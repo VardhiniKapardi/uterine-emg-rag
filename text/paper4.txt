@@ -1,0 +1,1467 @@
+Biomedical Signal Processing and Control 75 (2022) 103556
+Available online 9 February 2022
+1746-8094/© 2022 The Authors. Published by Elsevier Ltd. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-
+nc-nd/4.0/).
+Electrohysterography extracted features dependency on anthropometric 
+and pregnancy factors 
+Martim Almeida a, Helena Mouri˜no a,*, Arnaldo G. Batista b,c, Sara Russo b, Filipa Esgalhado b,d, 
+Catarina R. Palma dos Reis e,f, F´atima Serrano e,f, Manuel Ortigueira b,c 
+a Faculdade de Ciˆencias, Universidade de Lisboa, Campo Grande, 1749-016 Lisboa, Portugal 
+b NOVA School of Science and Technology - NOVA University Lisbon, 2829-516 Caparica, Portugal 
+c UNINOVA-CTS, 2829-516 Caparica, Portugal 
+d NMT, S.A., Parque Tecnol´ogico de Cantanhede, Núcleo 04, Lote 3, 3060 - 197 Cantanhede, Portugal 
+e Maternidade Alfredo da Costa, Rua Viriato 1, 1050-170 Lisboa, Portugal 
+f NOVA Medical School / Faculty of Medical Sciences, NOVA University Lisbon, 1169-056 Lisboa, Portugal   
+A R T I C L E I N F O  
+Keywords: 
+Uterine electromyography 
+Electrohysterography 
+Feature extraction 
+Pregnancy monitoring 
+Linear mixed models 
+A B S T R A C T  
+The Uterine Electromyogram often referred as the Electrohysterogram (EHG) is a signal that has the potential to 
+be used for pregnancy monitoring and preterm risk evaluation, amongst other applications. Classification al­
+gorithms success heavily rely on the adequacy of the selected features. In this study, Linear Mixed Models are 
+used to evaluate a selected set of EHG features dependency on the gestational age, placental position, age, body 
+mass index (BMI), gravidity and previous cesarean section. The obtained results point out, for example, to a 
+dependency of some EHG features on the BMI and placental position, on the form of a low pass filtering effect. On 
+the other hand, it was found that all the studied entropy features variation with gestational age was not sta­
+tistically validated. Several conclusions can be drawn from the obtained results, which could be of interest for the 
+increasing number of researchers using the EHG in machine learning computational algorithms, where the 
+features are often selected without a disclosed criterion.   
+1. Introduction 
+Uterine Electromyography is a non-invasive technique for the 
+recording of uterine contractile activity. The obtained signal is also 
+called Electrohysterogram (EHG). The EHG, recorded through elec­
+trodes placed on the abdominal surface, represents the bioelectrical 
+signal resulting from the wave propagation of electrical potentials in the 
+myometrium [1,2]. This new technique has been presented as an 
+alternative tool to the widely used Tocography [3]. Tocogram limita­
+tions include [3–8]:  
+• Significant dependency on the maternal abdominal wall thickness;  
+• Significant dependency on the transducer position relatively to the 
+uterus;  
+• Single channel mechanical sensor;  
+• Signal loss following maternal movements;  
+• Degraded sensitivity and specificity, namely for lower gestational 
+ages;  
+• Often used only as a contraction event rate counter. 
+The gold standard for uterine contraction monitoring is the Intra­
+uterine Pressure Catheter (IUPC) [9,10]. This is an invasive technique 
+with associated health risks, which requires amniotic membrane 
+rupture, thus being only applied in selected active labor contexts 
+[11,12]. It is therefore not the selected technique for general pregnancy 
+monitoring. 
+The EHG is considered the most accurate and robust technique to 
+record uterine contractile activity when compared to the TOCO and the 
+IUPC [13,3]. In fact, the EHG has been reported as a validated alterna­
+tive technique for pregnancy monitoring due to its non-invasive nature 
+[14,15], multichannel capability [16], superior sensitivity and speci­
+ficity and low dependency on the subject Body Mass Index (BMI) 
+[17,18]. Marque et al. (1986) [19] used EHG signal processing in the 
+time and spectral domains to investigate pregnancy and parturition. A 
+monitoring device was proposed for contraction rate and efficiency 
+evaluation. 
+* Corresponding author. 
+E-mail address: nunesmaria@campus.ul.pt (H. Mouri˜no).  
+Contents lists available at ScienceDirect 
+Biomedical Signal Processing and Control 
+journal homepage: www.elsevier.com/locate/bspc 
+https://doi.org/10.1016/j.bspc.2022.103556 
+Received 4 November 2021; Received in revised form 26 January 2022; Accepted 2 February 2022   
+Biomedical Signal Processing and Control 75 (2022) 103556
+2
+Several features of the EHG signal can be extracted for its charac­
+terization and analysis [20–22]. These features can be nonlinear or 
+linear and can be obtained from either the time or the spectral domain. 
+One of the main EHG application goals is preterm prediction, for 
+which good results have been achieved [23–25]. Other authors use the 
+EHG features to analyze the relationship between uterine contractions 
+during labor and pregnancy [19,26,27] finding significant differences. 
+Clearly, these methodologies heavily rely on the quality of the extracted 
+features which, in turn, depend on the anthropometric and pregnancy 
+variables such as gestational age. For instance, the contractions’ energy 
+dependency on the gestational age, using a cohort of subjects must 
+consider anthropometric and pre-gnancy variables including the BMI 
+and the Placental Position. 
+There are few studies dedicated to the analysis of the EHG features 
+dependency on anthropometric and pregnancy variables. Caldeyro- 
+Barcia (1959) [28] explored the intensity of uterine contractions 
+throughout pregnancy (during the first 30 weeks) using the amniotic 
+fluid pressure, recorded invasively. The presented results were 
+measured with and without oxytocin administration and showed an 
+evolution of uterine activity through gestational age, in all cases. In this 
+study it is suggested a steady increase in uterine activity towards term 
+pregnancy. Zahn (1984) [29] evaluated the occurrence rate of con­
+tractions during pregnancy and found relevant peaks at 31st and 32nd 
+gestational age. De Oliveira (2016) et al. [30] assessed the occurrence 
+rate of contractions, according to progesterone administration, to reduce 
+preterm risk in twin pregnancies, taking into account the progression 
+throughout gestational weeks. In the placebo group, a reduction of the 
+contractile occurrence was observed between 32nd and 34th gestational 
+weeks. Moore (1994) [31] and Main et al. (1991) [32] observed an in­
+crease in uterine contraction occurrence rate through pregnancy in 
+TOCO recordings. Dickinson et al. (1997) [33] reported an increase in 
+uterine activity, duration and amplitude of contractions throughout 
+pregnancy (20–40 gestational weeks), using linear mixed models in a 
+longitudinal study. The signal was recorded using the TOCO [33]. Ter­
+rien et al. (2010) [34] investigated contraction duration evolution 
+throughout pregnancy in a study regarding standard procedures for EHG 
+storage and visualization. The results indicated weekly changes in 
+contraction duration. Table 1 represents a summary of the state of the 
+art regarding contractile activity dependency on selected features. 
+BMI [17,18] and Placental Position [35–37] have been studied to 
+investigate how they could affect both the EHG and the TOCO signals. 
+Martinez et al. (2020) [38] studied the postpartum uterine dynamics 
+after vaginal and elective cesarean. The EHG linear and nonlinear pa­
+rameters were used for postpartum hemorrhage prediction. In other 
+study, Cabo et al. (2020) [39] investigated the robustness of different 
+EHG parameters obtained for a variety of obstetric scenarios. It was 
+shown that the percentiles 90th and 10th outperformed median values 
+in discriminating between obstetric scenarios. In the same study other 
+trends were investigated such as the time reversibility which was not 
+found a reliable indicator for EHG characterization. 
+Table 1 
+Contractile activity dependency on selected features.  
+Article 
+Used Sensor 
+Extracted Features 
+Anthropometric and Pregnancy 
+Variables 
+Relevant Conclusions 
+Caldeyro-Barcia 
+et al. (1959)  
+[28] 
+Electromanometer 
+Pressure 
+Weeks of pregnancy / oxytocin 
+infusion 
+Uterine activity increased with gestational age and oxytocin 
+administration. 
+Zhan (1984) [29] 
+TOCO 
+Number of contractions 
+Weeks of pregnancy 
+Number of contractions increased with gestational weeks, 
+with a peak on 30th week. 
+Main et al. (1991) 
+[32] 
+TOCO 
+(ambulatory) 
+Uterine activity 
+Gestational weeks and maternal 
+factors (univariable) 
+Contraction peak and rate generally increases with 
+gestational age, while duration does not increase. Maternal 
+weight influenced inversely contraction rate. Parity did not 
+affect uterine contraction profiles. 
+Moore (1994)  
+[31] 
+TOCO 
+(ambulatory) 
+Number of contractions (per 
+hour) 
+Gestational weeks and hour of the 
+day (multivariable) 
+A strong daily rhythm is present from the 24th week onwards 
+with 60% of the contractions happening at night. No 
+alteration in uterine contraction profiles with parity. 
+Dickinson (1997)  
+[33] 
+TOCO 
+(ambulatory) 
+Number of contractions, 
+duration, amplitude 
+Gestational week, parity and 
+physical activity (multivariable) 
+Occurrence, duration and amplitude of uterine activity 
+progressively increased with gestational weeks. Parity did 
+not affect the results. 
+Terrien et al 
+(2003) [35] 
+EHG 
+Fast wave low (FWL) and Fast 
+Wave High (FWH) 
+Placenta location and Gestational 
+weeks 
+Placenta location affects the EHG characteristics along the 
+gestation period. Non-placenta recording site is associated 
+with higher energy contractions. Population: two monkeys. 
+Terrien et al 
+(2010) [34] 
+EHG 
+Contraction Duration 
+Weeks before delivery 
+No significant patterns were found. 
+Alamedine (2015) 
+[46] 
+EHG 
+Sample Entropy, time 
+reversibility and other non- 
+linear features 
+Pregnancy vs labor 
+It was reported an increase from pregnancy to labor in 
+sample entropy and time reversibility. 
+De Oliveira et al 
+(2016) [30] 
+TOCO 
+Mean contraction occurrence 
+rate 
+Gestational weeks 
+No difference in mean occurrence rate in the reported 
+gestational weeks. 
+Vlemminx et al 
+(2018) [18] 
+EHG, TOCO and, 
+IUP 
+EHG and TOCO sensitivity 
+BMI and abdominal circumference 
+Marginal BMI influence on the EHG. Decreased sensitivity for 
+the TOCO for higher BMIs. 
+Hemthanon et al 
+(2020) [47] 
+EHG 
+Various time-domain features 
+(univariate) 
+Gestational weeks 
+Zero-crossing appears to be linearly correlated with the time 
+of recording. Average amplitude variation and Root Mean 
+Square (RMS) were not correlated with the time of recording. 
+Diaz-Martinez 
+(2020) [38] 
+EHG 
+Amplitude, Kurtosis, Hilbert 
+Envelope, and others. Multiple 
+non-linear parameters 
+Vaginal and cesarean delivery 
+Remarkable differences in post-partum myometrial activity 
+between women who delivered vaginal and by elective 
+cesarean. Application for post-partum hemorrhage 
+prediction. 
+Mas-Cabo (2020)  
+[39] 
+EHG 
+An array of parameters was 
+investigated including spectral 
+and nonlinear ones 
+Term, preterm, gestation, active 
+stage of labor and postpartum 
+The percentiles 90th and 10th outperformed median values 
+in discriminating between obstetric scenarios 
+The herein 
+presented study 
+EHG 
+a* 
+WBD, BMI, Placental Position, 
+Age, Gravidity, Previous Cesarian 
+(multivariable) 
+See Table 4 
+a*: Energy, Duration, Crest Factor, Mean Frequency, Median Frequency, Peak-to-Peak amplitude, Shannon Entropy, Sample Entropy, Permutation Entropy, Fuzzy 
+Entropy, Conditional Entropy, Lyapunov Exponent, Time Reversibility, Correlation Dimension, Autocorrelation FZC. 
+M. Almeida et al.                                                                                                                                                                                                                               
+Biomedical Signal Processing and Control 75 (2022) 103556
+3
+The aim of this work is to evaluate the effect of anthropometric and 
+pregnancy factors on important EHG extracted features. These features 
+were selected due to their general use in machine learning and other 
+artificial intelligence sub-fields [21]. In these scenarios feature selection 
+is a crucial first step. Often the selection criteria is not always clear. 
+Admittedly, a previous knowledge of the features’ characterristics, as far 
+as the involved independent variables are concerned, would assist in the 
+selection criteria. It is herein considered the features to be the output 
+variable of multiple linear regression processes. This is thus a multi­
+variable analysis. To the best of the authors knowledge three other 
+studies were published, in the EHG and pregnancy context, using 
+multivariable analysis: Dickinson et al. [33] (gestational age and 
+maternal parity), Maine et al. (gestational age, maternal weight, age and 
+parity) [32] and Moore [31] (gestational weeks and hour of the day). In 
+the herein presented work, the following independent variables will be 
+considered: Weeks before delivery (WBD), BMI, Placental Position, Age, 
+Gravidity and Previous Cesarean. These variables were selected because 
+they are available in the used database notation section. 
+2. Materials and methods 
+The EHG signals used in the present work are provided by the Ice­
+landic 16-electrode EHG database [40]. This database comprises 122 
+recordings from 45 pregnant women from the third trimester onwards. 
+Thirty-two subjects visited the recording center between 1 and 7 times. 
+Cesarean delivery cases were excluded from the study to avoid bias due 
+to calculation of the WBD parameter. Labor cases were also excluded to 
+avoid non-representative small values of the WBD. The remaining of the 
+33 subjects were initially eligible corresponding to 5105 contractions. 
+This dataset can be considered longitudinal since there are multiple 
+recordings per women, although each woman visited the center in 
+different gestational ages, and with a different number of total visits. 
+The maternal anthropometric characterristics and other relevant infor­
+mation of the pregnant women enrolled in this study are described in 
+Table 2. 
+The EHG signal sample rate was 200 Hz and an anti-aliasing filter 
+with a low cut-off frequency of 100 Hz was used. The recordings took 
+place from 2008 to 2010 and the data was published as open source in 
+2015 on physionet.org. 
+The data was recorded using 16 electrodes in a 4-by-4 grid. In the 
+present study, a bipolar channel was used, to reduce the common mode 
+noise components such as maternal respiration movements and power 
+supply interference. The selection arrangement for this study was the 
+bipolar channel 4–13, as shown in Fig. 1, and explained in [41,42]. 
+The data was processed with MATLAB® and R programing 
+languages. 
+2.1. Signal pre-processing and contraction detection 
+The description of the adopted signal filtering and the automatic 
+contraction detection can be found in [41]. 
+Pre-processing included sample rate reduction from 200 Hz to 4 Hz 
+and passband wavelet filtering between 0.1 Hz and 1 Hz [43]. 
+2.2. Feature Extraction 
+The features were extracted from the contractions’ dataset. The most 
+common used features in EHG based pregnancy monitoring and preterm 
+risk evaluation research algorithms were selected as follows [24,44,45]: 
+2.2.1. Energy 
+The energy of a given discrete signal x is computed as the sum of the 
+squared x values over the n samples. The units are Volt2. 
+Energy =
+∑n
+k=1x2
+k
+(1)  
+2.2.2. Duration 
+Length of the detected contraction in seconds. Computed as the 
+difference between the automatic detected contractions’ onset and offset 
+samples, divided by sample rate (4 Hz) to convert to seconds. 
+Duration = (maximum sample index
+−minimum sample index)/(sample rate (Hz) )
+(2)  
+2.2.3. Crest Factor 
+The ratio between the peak absolute signal amplitude value and the 
+corresponding RMS value [48]. It is computed as: 
+Crestfactor = xp
+/̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅
+1
+N
+∑
+N
+k=1
+xk2
+√
+√
+√
+√
+(3)  
+where N is the sample length. 
+2.2.4. Mean Frequency 
+It is the estimation of the mean of the normalized frequency of the 
+power spectrum [49]. It is defined as: 
+fmean =
+∑
+N
+k=1
+fkPs(k)
+/ ∑
+N
+k=1
+Ps(k)
+(4) 
+Table 2 
+Anthropometric and pregnancy variables description.  
+Variable 
+N 
+Min 
+Max 
+Mean 
+(±SD) 
+Q1 
+Median 
+Q3 
+WBD 
+75 
+0.14 
+11.88 
+3.67 
+(±2.55) 
+1.64 
+3.14 
+5.29 
+BMI 
+75 
+23 
+36 
+28.87 
+(±3.98) 
+25.85 
+28.90 
+30.40 
+Age 
+75 
+19 
+39 
+29.63 
+(±5.52) 
+26 
+31 
+33 
+Gravidity 
+75 
+1 
+7 
+2.56 
+(±1.71) 
+1 
+2 
+4 
+Placental 
+Position 
+75 
+– 
+– 
+– 
+– 
+– 
+–  
+• Anterior 
+37 
+– 
+– 
+– 
+– 
+– 
+–  
+• Non- 
+Anterior 
+38 
+– 
+– 
+– 
+– 
+– 
+– 
+Previous 
+Cesarean 
+75 
+– 
+– 
+– 
+– 
+– 
+–  
+• Yes 
+3 
+– 
+– 
+– 
+– 
+– 
+–  
+• No 
+72 
+– 
+– 
+– 
+– 
+– 
+– 
+N: Number of cases; SD: Standard Deviation; Q1: First Quantile; Q3: Third 
+Quantile. 
+Fig. 1. Bipolar channel configuration relatively to the original monopolar 
+arrangement. 
+M. Almeida et al.                                                                                                                                                                                                                               
+Biomedical Signal Processing and Control 75 (2022) 103556
+4
+where Ps(k) is the spectral estimation of the contraction under study, f is 
+a vector of frequency values and N is the number of frequency bins. 
+2.2.5. Median Frequency 
+The median frequency of the power spectrum of the signal, can be 
+defined as follows: 
+fmed = k fs
+N  
+∑
+k
+k=0
+Ps(k) =
+∑
+k=N−1
+k
+Ps(k)
+(5)  
+where k is obtained from expression (5), fs is the sample frequency and N 
+is the number of samples. It has been used to distinguish term from 
+preterm deliveries and to characterize the EHG signal [25]. 
+2.2.6. Peak-to-Peak amplitude 
+The difference of the maximum value and the minimum value of the 
+signal [48]. 
+Peak −to −PeakAmplitude = |max(x) −min(x)|
+(6)  
+2.2.7. Shannon Entropy 
+Measures the uncertainty of a random process, it represents the 
+randomness of a given x signal [50]. The lower the value the less un­
+certain the signal might be and therefore less random and more deter­
+ministic. It is defined as: 
+ShEntropy =
+∑
+n
+i=1
+x2
+i log
+(
+x2
+i
+)
+(7)  
+2.2.8. Sample Entropy 
+Sample Entropy is the negative natural logarithm of the conditional 
+probability that two sequences similar for m points remain similar at the 
+next point, where self-matches are not included in calculating the 
+probability [51]. 
+SampEn = −log A
+B
+(8)  
+where B represents the total number of template matches of length ­
+m and A is the total number of forward matches of length m + 1. 
+2.2.9. Permutation Entropy 
+Measures the complexity of the time series data, considering the non- 
+linear behavior, being robust to noise and computationally efficient. It is 
+also sensible to the ordering structure of the time series values [52]. 
+Permutation entropy of order n is defined as: 
+PermEntropy = −
+∑
+p(Π)logp(Π)
+(9)  
+where each Π is a permutation of order n of the time series and p(Π) is 
+the relative frequency of each Π. 
+2.2.10. Fuzzy Entropy 
+Fuzzy entropy belongs to the family of permutation entropy and 
+sample entropy, adding an exponential fuzzy function to measure the 
+“membership degree”. These fuzzy functions should be continuous and 
+convex [53]. It is defined as: 
+FuzzyEn = lim
+N→∞
+[
+lnøm(n, r) −lnøm+1(n, r)
+]
+(10)  
+where m is the length of sequences to be considered, n the width of 
+exponential function, r the gradient of boundary of the exponential 
+function, N the sample length and ø is a variable that contains the fuzzy 
+function for each m samples’ time series. 
+2.2.11. Conditional Entropy 
+The Conditional entropy [54] is defined as: 
+E(L/L −1) = −
+∑
+L−1
+pL−1
+∑
+L/L−1
+pL/L−1log
+(
+pL/L−1
+)
+(11)  
+where a pattern of L consecutive samples is considered, pL−1 is the joint 
+probability of pattern xL−1(i) and pL/L−1 the conditional probability of 
+the Lth sample of pattern xL(i) given the last L −1 ones. 
+2.2.12. Lyapunov Exponent 
+Lyapunov Exponent is a measurement of chaos in a signal and it is 
+considered to be an important non-linear feature in EHG analysis [55]. It 
+is defined as: 
+λ = lim
+t→∞lim
+||Δd0||→0
+1
+t log(||Δdt||
+/
+||Δd0||)
+(12)  
+where ||Δd0|| is the Euclidean distance between two states of the system 
+at a given point in time t0 , ||Δdt|| is the distance between the two states at 
+the time t [46]. 
+2.2.13. Time reversibility 
+Time Reversibility is a measure of nonlinearity, indicating the 
+strength of the stationary property of a time series and a relevant signal 
+feature to extract from the EHG signal [18]. It is defined as: 
+Tr(τ) =
+1
+N −τ
+∑N
+d=τ+1(x(d) −x(d −τ))3
+(13)  
+where x is the signal, N the signal length and τ the time delay. 
+2.2.14. Correlation Dimension 
+Correlation Dimension is used to distinguish random noise form 
+deterministic chaos. It is computed as the slope of the correlation inte­
+gral and the range of radius similarity [56]. Correlation Dimension has 
+been referred as an important feature to uterine contraction detection, 
+therefore it will be used in this study. It is defined as the slope of CDR vs 
+R where the correlation integral CDR is defined as: 
+C(R) =
+2
+N(N −1)
+∑N
+i=1Ni(R)
+(14)  
+where Ni is the number of within-range points i and R is the radius of 
+similarity. 
+2.2.15. Autocorrelation first zero-crossing 
+The autocorrelation function measures the correlation between x­
+t and xt + k where k = 0, ..., K and xt is a stochastic process. The auto­
+correlation for lag k is: 
+rk = ck/c0
+(15)  
+ck = 1
+T
+∑T−k
+t=1 (xt −x)
+/
+(xt+k −x)
+(16)  
+Where T is the time-series dimension and c0 is the sample variance of the 
+time series [57]. 
+2.3. Statistical modelling 
+For each recording session a feature average was performed on the 
+contraction set to simplify the results and the analysis. Linear modeling 
+requires the dependent variable to be normally distributed. Therefore, 
+normality was assessed by distribution plots (Fig. 2) and data skewness 
+was investigated. For each feature in which normality assumption was 
+clearly not met, a log transformation was applied. 
+Each woman under analysis made several recording sessions during 
+M. Almeida et al.                                                                                                                                                                                                                               
+Biomedical Signal Processing and Control 75 (2022) 103556
+5
+gestation. Therefore, there is a source of clustering in the data that 
+corresponds to each subject. Linear mixed models were used to describe 
+each signal feature as a function of WBD and the anthropometric and 
+pregnancy variables in Table 2, where the random effects corresponded 
+to the clustering data associated with each woman. More precisely, the 
+linear mixed model takes the general form [58]: 
+yit = β0 + β1WBDit +
+∑
+p
+l=2
+βlxlit + Ui + εij,
+i = 1, ..., 20, t = 1, ..., ni
+(17)  
+where yit is a realization of the random variable Yit that represents the 
+signal feature, for the i-th woman at discrete time t with ni being the 
+number of recording sessions of the i-th woman during the pregnancy 
+time; the β0 is the intercept; β1 describes the fixed effect of the variable 
+WBD, whereas βl represents the fixed impact of l-th covariate that is 
+denoted by xlit. The random effects term, Ui describes the deviation from 
+the fixed intercept β0 of the i-th woman, consequently it is called a model 
+with random intercept. Additionally, Ui follows a normal distribution 
+with mean zero and variance σ2
+U, that is, Ui ∼N(0,σ2
+U). The error term is 
+given by εij, and it is assumed that it follows a normal distribution, εij ∼
+N(0,σ2
+ε ). Independence is assumed between the error terms Ui and εij. 
+If the variance of the random variable Ui is equal to zero, i.e., σ2
+U =
+0, then the mixed effects model defined by (17) reduces to the special 
+case of the linear regression model, with no random effects. 
+Women with less than 3 visits during gestation were removed from 
+the multiple regression analysis due to lack of information for carrying 
+out the estimation procedure. This led the initial 96 recording sessions of 
+33 different women to be reduced to 75 recording sessions of 20 
+different women. 
+The significance of the random effects was assessed by the restricted 
+likelihood ratio test between the model with and without the random 
+effects [38]. Fig. 3 shows the general workflow for the used statistical 
+methodology, regarding the feature model. 
+An important outcome of this study would be to evaluate the features 
+boundary values resulting on each anthropometric and pregnancy var­
+iables range influence. Considering Y a feature that did not underwent 
+the log transformation, and disregarding the Ui factor, the feature range 
+ΔY for the β1 contribution of the X variable (range Xmax −Xmin), is ob­
+tained as follows: 
+Y = β0 + β1X +
+∑
+p
+l=2
+βlxlt
+(18)  
+ΔY =
+(
+β0 + β1Xmax +
+∑
+p
+l=2
+βlxlt
+)
+−
+(
+β0 + β1Xmin +
+∑
+p
+l=2
+βlxlt
+)
+(18a)  
+ΔY = β1(Xmax −Xmin)
+(18b) 
+For the variables that were log transformed Ylog, a different proced­
+ure is necessary. In this case, instead of a feature range it should be 
+obtained a feature percentage change P%. 
+log(Y) = β0 + β1X +
+∑
+p
+l=2
+βlxlt
+(19)  
+P% =
+(
+exp
+(
+β0 + β1Xmax + ∑p
+l=2βlxlt
+)
+exp
+(
+β0 + β1Xmin + ∑p
+l=2βlxlt
+) −1
+)
+× 100
+(19a)  
+Fig. 2. Distribution histograms of the selected EHG derived features.  
+M. Almeida et al.                                                                                                                                                                                                                               
+Biomedical Signal Processing and Control 75 (2022) 103556
+6
+P% = (exp(β1(Xmax −Xmin)) −1) × 100
+(19b) 
+Model fixed-effects validation was based on the backward stepwise 
+procedure by constructing an ANOVA table to each model. The fixed- 
+effect parameter with the highest p-value was removed and a new 
+model is constructed. If this new model was statistically significant (F 
+test) from the previous, then the simplified model was considered to next 
+iteration. This procedure is repeated until the final model was selected 
+[59]. 
+The following R programming language packages were used: lme4 
+[60], lmerTest [61] and MuMIn. This last package was used to compute 
+the conditional R2 presented in the results, that accounts for the ratio of 
+the explained variability, taking into account the linear mixed models 
+structure [62]. 
+3. Results 
+Table 3 presents the information regarding the anthropometric and 
+pregnancy variables that were found to be significant at the selected cut- 
+off value (p-value less than 0.1) to explain the linear trend of the selected 
+(transformed or not) signal features. The six explanatory variables are in 
+the columns and for each row (EHG signal features), the X represents 
+that a significant (positive or negative regression value) effect was 
+found. The random-effects’ column indicates if the random-intercept 
+representing subject-specific influence was included in the linear 
+model. For the Previous Cesarean case none of the studied features is 
+explained by this variable. This case will be mentioned in the conclusion 
+section. 
+In Table 4, the model output for each of the selected features is 
+described, specifying that a dependency exists with at least one 
+anthropometric variable or the WBD. For each feature entry, the 
+explanatory variables are represented. The second column shows the 
+respective 
+parameter 
+estimates 
+and 
+its 
+standard 
+error. 
+The 
+approximation to the p-value (third column) was computed via the 
+Satterthwaite’s degrees of freedom method. In the fourth column it is 
+also found the confidence interval for the estimate of the standard de­
+viation of the random intercept CI95%̂σU, which accounts for the vari­
+ability within each woman. The fifth and the sixth columns represent the 
+P% and the ΔY, respectively. Finally, the R2 column contains the esti­
+mate for the ratio of the total variability explained by the model. The 
+lowest p-value pertains the effect of the Non-Anterior Placenta (p-value 
+= 7.870e-6), which strongly suggests that the Placental Position affects 
+the log Sample Entropy. Some p-values near the selected cut-off of 0.1 
+were also found, as is the case of the Age effect on the Sample Entropy, 
+meaning a less strong evidence to support this result, although still 
+considered significant. As mentioned in the Materials and Methods 
+section, the R2 in the context of mixed models is computed conditionally 
+to each woman, thus increasing the feature explained variation when 
+compared with the marginal R2. The lowest value found for this 
+parameter is 0.17 for the Fuzzy Entropy model, while the highest 0.6 is 
+for the model explaining the log Peak Amplitude. This implies that the 
+model can explain 60% of the total variation and it is also the obtained 
+best fit in the results. 
+4. Discussion 
+The following comments are based on Table 4 results representation. 
+4.1. Log Mean Frequency 
+It was herein found that there is an effect of BMI and Placental po­
+sition on the Mean Frequency. The P% indicates a 11% reduction in the 
+Mean Frequency for the BMI range under study. As far as the Placental 
+position is concerned this result is generally in agreement with Terrien 
+et al. [35], where it is declared an influence of this factor on the 
+Fig. 3. Block Diagram of the statistical methodology.  
+Table 3 
+Summary of results.  
+Variable 
+Extracted Feature 
+WBD 
+BMI 
+Age 
+Gravidity 
+Placental Position 
+Previous Caesarean*** 
+Random effects 
+Log Energy 
+X 
+– 
+– 
+– 
+– 
+– 
+X 
+Log Entropy 
+X 
+– 
+– 
+– 
+– 
+– 
+X 
+Log Peak Amplitude 
+X 
+X 
+– 
+– 
+– 
+– 
+X 
+Log Duration* 
+– 
+– 
+– 
+– 
+– 
+– 
+– 
+Fuzzy Entropy 
+– 
+– 
+– 
+– 
+X 
+– 
+– 
+Lyapunov Exponent 
+– 
+– 
+– 
+– 
+X 
+– 
+X 
+Time Reversibility ** 
+– 
+X 
+– 
+– 
+– 
+– 
+– 
+Permutation Entropy 
+– 
+– 
+– 
+– 
+X 
+– 
+X 
+Log Sample Entropy 
+– 
+– 
+X 
+– 
+X 
+– 
+– 
+Crest Factor 
+– 
+– 
+X 
+– 
+– 
+– 
+X 
+Conditional Entropy 
+– 
+– 
+– 
+– 
+X 
+– 
+X 
+Correlation Dimension* 
+– 
+– 
+– 
+– 
+– 
+– 
+– 
+Autocorrelation FZC* 
+– 
+– 
+– 
+– 
+– 
+– 
+– 
+Log Mean Frequency 
+– 
+X 
+– 
+– 
+X 
+– 
+– 
+Log Median Frequency 
+– 
+X 
+– 
+– 
+– 
+– 
+X 
+* Features that are not explained by any of the variables. 
+** No statistical validation was found. 
+*** None of the studied features is explained by this variable. 
+M. Almeida et al.                                                                                                                                                                                                                               
+Biomedical Signal Processing and Control 75 (2022) 103556
+7
+frequency parameters for two monkeys. Likewise, the results also 
+generally agree with the works of Cohen et al. (2014) [17] and Vlem­
+minx et al. (2018) [18] as far as the BMI effect is concerned. The ob­
+tained P% suggests a low-pass filter effect of the body fat layer between 
+the myometrium and the electrodes. The same interpretation could be 
+inferred to the herein computed placental effect in this feature, albeit the 
+placenta not being located between the electrodes and the myometrium. 
+However, it is known that the placental implantation in the uterine 
+tissue changes its local electrical properties [37]. The encountered P% is 
+−7% thus suggesting a Non-Anterior Placenta effect on the spectral 
+distribution. This may imply a bandwidth increase effect for Non- 
+Anterior Placenta cases, for mono-component contractions. No 
+random effects were detected thus implying that the impact of multiple 
+subject recordings is not significant to the model. 
+The Mean Frequency is therefore a feature that is solely dependent 
+on the BMI and Placental Position as if all the women would be under the 
+same electrophysiological ruling in this respect. 
+4.2. Log Median Frequency 
+The Median Frequency was found in this model to be dependent on 
+the BMI only, portraying the same P% as the Log Mean Frequency. The 
+same comments presented in the Log Mean Frequency can be applied in 
+this case. 
+4.3. Log Energy 
+Log Energy has been found increasing as labor approaches 
+(decreasing WBD values) with P% = −55%. This result is in agreement 
+with the general consensus [28,30,63]. Additionally, this feature does 
+not show dependency on the anthropo-metric variables. This fact cor­
+roborates the EHG as being a robust tool for pregnancy monitoring. 
+4.4. Log Shannon Entropy 
+Log Shannon Entropy has been found increasing as labor approaches. 
+Additionally, this feature does not show dependency on the anthropo­
+metric variables. It stands out that the model parameters for this feature 
+are identical to the Log Energy ones. Also, the P% are identical for both 
+features. 
+4.5. Log Peak Amplitude 
+WBD and BMI were found as significant to describe the Log Peak 
+Amplitude feature. As labor approaches, the log peak amplitude in­
+creases (P% = −50%), and with higher BMI values a decrease in this 
+feature is found (P% = −50%). This result shows some agreement with 
+the one reported for uterine contractions by Main et al. [32], where this 
+parameter has been found to significantly increase with gestational age. 
+Different results were obtained by Hemthanon et al. [47] where the 
+average EHG amplitude was not found to be correlated with gestational 
+age. Other comments regarding these features are presented in the 
+Conclusion section. 
+4.6. Crest Factor 
+Crest Factor is found to be explained by Age and WBD. With age 
+increase there is a tendency to a decrease in the Crest Factor (ΔY =
+−161.280e-3). This would indicate that a younger uterus exhibits more 
+extreme peaks relatively to the contraction Root Mean Square value. 
+4.7. Log sample Entropy 
+Log Sample Entropy appears to be significantly influenced by 
+Placental Position and Age. Non-Anterior Placental position is associ­
+ated with lower values of Sample Entropy (P% = −11%). Sample En­
+tropy tends to increase with age (P% = 7%). 
+Table 4 
+Model results.  
+Signal Feature / Variable dependency 
+Parameter Estimation (SE) 
+p-value 
+σU CI95%  
+P%  
+ΔY  
+Conditional R2 
+Log Mean Frequency   
+–   
+0.23* 
+BMI 
+−9.091e-3 (2.808e-3) 
+1.825e-3 
+−11% 
+– 
+Non-Anterior Placenta 
+−70.181e-3 (18.754e-3) 
+364.000e-6 
+−7% 
+– 
+Log Median Frequency   
+0.06 
+]0.03; 0.09[   
+0.45 
+BMI 
+−9.451e-3 
+(4.849e-3) 
+64.300e-3 
+−11% 
+– 
+Log Energy   
+0.80 
+]0.53; 1.15[   
+0.58 
+WBD 
+−68.700e-3 (37.440e-3) 
+71.000e-3 
+−55% 
+– 
+Log ShnEntropy   
+0.67 
+]0.45; 0.97[   
+0.58 
+WBD 
+−57.010e-3 (31.460e-3) 
+74.500e-3 
+−49% 
+– 
+Log Peak Amplitude   
+0.38 
+]0.24; 0.54[   
+0.6 
+WBD 
+−47.320e-3 (19.740e-3) 
+19.200e-3 
+−50% 
+– 
+BMI 
+−53.380e-3 (28.190e-3) 
+72.400e-3 
+−50% 
+– 
+Crest Factor   
+0.07 
+]0.00; 0.11[ 
+–  
+0.33 
+Age 
+−8.064e-3 (3.789e-3) 
+48.800e-3 
+−161.280e-3 
+Log Sample Entropy   
+–   
+0.26* 
+Non-Anterior Placenta 
+−112.916e-3 (23.447e-3) 
+7.870e-6 
+−11% 
+– 
+Age 
+3.662e-3 
+(2.150e-3) 
+92.900e-3 
+7% 
+– 
+Fuzzy Entropy   
+–   
+0.17* 
+Non-Anterior Placenta 
+−81.390e-3 
+(20.610e-3) 
+179.000e-6  
+– 
+−81.390e-3  
+Conditional Entropy   
+0.01 
+]0.00; 0.02]   
+0.33 
+Non-Anterior Placenta 
+−17.714e-3 (7.860e-3) 
+38.000e-3 
+– 
+−17.714e-3 
+Permutation Entropy   
+0.03 
+]0.00; 0.04[   
+0.36 
+Non-Anterior Placenta 
+−40.030e-3 
+(15.120e-3) 
+16.600e-3 
+– 
+−40.030e-3  
+Lyapunov Exponent   
+0.05 
+]0.02; 0.07]   
+0.42 
+Non-Anterior Placenta 
+76.840e-3 
+(27.950e-3) 
+13.300e-3 
+– 
+76.840e-3 
+* R2 for standard linear regression; SE: Standard Error. 
+M. Almeida et al.                                                                                                                                                                                                                               
+Biomedical Signal Processing and Control 75 (2022) 103556
+8
+4.8. Fuzzy Entropy 
+Fuzzy Entropy appears to be better explained by the Placental Po­
+sition. Non-Anterior position is shown to decrease Fuzzy Entropy values 
+(ΔY = −81.390e-3). 
+4.9. Conditional Entropy 
+Non-Anterior Placental position tends to be associated with lower 
+Conditional Entropy values (ΔY = −17.714e-3). 
+4.10. Permutation Entropy 
+Permutation Entropy appears to be influenced by the Placental Po­
+sition. Non-Anterior Placental position is associated with higher values 
+of this entropy (ΔY = −40.030e-3). 
+4.11. Lyapunov Exponent 
+Lyapunov Exponent is significantly influenced by the Placental Po­
+sition. Non-Anterior Placental position appears to be associated with 
+higher values of Lyapunov Exponent (ΔY = 76.840e-3). 
+4.12. Log duration 
+None of the independent variables had a detectable effect on this 
+feature. Therefore, the feature is represented in Table 3 but not in 
+Table 4. This result agrees with Main et al. [32] for the WBD variable 
+since this author reports no significant changes with gestational age. 
+However these two findings are not in accordance with Dickinson et al. 
+[33] for which contraction duration generally increased 0.7 s per 
+gestational week. Additionally there is also agreement with the results 
+presented by Terrien et al. [34] where no significant effect of WBD was 
+found on contraction duration. 
+The above explained features without comparative literature results 
+indicate the non-existence of published equivalent results, as far as the 
+authors of this work are aware of. 
+It stands out that Fuzzy Entropy, Permutation Entropy, Conditional 
+Entropy and Lyapunov Exponent are only explained by the Placental 
+Position according to the used model. The variations ΔY are −81.390e- 
+3, −17.714e-03, −40.030e-3, 76.840e-3, respectively. This suggests that 
+these features should therefore be used with caution in applications for 
+pregnancy monitoring where the WBD or the herein studied anthropo­
+metric variables are used. 
+Upon on observation of Table 3 it was concluded that features rep­
+resented by two independent variables do not exhibit random effects 
+dependency, except for the Log Peak Amplitude. This could demonstrate 
+that features explained by two independent variables have their random 
+effects depen-dency explained by the latter. 
+For the following features: Log Duration and Correlation Dimension 
+no variable was found to have a significant effect at the selected p-value 
+cut-off to explain the behavior of the feature variation with the inde­
+pendent variables. 
+5. Conclusion 
+In recent times, machine learning applications using the EHG have 
+caught the attention in the pregnancy monitoring and preterm risk 
+evaluation research community. Often, EHG based features are used in 
+these works without the feature selection criteria being disclosed. 
+However, the nature of the selected features will certainly impact the 
+classification algorithms’ results. This work evaluated the effect of 
+anthropometric and pregnancy factors on popular EHG extracted fea­
+tures. The obtained results could help in selecting appropriate EHG 
+features for classification tasks. The herein presented work, along with 
+other three reports [31–33] are the only material published in this 
+subject, to the best of the authors’ knowledge. As shown in the results 
+section, a significant number of the obtained outcomes agree with pre­
+viously published results, however for other features some disagreement 
+was detected. This is expected since the used methodologies and datasets 
+are not the same. More work should be done in this field using common 
+parametrization, methodologies and data. 
+In studies of this nature, the used dataset structure is an important 
+factor. Since the longitudinal data structure is irregular, estimation bias 
+might exist, especially considering the cases where WBD was found as a 
+significant variable due to its heterogenous sampling distribution. 
+Considering a model structure without the random effects, there is 
+indubitably induced bias by having multiple observations per women 
+and each woman having a different contribution to the estimates, due to 
+the different number of recording sessions. As mentioned before, there 
+are only 3 cases of previous cesarean delivery compared with 72 cases of 
+non-cesarean recordings, which makes it an unbalanced design. None­
+theless, this variable was included so that it could be considered as a 
+reference for further studies using databases that could have a more 
+suitable data balancing for this particular case. The used database, 
+likewise the other popular EHG datasets, lacks homogeneous sampling 
+in parameters such as the WBD. Also, the number of recording sessions 
+per woman is not the same. In addition, not all recording sessions occur 
+at the same gestation age for all women. It is often not possible to 
+schedule recording sessions to get statistical homogeneously distributed 
+data. The number of recording sessions per woman would ideally be 
+higher than the average portraited in the used database and with a 
+common value. 
+This is hardly achievable, as the enrollment in the recording sessions 
+is voluntary and it has been often observed reluctance to adhere to a 
+steady recording protocol, for a variety of reasons. Researchers are left 
+with unbalanced data which requires techniques whose complexity may 
+lead to an extra effort in the results interpretation and validation. 
+Despite the above enunciated predicaments, regarding EHG database 
+acquisition paradigms, it was possible to statistically validate the used 
+models. A set of selected features currently used in EHG classification 
+algorithms has been accessed using Linear Regression methods 
+regarding their variation with WBD and anthropometric variables. 
+Interesting conclusions have been found which are presented in the 
+Results section and Table 4. Placental Position has been found to impact 
+all the entropy studied features, except for the Shannon Entropy. For 
+Non-Anterior Placenta cases, all the affected entropy features display a 
+value reduction. This indicates that anterior placental implantation in­
+duces an increase on the information content or uncertainty in the EHG 
+contraction signal. Further electrophysiological studies are required for 
+a complete understanding of this property. This finding should be 
+examined along with the Non-Anterior Placental impact on the spectral 
+features to be mentioned below. The Lyapunov Exponent, which is a 
+measure of chaos, increases for the Non-Anterior Placenta cases. This 
+feature is a measure of signal dependency on the initial conditions of the 
+system. Again, this requires further investigation. 
+Both the Log Mean Frequency and the Log Median Frequency show a 
+reduction (P% = −11%) with increasing BMI values, thus implying a 
+low-pass filter effect mainly due to the fat layer between the myome­
+trium and the acquisition electrodes. For mono-component signals this 
+may imply a bandwidth reduction. The Log Mean Frequency shows a 
+reduction (P% = −7%) for Non-Anterior Placenta cases. This interesting 
+result can be interpreted under the knowledge that placental implan­
+tation on the myometrium impacts the later electrical properties [37]. It 
+is apparent that the placenta implantation in the myometrium incurs in 
+the increase of the higher frequency components of the EHG contrac­
+tions. The electrophysiological mechanisms behind this effect remain to 
+be investigated. 
+The Log Energy feature has been found to decrease with the WBD 
+(increasing with the gestational age) with P% = −55%. This indicates 
+that uterus maturation implies higher contractions’ energy. An identical 
+result has been found in the Log Peak Amplitude as far as the WBD is 
+M. Almeida et al.                                                                                                                                                                                                                               
+Biomedical Signal Processing and Control 75 (2022) 103556
+9
+concerned, although this feature also being explained by the BMI, unlike 
+the Log Energy. This can be interpreted as the contractions’ peaks 
+having low energy content despite their amplitude (short lived events). 
+On the other hand, the low-pass filtering effect of the BMI makes this 
+variable to impact the Log Peak Amplitude P% = −50%. 
+The EHG independence on the BMI has been presented as a flagship 
+of the method. In this study, it has been found that the three of the eleven 
+studied features depending on the BMI are: Log Mean Frequency, Log 
+Median Frequency and the Log Peak Amplitude. As stated above, the Log 
+Peak Amplitude dependency on the BMI is due to its low-pass filter ef­
+fect, for higher BMI values, on the signal low energy sharp peaks. One 
+might therefore conclude that the BMI impacts mostly spectral related 
+features. The used dataset (Icelandic Database) does not include preterm 
+cases. Therefore, feature investigation for preterm cases was not inves­
+tigated in this study. 
+This work is a contribution for EHG feature selection for classifica­
+tion algorithms applied to pregnancy monitoring and preterm risk 
+evaluation. A complete electrophysiological interpretation of the ob­
+tained results is a task beyond the scope of this work and is probably an 
+assignment for which it is expected a greater involvement in multidis­
+ciplinary cooperation. It is, however, in the authors’ future research 
+planning, as well as using the presented methodology in other EHG 
+databases. 
+Funding 
+This work was supported by the Portuguese National Funds through 
+the FCT Foundation for Science and Technology within the scope of the 
+CTS Research Unit - UNINOVA, under the project UIDB/00066/2020 
+(FCT) and under the project CMAFcIO UIDB/04561/2020. 
+CRediT authorship contribution statement 
+Martim Almeida: Conceptualization, Investigation, Methodology, 
+Resources, Software, Validation, Visualization, Writing – original draft, 
+Writing – review & editing. Helena Mouri˜no: Conceptualization, 
+Funding acquisition, Investigation, Methodology, Project administra­
+tion, Resources, Software, Supervision, Validation, Visualization, 
+Writing – original draft, Writing – review & editing. Arnaldo G. Batista: 
+Conceptualization, Investigation, Methodology, Project administration, 
+Resources, Supervision, Validation, Visualization, Writing – review & 
+editing. Sara Russo: Conceptualization, Investigation, Methodology, 
+Resources, Validation, Visualization, Writing – review & editing. Filipa 
+Esgalhado: Conceptualization, Investigation, Methodology, Resources, 
+Validation, Visualization, Writing – review & editing. Catarina R. 
+Palma dos Reis: Conceptualization, Investigation, Methodology, Re­
+sources, Validation, Visualization, Writing – review & editing. F´atima 
+Serrano: Conceptualization, Investigation, Methodology, Resources, 
+Validation, Visualization, Writing – review & editing. Manuel Orti­
+gueira: Conceptualization, Investigation, Methodology, Project admin­
+istration, Resources, Supervision, Validation, Visualization, Writing – 
+review & editing. 
+Declaration of Competing Interest 
+The authors declare that they have no known competing financial 
+interests or personal relationships that could have appeared to influence 
+the work reported in this paper. 
+References 
+[1] C. Marque, J. Gondry, J. Rossi, N. Baaklini, J. Duchˆene, Surveillance des grossesses 
+`a risque par ´electromyographie ut´erine, RBM-News 17 (1) (Jan. 1995) 25–31. 
+[2] H. Kuriyama, A. Csapo, A study of the parturient uterus with the microelectrode 
+techinque, Endocrinology 68 (6) (Jun. 1961) 1010–1025. 
+[3] T.Y. Euliano, et al., Monitoring uterine activity during labor: a comparison of 3 
+methods, Am. J. Obstet. Gynecol. 208 (1) (Jan. 2013) 66.e1–66.e6. 
+[4] T.Y. Euliano, M.T. Nguyen, D. Marossero, R.K. Edwards, Monitoring Contractions 
+in Obese Parturients, Obstet. Gynecol. 109 (5) (May 2007) 1136–1140. 
+[5] J. Alberola-Rubio, G. Prats-Boluda, Y. Ye-Lin, J. Valero, A. Perales, J. Garcia- 
+Casado, Comparison of non-invasive electrohysterographic recording techniques 
+for monitoring uterine dynamics, Med. Eng. Phys. 35 (12) (Dec. 2013) 1736–1743. 
+[6] J. Alberola-Rubio, J. Garcia-Casado, Y. Ye-Lin, G. Prats-Boluda, A. Perales, 
+Recording of electrohysterogram laplacian potential, in: 2011 Annual International 
+Conference of the IEEE Engineering in Medicine and Biology Society, 2011, vol. 
+2011, pp. 2510–2513. 
+[7] D. Schlembach, W.L. Maner, R.E. Garfield, H. Maul, Monitoring the progress of 
+pregnancy and labor using electromyography, Eur. J. Obstet. Gynecol. Reprod. 
+Biol. 144 (SUPPL 1) (May 2009) S33–S39. 
+[8] E. Hadar, T. Biron-Shental, O. Gavish, O. Raban, Y. Yogev, A comparison between 
+electrical uterine monitor, tocodynamometer and intra uterine pressure catheter 
+for uterine activity in labor, J. Matern. Neonatal Med. 28 (12) (Aug. 2015) 
+1367–1374. 
+[9] P.C.A.M. Bakker, S. Van Rijsiwijk, H.P. van Geijn, Uterine activity monitoring 
+during labor, J. Perinat. Med. 35 (6) (Jan. 2007) 468–477. 
+[10] D.M.F. Gibb, Measurement of uterine activity in labour-clinical aspects, BJOG An 
+Int. J. Obstet. Gynaecol. 100 (s9) (Mar. 1993) 28–31. 
+[11] C. Rabotti, M. Mischi, J.O.E.H. van Laar, P. Aelen, S.G. Oei, J.W.M. Bergmans, 
+Relationship between electrohysterogram and internal uterine pressure: a 
+preliminary study, International Conference of the IEEE Engineering in Medicine 
+and Biology Society 2006 (2006) 1661–1664. 
+[12] C. Rabotti, M. Mischi, J.O.E.H. van Laar, G.S. Oei, J.W.M. Bergmans, Estimation of 
+internal uterine pressure by joint amplitude and frequency analysis of 
+electrohysterographic signals, Physiol. Meas. 29 (7) (Jul. 2008) 829–841. 
+[13] M. W. C. Vlemminx, C. Rabotti, M. B. Van Der Hout-Van Der Jagt, and S. G. Oei, 
+“Clinical Use of Electrohysterography during Term Labor: A Systematic Review on 
+Diagnostic Value, Advantages, and Limitations,” Obstetrical and Gynecological 
+Survey, vol. 73, no. 5. Lippincott Williams and Wilkins, pp. 303–324, 01-May- 
+2018. 
+[14] R. E. Garfield, M. Lucovnik, L. Chambliss, and X. Qian, “Monitoring the onset and 
+progress of labor with electromyography in pregnant women,” Current Opinion in 
+Physiology, vol. 13. Elsevier Ltd, pp. 94–101, 01-Feb-2020. 
+[15] C. Benalcazar-Parra, et al., New electrohysterogram-based estimators of 
+intrauterine pressure signal, tonus and contraction peak for non-invasive labor 
+monitoring, Physiol. Meas. 40 (8) (2019) Sep. 
+[16] T. R. Jossou et al., “Electrodes in external electrohysterography: a systematic 
+literature review,” Biophys. Rev. 2021 133, vol. 13, no. 3, pp. 405–415, May 2021. 
+[17] W.R. Cohen, B. Hayes-Gill, Influence of maternal body mass index on accuracy and 
+reliability of external fetal monitoring techniques, Acta Obstet. Gynecol. Scand. 93 
+(6) (Jun. 2014) 590–595. 
+[18] M. W. C. Vlemminx, K. M. J. Thijssen, G. I. Bajlekov, J. P. Dieleman, M. B. Van Der 
+Hout-Van Der Jagt, and S. G. Oei, “Could electrohysterography be the solution for 
+external uterine monitoring in obese women?,” J. Perinatol., vol. 38, no. 5, pp. 
+580–586, May 2018. 
+[19] C. Marque, J. M. G. Duchene, S. Leclercq, G. S. Panczer, and J. Chaumont, “Uterine 
+EHG Processing for Obstetrical Monitoring,” IEEE Trans. Biomed. Eng., vol. BME-33, 
+no. 12, pp. 1182–1187, 1986. 
+[20] G. Fele-ˇZorˇz, G. Kavˇsek, ˇZ. Novak-Antoliˇc, F. Jager, A comparison of various linear 
+and non-linear signal processing techniques to separate uterine EMG records of 
+term and pre-term delivery groups, Med. Biol. Eng. Comput. 46 (9) (2008) 
+911–922. 
+[21] S. A. P., K. Subramaniam, and N. V. Iqbal, “A review of significant researches on 
+prediction of preterm birth using uterine electromyogram signal,” Futur. Gener. 
+Comput. Syst., vol. 98, pp. 135–143, Sep. 2019. 
+[22] N. Sadi-Ahmed, B. Kacha, H. Taleb, M. Kedir-Talha, Relevant Features Selection for 
+Automatic Prediction of Preterm Deliveries from Pregnancy ElectroHysterograhic 
+(EHG) records, J. Med. Syst. 41 (12) (2017) Dec. 
+[23] S. Vinothini, N. Punitha, P.A. Karthick, S. Ramakrishnan, Automated detection of 
+preterm condition using uterine electromyography based topological features, 
+Biocybern. Biomed. Eng. 41 (1) (Jan. 2021) 293–305. 
+[24] J. Garcia-Casado, Y. Ye-Lin, G. Prats-Boluda, J. Mas-Cabo, J. Alberola-Rubio, and 
+A. Perales, “Electrohysterography in the diagnosis of preterm birth: A review,” 
+Physiological Measurement, vol. 39, no. 2. Institute of Physics Publishing, 26-Feb- 
+2018. 
+[25] J. Peng, et al., Evaluation of electrohysterogram measured from different 
+gestational weeks for recognizing preterm delivery: a preliminary study using 
+random Forest, Biocybern. Biomed. Eng. 40 (1) (Jan. 2020) 352–362. 
+[26] M. Hassan, J. Terrien, A. Alexandersson, C. Marque, and B. Karlsson, “Nonlinearity 
+of EHG signals used to distinguish active labor from normal pregnancy 
+contractions,” in 2010 Annual International Conference of the IEEE Engineering in 
+Medicine and Biology Society, EMBC’10, 2010, vol. 2010, pp. 2387–2390. 
+[27] F. Fatehalla Shero, G. Thabet, S. Al-Ani, E.J. Khadim, H. Zuhairkhaleel, F.F. Shero, 
+Assessment of linear parameters of Electrohysterograph (EHG) in diagnosis of true 
+labor vol. 23 (2020) 502. 
+[28] R. Caldeyro-Barcia and J. J. Poseiro, “Oxytocina and Contractility of the Pregnant 
+Human Uterus,” Ann. N. Y. Acad. Sci., vol. 75, no. 2 The Uterus, pp. 813–830, Jan. 
+1959. 
+[29] V. Zahn, Uterine contractions during pregnancy, J. Perinat. Med. 12 (3) (1984) 
+107–114. 
+[30] L.A.M.L. De Oliveira, M.L. Brizot, A.W. Liao, R.E. Bittar, R.P.V. Francisco, 
+M. Zugaib, Prenatal administration of vaginal progesterone and frequency of 
+uterine contractions in asymptomatic twin pregnancies, Acta Obstet. Gynecol. 
+Scand. 95 (4) (2016) 436–443. 
+M. Almeida et al.                                                                                                                                                                                                                               
+Biomedical Signal Processing and Control 75 (2022) 103556
+10
+[31] T.R. Moore, et al., Diurnal and gestational patterns of uterine activity in normal 
+human pregancy, Obstet. Gynecol. 83 (4) (1994) 517–523. 
+[32] D.M. Main, J.A. Grisso, T. Wold, E.S. Snyder, J. Holmes, G. Chiu, Extended 
+longitudinal study of uterine activity among low-risk women, Am. J. Obstet. 
+Gynecol. 165 (5) (Nov. 1991) 1317–1322. 
+[33] J.E. Dickinson, M. Godfrey, S.F. Evans, Antenatal patterns of uterine activity in 
+low-risk women: A longitudinal study, Aust. New Zeal. J. Obstet. Gynaecol. 37 (2) 
+(1997) 149–152. 
+[34] J. Terrien, C. Marque, J. Gondry, T. Steingrimsdottir, B. Karlsson, Uterine 
+electromyogram database and processing function interface: An open standard 
+analysis platform for electrohysterogram signals, Comput. Biol. Med. 40 (2) (2010) 
+223–230. 
+[35] J. Terrien, C. Marque, and C. Germain, “Study of the local influence of the placenta 
+on the characteristics of monkey uterine electrical activity,” in Proceedings of the 
+25th Annual International Conference of the IEEE Engineering in Medicine and 
+Biology Society (IEEE Cat. No.03CH37439), 2003, vol. 3, pp. 2394–2397. 
+[36] O. Grgic, R. Matijevic, O. Vasilj, Placental site does not change background uterine 
+electromyographic activity in the middle trimester of pregnancy, Eur. J. Obstet. 
+Gynecol. Reprod. Biol. 127 (2) (Aug. 2006) 209–212. 
+[37] G. Kavˇsek, M. Pajntar, B. Leskoˇsek, Electromyographic Activity of the Uterus Above 
+the Placental Implantation Site, Gynecol. Obstet. Invest. 48 (2) (1999) 81–84. 
+[38] A. Diaz-Martinez, et al., A comparative study of vaginal labor and caesarean 
+section postpartum uterine myoelectrical activity, Sensors (Switzerland) 20 (11) 
+(2020) Jun. 
+[39] J. Mas-Cabo, et al., Robust characterization of the uterine myoelectrical activity in 
+different obstetric scenarios, Entropy 22 (7) (Jul. 2020). 
+[40] A. Alexandersson, T. Steingrimsdottir, J. Terrien, C. Marque, B. Karlsson, The 
+Icelandic 16-electrode electrohysterogram database, Sci. Data 2 (1) (Apr. 2015) 
+1–9. 
+[41] F. Esgalhado, et al., Automatic contraction detection using uterine 
+electromyography, Appl. Sci. 10 (20) (Oct. 2020) 1–14. 
+[42] F. Esgalhado, et al., Uterine contractions clustering based on electrohysterography, 
+Comput. Biol. Med. 123 (Aug. 2020) 103897. 
+[43] A.G. Batista, et al., A multichannel time–frequency and multi-wavelet toolbox for 
+uterine electromyography processing and visualisation, Comput. Biol. Med. 76 
+(Sep. 2016) 178–191. 
+[44] F. Jager, S. Libenˇsek, K. Gerˇsak, Characterization and automatic classification of 
+preterm and term uterine records, PLoS One 13 (8) (2018) 1–50. 
+[45] D. Alamedine, M. Khalil, C. Marque, Comparison of Different EHG Feature 
+Selection Methods for the Detection of Preterm Labor, Comput. Math. Methods 
+Med. 2013 (2013) 1–9. 
+[46] D. Alamedine, Selection of EHG parameter characteristics for the classification of 
+uterine contractions, Universit´e de technologie de Compi`egne (2015). 
+[47] C. Hemthanon, S. Janjarasjitt, “Correlation Between Time-Domain Features of 
+Electrohysterogram Data of Pregnant Women and Gestational Age”, in IFMBE 
+Proceedings vol. 74 (2020) 212–218. 
+[48] IEEE Std 181–2003 (2003) 1–60. 
+[49] A. Phinyomark, S. Thongpanja, H. Hu, P. Phukpattaranont, C. Limsakul, “The 
+Usefulness of Mean and Median Frequencies in Electromyography Analysis”, in 
+Computational Intelligence in Electromyography Analysis - A Perspective on 
+Current Applications and Future Challenges, InTech (2012). 
+[50] D. Galar, U. Kumar, “Preprocessing and Features”, in eMaintenance, Elsevier 
+(2017) 129–177. 
+[51] J.S. Richman, J.R. Moorman, Physiological time-series analysis using approximate 
+and sample entropy, Am. J. Physiol. - Hear. Circ. Physiol. 278 (6) (2000) 47–56. 
+[52] C. Bandt, B. Pompe, Permutation Entropy: A Natural Complexity Measure for Time 
+Series, Phys. Rev. Lett. 88 (17) (Apr. 2002) 4. 
+[53] W. Chen, Z. Wang, H. Xie, W. Yu, Characterization of surface EMG signal based on 
+fuzzy entropy, IEEE Trans. Neural Syst. Rehabil. Eng. 15 (2) (Jun. 2007) 266–272. 
+[54] A. Porta, et al., Measuring regularity by means of a corrected conditional entropy 
+in sympathetic outflow, Biol. Cybern. 78 (1) (1998) 71–78. 
+[55] M.T. Rosenstein, J.J. Collins, C.J. De Luca, A practical method for calculating 
+largest Lyapunov exponents from small data sets, Phys. D Nonlinear Phenom. 65 
+(1–2) (May 1993) 117–134. 
+[56] J. Theiler, Efficient algorithm for estimating the correlation dimension from a set of 
+discrete points, Phys. Rev. A 36 (9) (Nov. 1987) 4456–4462. 
+[57] G. Box, G. Jenkins, G. Reinsel, G. Ljung, Thrid Edition Time Series Analysis 
+Forecasting and Control, John Wiley & Sons, 1995. 
+[58] G. Molenberghs, G. Verbeke, Linear Mixed Models for Longitudinal Data, Springer, 
+New York, New York, NY, 2000. 
+[59] A. Kuznetsova, P.B. Brockhoff, R.H.B. Christensen, lmerTest Package: Tests in 
+Linear Mixed Effects Models, J. Stat. Softw. 82 (1) (Dec. 2017) 1–26. 
+[60] D. Bates, M. M¨achler, B. Bolker, S. Walker, Fitting Linear Mixed-Effects Models 
+Using lme4, J. Stat. Softw. 67 (1) (Oct. 2015) 1–48. 
+[61] A. Kuznetsova, P. B. Brockhoff, and R. H. B. Christensen, “lmerTest Package: Tests 
+in Linear Mixed Effects Models ,” J. Stat. Softw., vol. 82, no. 13, 2017. 
+[62] S. Nakagawa, P.C.D. Johnson, H. Schielzeth, The coefficient of determination R2 
+and intra-class correlation coefficient from generalized linear mixed-effects models 
+revisited and expanded, J. R. Soc. Interface 14 (134) (2017) Sep. 
+[63] R. Caldeyro-Barcia, J.J. Poseiro, Physiology of the Uterine Contraction, Clin. 
+Obstet. Gynecol. 3 (2) (Jun. 1960) 386–410. 
+M. Almeida et al.                                                                                                                                                                                                                               

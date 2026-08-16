@@ -1,0 +1,4405 @@
+ 
+Contents lists available at ScienceDirect
+Artificial Intelligence In Medicine
+journal homepage: www.elsevier.com/locate/artmed
+ 
+Electrohysterography in modern obstetrics: Advances in signal processing, 
+machine learning, and clinical applications
+Katerina Barnova a,b
+, Radek Martinek a
+, Jitka Horakova c, Ondrej Simetka c
+, 
+Radana Vilimkova Kahankova a
+,∗
+a VSB – Technical University of Ostrava, Department of Cybernetics and Biomedical Engineering, 17. listopadu 2172/15, Ostrava, 70800, Czechia
+b Hospital AGEL Trinec-Podlesi, Telemedicine Center, Konska 453, Trinec, 739 61, Czechia
+c University Hospital Ostrava, Department of Obstetrics and Gynecology, 17. listopadu 1790/5, Ostrava, 708 00, Czechia
+A R T I C L E  I N F O
+Keywords:
+Uterine electromyography
+Uterine activity monitoring
+EHG signal processing
+Uterine contractions detection
+Term/preterm birth prediction
+Pregnancy/labor classification
+ 
+A B S T R A C T
+Electrohysterography (EHG) represents a promising computational approach for non-invasive monitoring of 
+uterine activity during pregnancy and labor. This review summarizes the advancements in signal processing 
+techniques and machine learning algorithms that have been applied to enhance the utility of EHG. Key topics 
+include the extraction and analysis of uterine electrical signals, classification of contractions, and prediction 
+of obstetric outcomes such as preterm and labor/non-labor states. The review emphasizes computational 
+methodologies for signal processing and extraction, including empirical mode decomposition or wavelet 
+transform, and for data classification, such as neural networks or support vector machine, highlighting their 
+performance and limitations. Despite significant progress, challenges persist, such as the lack of standardized 
+protocols, limited datasets, and inconsistent evaluation and annotation metrics, which hinder broader clinical 
+adoption. The integration of additional clinical markers, simultaneous monitoring of maternal and fetal health, 
+and the development of wearable systems for telemedicine present exciting opportunities for future research.
+Contents
+1. 
+Introduction ......................................................................................................................................................................................................
+2
+2. 
+EHG signal characteristics ..................................................................................................................................................................................
+3
+2.1. 
+Uterine contraction classification .............................................................................................................................................................
+4
+2.2. 
+Noise definition......................................................................................................................................................................................
+5
+3. 
+Acquisition of EHG signals .................................................................................................................................................................................
+6
+3.1. 
+Electrodes placement ..............................................................................................................................................................................
+6
+3.1.1. 
+Sensing electrodes ....................................................................................................................................................................
+6
+3.1.2. 
+Reference and ground electrodes ...............................................................................................................................................
+6
+3.2. 
+Available measurement systems...............................................................................................................................................................
+6
+3.2.1. 
+Commercial devices..................................................................................................................................................................
+6
+3.2.2. 
+Research prototypes .................................................................................................................................................................
+6
+3.3. 
+Available datasets...................................................................................................................................................................................
+7
+3.3.1. 
+Icelandic 16-electrode electrohysterogram database (Icelandic) ....................................................................................................
+7
+3.3.2. 
+Term–preterm electrohysterogram database (TPEHG) ..................................................................................................................
+7
+3.3.3. 
+Term–preterm electrohysterogram dataset with tocogram (TPEHGT).............................................................................................
+7
+3.3.4. 
+Induced cesarean EHG dataset (ICEHG)......................................................................................................................................
+8
+4. 
+EHG signal processing and analysis .....................................................................................................................................................................
+8
+4.1. 
+Evaluation metrics..................................................................................................................................................................................
+8
+4.2. 
+Preprocessing......................................................................................................................................................................................... 10
+4.3. 
+Extraction methods................................................................................................................................................................................. 10
+4.3.1. 
+Wavelet transform for signal extraction...................................................................................................................................... 10
+∗Corresponding author.
+E-mail addresses: katerina.barnova@vsb.cz (K. Barnova), radek.martinek@vsb.cz (R. Martinek), jitka.horakova@fno.cz (J. Horakova), 
+ondrej.simetka@fno.cz (O. Simetka), radana.vilimkova.kahankova@vsb.cz (R. Vilimkova Kahankova).
+https://doi.org/10.1016/j.artmed.2025.103303
+Received 5 May 2025; Received in revised form 9 October 2025; Accepted 10 November 2025
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+Available online 11 November 2025 
+0933-3657/© 2025 The Authors. Published by Elsevier B.V. This is an open access article under the CC BY-NC-ND license ( http://creativecommons.org/licenses/by- 
+nc-nd/4.0/ ). 
+K. Barnova et al.
+4.3.2. 
+Empirical mode decomposition for signal extraction.................................................................................................................... 10
+4.3.3. 
+Quadratic discriminant analysis for signal extraction................................................................................................................... 11
+4.4. 
+Uterine contractions detection ................................................................................................................................................................. 11
+4.4.1. 
+Wavelet transform for contractions detection.............................................................................................................................. 11
+4.4.2. 
+Multilayer perceptron for contractions detection ......................................................................................................................... 11
+4.4.3. 
+Convolutional neural network for contractions detection ............................................................................................................. 12
+4.4.4. 
+Support vector machine for contractions detection ...................................................................................................................... 12
+4.4.5. 
+Decision trees for contractions detection .................................................................................................................................... 12
+4.4.6. 
+Hierarchical clustering for contractions detection........................................................................................................................ 12
+4.5. 
+Term/preterm birth prediction ................................................................................................................................................................ 13
+4.5.1. 
+Artificial neural network for preterm birth prediction ................................................................................................................. 13
+4.5.2. 
+Multilayer perceptron for preterm birth prediction...................................................................................................................... 13
+4.5.3. 
+Spiking neural network for preterm birth prediction ................................................................................................................... 13
+4.5.4. 
+Convolution neural network for preterm birth prediction............................................................................................................. 13
+4.5.5. 
+Temporal convolution network for preterm birth prediction......................................................................................................... 13
+4.5.6. 
+Radial basis function network for preterm birth prediction .......................................................................................................... 13
+4.5.7. 
+Recurrent neural network for preterm birth prediction ................................................................................................................ 14
+4.5.8. 
+Support vector machine for preterm birth prediction................................................................................................................... 14
+4.5.9. 
+Adaptive boosting for preterm birth prediction ........................................................................................................................... 16
+4.5.10. 
+Random forest for preterm birth prediction ................................................................................................................................ 16
+4.5.11. 
+Linear discriminant analysis for preterm birth prediction............................................................................................................. 16
+4.5.12. 
+Quadratic discriminant analysis for preterm birth prediction........................................................................................................ 16
+4.5.13. 
+Gaussian mixture model for preterm birth prediction .................................................................................................................. 16
+4.6. 
+Labor/non-labor records classification ...................................................................................................................................................... 16
+4.6.1. 
+Extreme learning machine for labor classification ....................................................................................................................... 16
+4.6.2. 
+Support vector machine for labor classification........................................................................................................................... 16
+4.6.3. 
+Random forest for labor classification ........................................................................................................................................ 17
+4.6.4. 
+Quadratic discriminant analysis for labor classification................................................................................................................ 17
+4.6.5. 
+Gaussian mixture model for labor classification .......................................................................................................................... 17
+5. 
+Summary of evidence......................................................................................................................................................................................... 17
+5.1. 
+Algorithms’ performance ......................................................................................................................................................................... 17
+5.2. 
+Significant EHG features ......................................................................................................................................................................... 18
+6. 
+Discussion ......................................................................................................................................................................................................... 18
+7. 
+Future directions ............................................................................................................................................................................................... 21
+8. 
+Conclusion ........................................................................................................................................................................................................ 23
+ 
+CRediT authorship contribution statement ........................................................................................................................................................... 23
+ 
+Declaration of competing interest........................................................................................................................................................................ 23
+ 
+Acknowledgments .............................................................................................................................................................................................. 23
+ 
+Data availability ................................................................................................................................................................................................ 23
+ 
+References......................................................................................................................................................................................................... 23
+1. Introduction
+Effective uterine contractions are an essential part of physiological 
+labor, ensuring the safe arrival of the newborn. These rhythmic con-
+tractions of the uterine muscles are crucial for cervical dilation and the 
+subsequent expulsion of the fetus. During labor, contractions not only 
+help move the baby down the birth canal but also ensure its correct 
+positioning and facilitate its progress out of the mother’s body [1]. 
+Without effective uterine contractions, the birth process cannot proceed 
+naturally, often necessitating medical interventions such as a cesarean 
+section [2].
+The uterine contractions can be assessed using manual palpation. 
+However, its accuracy heavily depends on the experience and sub-
+jective judgment of the physician [3]. For this reason, the electronic 
+measurement techniques are commonly used in clinical practice. The 
+most widely used method is external tocography, which measures 
+pressure changes via a tocodynamometer (TOCO) secured to the preg-
+nant woman’s abdomen with a fixation belt. While simple to use, 
+non-invasive and passive, this method is significantly affected by ma-
+ternal movements and high body mass index (BMI). Additionally, its 
+accuracy relies on proper sensor placement and optimal belt tight-
+ness, which can restrict the mother’s mobility and hinder continu-
+ous monitoring [4]. Another available method involves invasive mea-
+surement of intrauterine pressure using a pressure catheter (IUPC), 
+which is inserted transvaginally during labor after rupture of the fetal 
+membranes. This approach carries risks such as intrauterine infection, 
+uterine perforation, or placental abruption [5].
+The limitations of these conventional methods, coupled with ad-
+vancements in technology, have shifted scientific attention toward 
+electrohysterography (EHG). This technique evaluates uterine muscle 
+activity by detecting electrical signals generated during contractions. 
+The first EHG recording, achieved by Bode in 1931 [6], used two 
+electric needles placed on the abdominal surface connected to a gal-
+vanometer. Later, in 1950, Steer and Hertsch [7] recorded uterine 
+electrical activity using six channels linked to electrodes placed on 
+the abdomen of a pregnant woman. Since then, research in EHG has 
+significantly progressed, driven by modern technologies and advanced 
+signal processing algorithms.
+Today, high-quality EHG recordings can be obtained non-invasively 
+from the 19th week of pregnancy using surface electrodes placed 
+on the abdominal wall. This method provides detailed information 
+about the frequency, intensity, duration, and coordination of uter-
+ine contractions [8]. Compared to external TOCO, EHG is a motion-
+resistant, BMI-independent approach suitable for continuous monitor-
+ing [4,9]. A study [8] reported significantly higher sensitivity for 
+detecting uterine contractions using EHG (86.0%–98.0%) compared 
+to TOCO (46.0%–73.6%). Obstetricians also found EHG more inter-
+pretable than TOCO traces. Furthermore, the use of surface electrodes 
+is comfortable for pregnant women and does not restrict mobility. 
+According to another study [9], 80.8% of women preferred EHG, 17.3% 
+preferred IUPC, and only 1.9% were satisfied with external TOCO.
+In addition to uterine activity, abdominally placed electrodes for 
+EHG can simultaneously record maternal and fetal heart activity using 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+2 
+K. Barnova et al.
+the non-invasive fetal electrocardiography (NI-fECG) technique. Stud-
+ies [10,11] have demonstrated that NI-fECG can extract both fetal 
+(fECG) and maternal (mECG) signals from the mother’s abdominal sur-
+face (these abdominally recorded signals are referred to as abdominal 
+ECG (aECG)), enabling accurate fetal heart rate (fHR) and maternal 
+heart rate (mHR) traces after signal processing.
+A recent study [12] found that simultaneous NI-fECG and EHG 
+monitoring was more accurate and reliable than conventional car-
+diotocography (CTG), which combines TOCO with fHR measurement. 
+These methods were less affected by maternal obesity, and 90% of 
+women did not require a switch to conventional monitoring. Addition-
+ally, simultaneous monitoring of fHR and uterine contractions has been 
+shown to improve the detection of fetal distress [13].
+Despite its potential, the EHG technique faces several challenges 
+that hinder its widespread clinical adoption. Extracting a high-quality 
+EHG signal is inherently difficult due to its low frequency (0.01 Hz–
+5 Hz) and very low amplitude (50 μV–5 mV), which make it highly 
+susceptible to artifacts such as maternal and fetal movements, respi-
+ration, and electrical cardiac activity [14]. These issues are further 
+compounded by the lack of standardization in key aspects of the 
+method. There are no universally accepted guidelines for electrode 
+placement, signal recording techniques, or definitions of frequency 
+ranges for EHG signals, with considerable variability reported in the 
+literature [4]. Moreover, the characteristics of EHG signals evolve 
+throughout pregnancy as uterine muscle tissue develops, leading to 
+changes in both time and frequency domain properties [15].
+To address these challenges, advanced signal processing methods 
+are needed to filter noise and ensure reliable data extraction. Once 
+these limitations are resolved, the EHG technique, especially when 
+combined with NI-fECG, could become a new standard of antenatal 
+care. It holds promise for continuous and non-invasive monitoring of 
+uterine contractions and fetal heart activity, even enabling remote 
+telemonitoring for e-health applications [14].
+Several reviews have been published [8,16–22] that summarize the 
+current knowledge in the field of EHG:
+• Devedeux et al. [21] focused on the analysis of uterine elec-
+trical activity during different stages of pregnancy and labor, 
+with particular emphasis on its frequency characteristics and 
+propagation patterns within the myometrial tissue. Similarly, 
+Vinken et al. [16] investigated frequency parameters of EHG sig-
+nals for distinguishing premature contractions leading to preterm 
+labor but did not extensively cover signal processing or classifi-
+cation methods.
+• Vlemminx et al. [8] and Huber et al. [20] summarized the clinical 
+benefits of EHG compared to conventional techniques but did 
+not provide a comprehensive analysis of algorithms, datasets, or 
+evaluation metrics.
+• Jossou et al. [17] examined electrode placement, number, and 
+type but did not provide an in-depth analysis of EHG signal 
+characteristics, interference, datasets, or signal processing and 
+classification algorithms.
+• Casado et al. [18] and Xu et al. [19] focused on preterm la-
+bor diagnosis. Casado et al. [18] explored temporal, spectral, 
+nonlinear, and propagation analyses, including artificial intelli-
+gence (AI) and machine learning (ML) classification but lacked 
+broad summaries of datasets, evaluation metrics, and extraction 
+methods. Xu et al. [19] reviewed datasets, feature extraction, 
+segmentation, and classification but omitted detailed discussion 
+of evaluation metrics, electrode deployment, public datasets, and 
+signal extraction algorithms.
+• Liu et al. [22] provided a comprehensive overview of wearable 
+sensors and AI applications in pregnancy monitoring, covering 
+modalities such as EHG, fHR, and maternal physical activity. 
+However, the review adopted a broad perspective, emphasizing 
+hardware design, data transmission, and energy efficiency in 
+telemonitoring systems, while lacking a detailed analysis focused 
+on EHG-specific characteristics, signal processing pipelines, fea-
+ture extraction techniques, and the comparative performance of 
+classification algorithms.
+Unlike previous reviews that addressed only specific aspects of 
+EHG—such as physiology without a detailed analysis of algorithms [21], 
+frequency-based indicators related to preterm birth [16], clinical com-
+parisons with TOCO/IUPC without coverage of data or metrics [8,
+20], electrode configurations without signal analysis [17], wearable 
+sensors and telemonitoring systems [22], or narrowly focused AI/ML 
+approaches lacking a systematic overview of datasets, metrics, and 
+feature extraction steps [18,19]—the present work integrates both 
+clinical and technical perspectives and provides a comprehensive map-
+ping of the field. Specifically, it covers the nature of EHG signals and 
+noise sources, electrode layouts and commercial systems, available 
+public datasets and their characteristics, evaluation standards, and 
+the entire processing pipeline—from preprocessing and signal extrac-
+tion through contraction detection to classification (term/preterm; la-
+bor/non-labor)—with a particular emphasis on modern ML/AI method-
+ologies. The present review covers the most recent literature from 2010 
+to 2025 and, in parallel, identify and discuss research gaps from both 
+technical (signal, feature extraction, modeling, metrics, data) and clini-
+cal (feasibility, interpretation, workflow integration, multimodal signal 
+fusion) perspectives, and offer concrete recommendations for future 
+research directions. The scope of this review compared to previous 
+works is summarized in Table 1.
+Google Scholar, PubMed, and Scopus were used to identify rele-
+vant sources for this review. The search employed combinations of 
+key terms related to EHG: ‘‘Electrohysterography’’, ‘‘Uterine electromyo-
+graphy’’, and ‘‘Uterine contractions’’, combined with signal processing 
+and analysis terms: ‘‘Extraction’’, ‘‘Processing’’, ‘‘Analysis’’, ‘‘Detection’’, 
+and ‘‘Classification’’ forming 15 unique queries. Low-quality conference 
+papers and articles published before 2010 were excluded. A total of 46 
+studies that tested advanced signal processing methods or AI/ML-based 
+algorithms met these criteria and form the foundation of this review.
+The remainder of this paper is organized as follows: Section 2 
+discusses the characteristics of EHG signals, focusing on different types 
+of uterine contractions and common sources of interference. Section 3 
+examines EHG signal recording, emphasizing the number and place-
+ment of sensing electrodes, and provides a summary of publicly avail-
+able EHG datasets and their parameters. Section 4 reviews advanced 
+algorithms, including AI/ML-based approaches, for processing and an-
+alyzing EHG signals. This section is divided into five thematic areas: 
+EHG preprocessing, signal extraction, uterine contraction detection, 
+term/preterm birth prediction, and labor/non-labor record classifi-
+cation. Evaluation metrics used to assess extraction, detection, and 
+classification quality are also discussed.  Section 5 summarizes the prin-
+cipal findings of this review, while Section 6 discusses these findings 
+in the context of existing research. Key directions for future investiga-
+tion to further advance the field are presented in Section 7. Finally, 
+Section 8 concludes the review and its contributions.
+2. EHG signal characteristics
+EHG signals arise from the electrical activity of the myometrial cells, 
+which generate action potentials initiated by changes in cell membrane 
+potential. The coordination of these impulses leads to uterine contrac-
+tions. The transmission of electrical potentials across myometrial cell 
+membranes is facilitated by hormone-dependent development of gap 
+junctions, which form low-resistance electrical pathways within the 
+myometrium [3].
+The frequency of action potential discharges, the number of myome-
+trial cells activated simultaneously, and the duration of each discharge 
+determine the frequency, amplitude, and duration of uterine contrac-
+tions [20]. The force generated by the uterus depends on the propaga-
+tion extent of action potentials, reflected in the spectral characteristics 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+3 
+K. Barnova et al.
+Table 1
+Areas of interest covered by existing review articles on EHG.
+ Author, year
+Year range
+covered
+UC
+charact.
+Noise
+charact.
+Electrodes
+layout
+Public
+datasets
+Evaluat.
+metrics
+Signal
+process.
+AI/ML
+Feature
+relevance
+Main focus
+ 
+ Devedeux et al. [21]
+(1993)
+1950–1992
+✓✓
+
+
+
+
+✓
+
+
+Physiological EHG 
+overview
+ 
+ Vinken et al. [16]
+(2009)
+1979–2008
+✓✓
+
+✓
+
+✓
+✓
+
+✓✓
+Frequency-domain 
+parameters linked 
+to preterm birth
+ 
+ Casado et al. [18]
+(2018)
+1998–2017
+✓
+✓
+✓
+
+
+✓
+✓✓
+✓✓
+Overview 
+of features and
+classifiers
+for preterm birth
+ 
+ Vlemminx et al. [8]
+(2018)
+2003–2018
+✓✓
+✓
+✓
+
+✓
+✓
+
+✓
+Clinical evaluation 
+of EHG vs. 
+TOCO/IUPC
+ 
+ Huber et al. [20]
+(2019)
+1950–2018
+✓✓
+✓
+✓
+
+
+✓
+
+
+Clinical feasibility 
+and practical 
+aspects of EHG
+ 
+ Jossou et al. [17]
+(2021)
+1984–2020
+
+
+✓✓
+
+
+
+
+
+Electrode design, 
+artifact reduction
+ 
+ Xu et al. [19]
+(2021)
+2008–2021
+✓
+✓
+✓
+✓
+
+✓
+✓✓
+✓✓
+Features 
+and models 
+overview
+for preterm birth
+ 
+ Liu et al. [22]
+(2024)
+2000–2024
+
+
+✓
+
+
+✓
+✓
+
+Wearable/AI 
+overview
+covering multiple
+sensing modalities
+ 
+ Preset study
+2010–2025
+✓✓
+✓✓
+✓✓
+✓✓
+✓✓
+✓✓
+✓✓
+✓✓
+Comprehensive
+overview 
+integrating
+clinical insights,
+data acquisition,
+signal processing,
+AI/ML application,
+feature engineering,
+interpretability,
+clinical translation
+ 
+ — not addressed, ✓— partially addressed, ✓✓— extensive coverage, EHG — electrohysterography, UC — uterine contractions, 
+TOCO — tocodynamometry, IUPC — intrauterine pressure catheter, AI — artificial intelligence, ML — machine learning.
+of the EHG signal, and on the recruitment of additional muscle cells, 
+which influences the signal amplitude [16].
+The amplitude of EHG signals ranges from 50 μV–5 mV [14]. 
+However, defined frequency ranges for EHG signals vary across the 
+literature [4,23]. EHG signals consist of slow waves, resulting from 
+abdominal skin stretching, and fast waves, associated with uterine 
+muscle activity [23] and are defined as follows:
+• Slow waves – According to Devedeux et al. [21], the frequency 
+range of slow waves is 0.014–0.033 Hz, while Jezewski et al. [24] 
+identified a broader range of 0.03–0.1 Hz.
+• Fast waves – Fast waves are further categorized into low-frequency 
+and high-frequency bands. Low-frequency waves occur during 
+pregnancy and labor, while high-frequency waves are associated 
+with effective labor contractions [23].
+– Low-Frequency Waves: Vrhovec et al. [25] reported a fre-
+quency range of 0.1–1.2 Hz, whereas Khalil et al. [26] 
+defined a narrower range of 0.2–0.45 Hz.
+– High-Frequency Waves: The range for high-frequency waves 
+was determined by Khalil et al. [26] as 0.8–3 Hz, and by 
+Vrhovec et al. [25] as 1.2–4.7 Hz.
+2.1. Uterine contraction classification
+Uterine contractions are a key indicator of labor onset and pro-
+gression, though they occur throughout pregnancy and postpartum. 
+During pregnancy and labor, contractions vary in frequency, duration, 
+and intensity [27]. In early pregnancy, uterine electrical activity is low 
+and uncoordinated, gradually becoming more intense, frequent, and 
+synchronous as gestation progresses (see illustration in Fig. 1). While 
+mild uterine activity is common throughout pregnancy, painful contrac-
+tions before 37 weeks may indicate threatened preterm labor [20]. The 
+primary types of uterine contractions, summarized in Table 2, include:
+• Alvarez waves – Alvarez waves, defined by Alvarez et al. [28], 
+are local, asynchronous contractions occurring randomly in the 
+uterus during the first 30 weeks of pregnancy. These contractions 
+are characterized by high frequency (1–2 per minute) and low 
+intensity [27,29], with a frequency range of 0.2–1 Hz [30]. 
+Recent research suggests Alvarez waves may precede more syn-
+chronized contractions, potentially leading to preterm labor [23], 
+though this link remains debated, with some studies reporting low 
+predictive value [29].
+• Braxton-Hicks – Braxton-Hicks contractions [31] are irregular, 
+localized contractions starting around the 20th week of preg-
+nancy. These ‘‘false labor’’ contractions occur infrequently (1 
+every 3–4 h) [32] and do not cause cervical dilation. They do not 
+increase in frequency, duration, or intensity, and may disappear 
+and reappear. After the 36th week, these contractions may inten-
+sify, but they still do not signal true labor [23]. Their frequency 
+range is not well defined in the literature.
+• Early labor contractions — This type of contractions occurs after 
+the 36th week but before active labor [23]. These contractions are 
+less intense and regular than late labor contractions, occurring at 
+a lower frequency (1 every 10 min) and lasting approximately 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+4 
+K. Barnova et al.
+Fig. 1. Illustration of the origin and evolution of the electrohysterography (EHG) signal throughout pregnancy. The upper left part of the figure shows the 
+physiological source of the EHG: electrical potentials generated by ionic currents across myometrial cell membranes, which initiate mechanical contractions 
+of the uterine muscle. On the lower right, the development of contraction patterns is illustrated from 13 weeks of pregnancy to delivery, progressing from 
+low-amplitude Alvarez waves, through irregular Braxton Hicks contractions, to regular labor contractions. The positions on the maternal abdomen where these 
+contractions can be sensed are highlighted on the anatomical illustration, with colors matched to the corresponding recorded signals shown in the waveform 
+panels.
+20 s. They begin in the uterine fundus and spread downward, 
+aiding initial cervical dilation and preparing for active labor [27]. 
+Although specific frequency ranges are not well documented, 
+values above 0.5 Hz are generally reported for later pregnancy 
+stages [30].
+• Late labor contractions – Late labor contractions are intense and 
+highly synchronized, occurring close to delivery [23]. These 
+contractions are more regular, with higher frequency (3 every 
+10 min) and longer duration (40–90 s). They are stronger in the 
+upper uterus and progress in a coordinated manner throughout, 
+achieving simultaneous peak contraction across the uterus. Their 
+primary role is full cervical dilation and fetal expulsion [27].
+• Long duration low frequency waves (LDBF) — LDBF waves are char-
+acterized by long duration (several minutes) and low frequency 
+(0–1 Hz) [32,33]. These waves, common in late pregnancy, are 
+associated with uterine hypertonicity, where the uterus remains 
+contracted without complete relaxation. This can cause uterine 
+hypoxia and fetal stress due to compromised blood flow.
+• Other contractions — Less well-described contractions include Le-
+man waves, which are associated with low amplitude [32] and 
+low frequency [23]. Contractions may also occur postpartum, 
+though they are not yet thoroughly characterized in the literature.
+2.2. Noise definition
+In addition to uterine contractions, which constitute the useful 
+EHG signal, various interfering electrical signals and artifacts are also 
+detected from the surface of the pregnant woman’s abdomen. These 
+overlapping signals can obscure or distort the EHG and must be ad-
+dressed to ensure accurate signal interpretation. The most significant 
+interfering signals and artifacts include:
+• Maternal ECG – Representing maternal cardiac activity, the mECG 
+signal is a prominent component present in all recorded chan-
+nels [33,34]. Its frequency range is 0.5–100 Hz [35].
+• Fetal ECG – The fECG signal represents fetal cardiac activity 
+and typically has a very low amplitude, often difficult to record 
+alongside the EHG [33,36]. Its frequency range is similar to that 
+of the mECG [35].
+• Maternal and fetal respiration – Respiratory artifacts, especially 
+those originating from the mother, are a significant source of 
+interference. While they do not show large amplitude varia-
+tions, they are highly disruptive because they overlap with the 
+dominant frequency band of the EHG (0.1–1 Hz) [23,33].
+• Electromyography noise – This interference originates from con-
+tractions of the abdominal muscles. These signals have low ampli-
+tude and minimal impact on the EHG, with a frequency content 
+around 30 Hz [23,33].
+• Motion artefacts – Movement of the mother or fetus generates 
+motion artifacts, which vary significantly based on the type of 
+movement. The frequency range of these artifacts spans from 1 Hz 
+to hundreds of Hz [14,33].
+• Baseline wander – Baseline wander disrupts the stability and uni-
+formity of the isoelectric line in the EHG signal. This artifact often 
+results from maternal movement or poor electrode–skin contact 
+and has frequency content up to 1 Hz [14].
+• External electromagnetic noise – This interference arises from elec-
+tromagnetic fields generated by electrical devices and power 
+supply networks. It typically does not significantly affect the EHG 
+signal, as its frequency range is concentrated around 50 or 60 Hz 
+and their harmonics [33].
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+5 
+K. Barnova et al.
+Table 2
+Overview of the characteristics of uterine contractions occurring during pregnancy.
+ Type of contraction
+Week of 
+pregnancy
+Intensity
+Occurrence
+(nr/10 min)
+Duration
+(s)
+Frequency band
+(Hz)
+Localization
+ 
+ Alvarez waves
+0–30
+Very small
+10
+<<20
+0.2–1
+Anywhere in the uterus,
+restricted to a small area
+ 
+ Braxton-Hicks contr.
+From 20
+Small
+0.04–0.06
+<20
+Undefined
+Anywhere in the uterus
+ 
+ Early labor contr.
+From 36
+High
+1
+20
+>0.5
+From the fundus of the
+uterus down to the cervix
+ 
+ Late labor contr.
+During labor
+Very high
+3
+40–90
+>0.5
+Stronger in the upper part, but
+spreads throughout the uterus
+ 
+ LDBF waves
+Late stages
+of pregnancy
+Very small
+Persistent
+Minutes
+0–1
+Entire uterine muscle
+ 
+LDBF – long duration low frequency waves, nr — number.
+3. Acquisition of EHG signals
+EHG signals are recorded non-invasively using electrodes placed on 
+the surface of the pregnant woman’s abdomen. Classical wet Ag/AgCl 
+electrodes are predominantly used for this purpose. The application of 
+these electrodes varies in several aspects, including their type (monopo-
+lar, bipolar, concentric, or grid), number, and placement, as detailed 
+in [17] and illustrated in Fig. 2.
+3.1. Electrodes placement
+The proper placement of sensing electrodes on a pregnant woman’s 
+abdomen is critical to effectively capturing the electrical activity gen-
+erated by uterine muscles during contractions. To minimize skin impe-
+dance and enhance signal quality, it is recommended to prepare the 
+skin with an abrasive gel prior to electrode placement [37–42].
+A significant limitation of the EHG technique is the lack of stan-
+dardization. Currently, no uniform guidelines exist for electrode place-
+ment or the methodology for recording EHG signals [17]. This subsec-
+tion summarizes the most commonly used placements of sensing and 
+reference/ground electrodes based on the available literature.
+3.1.1. Sensing electrodes
+The number of sensing electrodes varies widely, from as few as 
+2 [41,43,44] to as many as 64 [45]. For basic EHG signal char-
+acterization, 2–4 electrodes are sufficient [46]. However, for more 
+detailed signal analysis, larger setups with 11, 16, or 64 electrodes are 
+preferred [17].
+Electrodes are typically placed around the navel, either along the 
+vertical [24,47] or horizontal [38,41] axis of the uterus. Some re-
+searchers have placed electrodes along two vertical lines around the 
+navel [48,49], while others have used both vertical and horizontal 
+configurations [39,40,50–53]. The inter-electrode distance varies con-
+siderably, with reported values of 3–4 cm [54], 5 cm [24,47,55], 
+7 cm [42,50], and 8 cm [38].
+When a larger number of electrodes is used, such as in a matrix 
+grid [56–59], the grid typically covers a significant portion of the uter-
+ine surface, allowing detailed mapping of electrical activity. Effective 
+inter-electrode distances for grids are reported as 17.5 mm [58,59] or 
+25 mm [44].
+3.1.2. Reference and ground electrodes
+Various configurations exist for the placement of reference and 
+ground electrodes. When a single reference electrode is used without a 
+ground electrode, it is typically placed on the left [24], right [40] side 
+of the subject, or the right thigh [42]. For two reference electrodes, 
+they are usually placed on both hips [56,57] or thighs [44].
+For setups with only a ground electrode, it is placed on the right [43,
+55] or left hip [51]. When both reference and ground electrodes are 
+used, the reference electrode is often positioned below the navel and 
+the ground electrode on the right side [37], or one on each side of 
+the subject [38,54,58]. Another promising configuration places both 
+electrodes next to each other in the middle of the abdomen, with the 
+reference electrode just above the navel [39].
+3.2. Available measurement systems
+The previous subsections described a general overview of EHG ac-
+quisition using standard bio-potential measurement systems, including 
+electrode placement options and different recording configurations. 
+In contrast, this subsection focuses on systems—both commercial de-
+vices and research prototypes—designed specifically for EHG monitor-
+ing, typically with fixed hardware configurations, electrode layouts, 
+and acquisition settings. Several commercially available and research-
+developed systems [5,60–65] are in use for EHG acquisition. These 
+platforms differ in channel count, electrode arrangement, signal reso-
+lution, and intended clinical application, which directly influence their 
+suitability for research datasets.
+3.2.1. Commercial devices
+Commercial devices such as Bloomlife (Bloomlife, USA) [60], Nemo 
+Fetal Monitoring Patch (Nemo Healthcare, The Netherlands) [61], and 
+Novii Wireless Patch System (GE Healthcare, USA; previously Monica 
+Healthcare, UK) [62] provide wireless, adhesive-based solutions for 
+uterine activity and fHR monitoring. In addition to these NI-fECG–
+based devices, Nemo Healthcare also offers a commercial system ded-
+icated solely to EHG-based contraction monitoring, the PUREtrace 
+labour registration system [5]. These devices typically employ 3–5 
+disposable Ag/AgCl electrodes, sample at rates of 250–500 Hz, and 
+incorporate on-board preprocessing to transmit compressed data. Their 
+advantages include patient comfort, minimal movement restriction, and 
+validated reliability in routine obstetric use. Limitations for research 
+purposes include proprietary filtering, restricted access to raw signals, 
+and variability in documentation of electrode placement. 
+Another example is the INVU system (Nuvo Group, Israel/USA) [63], 
+which is intended for remote pregnancy monitoring and combines elec-
+trical modalities (EHG and NI-fECG) with mechano-acoustic monitoring 
+(fetal phonocardiography–fPCG). Unlike patch-based systems, INVU 
+uses a reusable belt without disposable electrodes, reducing ongoing 
+consumable costs and simplifying patient setup. Additional advantages 
+include patient self-application, integration with telehealth platforms 
+for remote review by clinicians, and continuous monitoring without re-
+quiring in-clinic visits. These features make INVU particularly suitable 
+for long-term home-based pregnancy surveillance.
+3.2.2. Research prototypes
+Research embedded systems have been developed by academic 
+groups to allow full control over hardware, signal processing, and 
+electrode configurations. Examples include the FetalCare system [64], 
+which integrates EHG and NI-fECG acquisition with empirical mode 
+decomposition-based signal separation, and the Nemo Grid proto-
+types [65], which employ high-density electrode arrays for mapping 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+6 
+K. Barnova et al.
+Fig. 2. Illustration of electrohysterography (EHG) sensor types and placement in relation to uterine position during pregnancy. The left part of the figure depicts 
+the maternal abdomen and uterus at different stages of gestation, highlighting how uterine growth alters the optimal detection area for uterine electrical activity. 
+Because the uterus enlarges and rises during pregnancy, the location and strength of detectable EHG signals vary across gestational stages, as described earlier. The 
+right part of the figure shows typical sensor placement for the final stage of pregnancy (full-term uterus). The green rectangle indicates two types of electrodes 
+used for EHG monitoring: single electrodes and multi-electrode patches. Also shown are two pressure-based sensors used for conventional cardiotocographic 
+(TOCO) monitoring: the tocodynamometer for non-invasive external pressure measurement and the intrauterine pressure catheter (IUPC) for invasive internal 
+pressure monitoring (yellow rectangle).
+uterine propagation. These platforms often utilize low-power microcon-
+trollers, wireless data transfer, and customizable firmware, providing 
+flexibility for algorithm development and dataset creation. However, 
+their reliability depends on lab-specific validation and clinical testing.
+3.3. Available datasets
+To evaluate the effectiveness of extraction and classification algo-
+rithms, it is essential to test them on real clinical data. Currently, 
+only four publicly available databases with real EHG recordings exist 
+and these will be summarized in this subsection. A summary of the 
+characteristics of these publicly available datasets is presented in Table 
+3.
+3.3.1. Icelandic 16-electrode electrohysterogram database (Icelandic)
+The Icelandic database [58] includes 122 EHG recordings from 45 
+pregnant women during pregnancy or suspected labor. Among the 
+recordings, 2 resulted in preterm birth, 84 in term birth, 20 in induced 
+labor, and 16 in cesarean sections. Data were collected between 2008 
+and 2010 at Landspitali University Hospital and Akureyri Hospital, 
+focusing on normal singleton pregnancies without known risk factors 
+for preterm birth. Each participant contributed 2–7 recordings.
+Recordings were performed using 16 monopolar Ag/AgCl electrodes 
+arranged in a 4 × 4 grid with a 17.5 mm inter-electrode distance. Ref-
+erence and ground electrodes were placed over the iliac crests, though 
+placement was not standardized. Signals were sampled at 200 Hz with 
+16-bit resolution and a 100 Hz antialiasing filter. TOCO data were 
+simultaneously recorded.
+The average recording duration was 61 min during pregnancy 
+(range: 19–86 min) and 36 min during labor (range: 8–64 min). Gesta-
+tional ages ranged from 29 weeks and 5 days to 41 weeks and 5 days. 
+The dataset includes TOCO recordings, annotations of clinical events 
+(e.g., contractions, maternal position changes, and fetal movements), 
+and clinical information.
+3.3.2. Term–preterm electrohysterogram database (TPEHG)
+The TPEHG database [50] contains 300 EHG recordings, each 
+30 min long, from 300 different women collected between 1997 and 
+2005 at the University Medical Centre Ljubljana. Of these, 262 record-
+ings were from pregnancies ending in term labor (143 before 26 
+weeks and 119 at or after 26 weeks), while 38 recordings were from 
+pregnancies ending in preterm labor (19 before 26 weeks and 19 at or 
+after 26 weeks).
+Four AgCl2 electrodes were placed in two horizontal rows 3.5 cm 
+above and below the umbilicus with a 7 cm inter-electrode distance. 
+Signals were sampled at 20 Hz with 16-bit resolution and a ±2.5 mV 
+amplitude range. Three bipolar signals were derived from the electrode 
+configuration. The dataset also provides three filtered versions of each 
+signal using Butterworth filters with cutoffs of 0.08–4 Hz, 0.3–3 Hz, 
+and 0.3–4 Hz. Clinical information is included.
+3.3.3. Term–preterm electrohysterogram dataset with tocogram (TPEHGT)
+The TPEHGT dataset [66] consists of 26 recordings collected at the 
+University Medical Centre Ljubljana, each 30 min long, from women 
+between 26 and 36 weeks of gestation. These are divided into two 
+groups: 13 recordings from pregnancies ending in preterm birth (av-
+erage gestational age: 33.7 ±1.97 weeks) and 13 term pregnancies 
+(average gestational age: 38.1± 1.04 weeks).
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+7 
+K. Barnova et al.
+Table 3
+Overview of publicly available datasets with EHG signals.
+ Dataset
+No. of 
+records
+Labor/delivery type
+No. of 
+EHG signals
+Length 
+(min)
+Reference
+Pregnancy
+week
+Sample 
+rate
+(Hz)
+Preprocessing 
+(Hz)
+ 
+ Icelandic 
+[58]
+122
+2 preterm, 84 term
+20 induced, 16 cesarean
+16 unipolar
+8–86
+TOCO, 
+annotations
+29–41
+200
+0–100
+ 
+ TPEHG [50]
+300
+38 preterm, 262 term
+3 bipolar
+30
+–
+22–32
+20
+Unprocessed,
+ 
+ 
+0.08–4,
+ 
+ 
+0.3–4,
+ 
+ 
+0.3–3
+ 
+ TPEHGT [66]
+26
+13 preterm, 13 term
+3 bipolar
+30
+TOCO,
+26–36
+20
+Unprocessed,
+ 
+ 
+annotations
+0.08–5
+ 
+ ICEHG [67]
+126
+81 induced, 19 cesarean
+3 bipolar
+30
+–
+23–31
+20
+Unprocessed,
+ 
+ 
+26 induced-cesarean
+0.08–5
+ 
+TPEHG – Term–Preterm Electrohysterogram Database, TPEHGT — Term–Preterm Electrohysterogram Dataset with Tocogram,
+ICEHG — Induced Cesarean EHG Dataset, TOCO — tocogram.
+Four AgCl2 electrodes were placed in two horizontal rows above and 
+below the umbilicus with a 7 cm inter-electrode distance, and a refer-
+ence electrode was attached to the woman’s thigh. Signals were sam-
+pled at 20 Hz with 16-bit resolution. Both unfiltered and Butterworth-
+filtered (0.08–5 Hz) EHG signals are included. Simultaneously mea-
+sured TOCO signals are provided in unfiltered and filtered versions. 
+Annotations for uterine contractions and non-contraction intervals, 
+created by two experts, as well as clinical information, are included.
+3.3.4. Induced cesarean EHG dataset (ICEHG)
+The ICEHG dataset [67] contains 126 EHG recordings, each 30 min 
+long, from pregnancies expected to end in spontaneous labor but re-
+sulting in induced labor (81 recordings), emergency cesarean sections 
+without prior induction (19 recordings), or cesareans after failed in-
+duction (26 recordings). Data were collected between 1997 and 2006 
+at the University Medical Center Ljubljana.
+EHG signals were recorded using four AgCl2 electrodes in two 
+horizontal rows above and below the umbilicus, spaced 7 cm apart. A 
+reference electrode was placed on the left thigh. Signals were filtered 
+using a 5 Hz antialiasing Butterworth filter before sampling at 20 Hz 
+with 16-bit resolution and a ±2.5 mV amplitude range. The dataset 
+includes both original and Butterworth-filtered (0.08–5 Hz) signals 
+along with clinical information about the participants.
+4. EHG signal processing and analysis
+EHG signals contain clinically significant information about uterine 
+activity; however, this information is often masked by various interfer-
+ences due to the signals’ low frequency and amplitude. The presence 
+of such interference can distort the signal’s power spectral density 
+and hinder the accurate identification of uterine contractions [14]. 
+Therefore, it is crucial to eliminate these interferences to obtain a 
+clean, unaltered EHG signal, enabling effective analysis and accurate 
+diagnostic insights.
+This section covers the most important aspects in EHG signal pro-
+cessing, analysis, and classification and is structured as follows. The 
+techniques for preprocessing and extracting EHG signals are detailed 
+in Section 4.2 and Section 4.3, respectively. After obtaining a high-
+quality EHG signal, further analysis can be performed. Common areas 
+of research include: Detection of uterine contractions (Section 4.4), 
+Term/preterm birth prediction (Section 4.5), Labor/non-labor records 
+classification (Section 4.6). Finally, to objectively evaluate the perfor-
+mance of EHG signal processing and analysis methods, a range of eval-
+uation metrics are used. These metrics are summarized in Section 4.1. 
+The domains of EHG signal processing and analysis are illustrated in 
+Fig. 3.
+4.1. Evaluation metrics
+In the field of EHG, various metrics are employed to objectively 
+evaluate the quality of signal extraction, detection accuracy, or clas-
+sification. These metrics require a reference or annotation to provide a 
+basis for evaluation. Commonly used evaluation parameters include:
+• Signal-to-noise ratio (SNR) – SNR is used to quantify the ratio 
+between the useful EHG signal and noise. It is calculated as the 
+difference between the SNR values of the output filtered signal 
+(𝑆𝑁𝑅𝑜𝑢𝑡) and the input unfiltered signal (𝑆𝑁𝑅𝑖𝑛), indicating the 
+improvement in SNR achieved through the filtering process. The 
+values of 𝑆𝑁𝑅𝑖𝑛 and 𝑆𝑁𝑅𝑜𝑢𝑡 are determined using Eqs. (1) and 
+(2), respectively. SNR is typically expressed in decibels (dB) [68]. 
+𝑆𝑁𝑅𝑖𝑛= 10 log10
+∑𝑀−1
+𝑚=1
+(𝑠𝑟𝑒𝑓(𝑚))2
+∑𝑀−1
+𝑚=1
+(𝑠𝑖𝑛(𝑚) −𝑠𝑟𝑒𝑓(𝑚))2 ,
+(1)
+𝑆𝑁𝑅𝑜𝑢𝑡= 10 log10
+∑𝑀−1
+𝑚=1
+(𝑠𝑟𝑒𝑓(𝑚))2
+∑𝑀−1
+𝑚=1
+(𝑠𝑓𝑖𝑙𝑡(𝑚) −𝑠𝑟𝑒𝑓(𝑚))2 ,
+(2)
+where 𝑀 represents the number of samples in the reference signal 
+(𝑠𝑟𝑒𝑓), the input signal with interference is denoted as 𝑠𝑖𝑛, and the 
+filtered signal obtained through the specific method is marked as 
+𝑠𝑓𝑖𝑙𝑡.
+• Contraction consistency index (CCI) – The CCI quantifies the re-
+lationship between the EHG signal and the uterine contraction 
+signal recorded by CTG. Since the electrical activity of the uterus 
+precedes its mechanical contractions, the onset of a contraction 
+identified in the EHG signal should occur before the peak am-
+plitude of the uterine contraction signal in the CTG recording. 
+This relationship is captured by the contraction consistency index, 
+which is defined mathematically by Eq. (3) [64]. 
+𝐶𝐶𝐼=
+𝑁𝐶
+1
+2(𝑁𝑇+ 𝑁𝑈)
+,
+(3)
+where 𝑁𝑇 is the number of contractions in CTG, 𝑁𝑈 is the number 
+of contractions in EHG, and 𝑁𝐶 is the number of consistent 
+contractions.
+• Estimation error (𝜖) – The estimation error is used to evaluate the 
+accuracy of the estimated EHG signal (𝐸𝐻𝐺𝑒𝑠𝑡𝑖𝑚) compared to the 
+original EHG signal (𝐸𝐻𝐺𝑜𝑟𝑖𝑔). This metric calculates the error 
+rate, providing insight into the quality of the estimated signal. It 
+is defined mathematically by Eq. (4) [69]. 
+𝜖=
+∑𝑀
+𝑚=1
+(𝐸𝐻𝐺𝑜𝑟𝑖𝑔(𝑚) −𝐸𝐻𝐺𝑒𝑠𝑡𝑖𝑚(𝑚))2
+∑𝑀
+𝑚=1 𝐸𝐻𝐺𝑜𝑟𝑖𝑔(𝑚)2
+,
+(4)
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+8 
+K. Barnova et al.
+Fig. 3. Block diagram illustrating the acquisition and processing of electrohysterography (EHG) signals. The left section shows the maternal and fetal anatomical 
+sources contributing to the abdominal recordings, including maternal ECG (mECG), fetal ECG (fECG), maternal electromyographic activity (EMG), and uterine 
+electrical activity (EHG). The middle rectangle (‘‘Acquired Signals’’) represents the raw abdominal mixtures obtained from electrodes (Abdominal Mix 1 and 
+Abdominal Mix 2) in both the time and frequency domains. At this stage, the EHG signal is embedded within the composite recordings and is not directly visible 
+in the time domain. The right rectangle illustrates the effect of processing steps applied to the abdominal signals: initial preprocessing (e.g., bandpass filtering), 
+EHG extraction, envelope estimation, and uterine contraction (UC) detection, allowing the classification and decision-making.
+• Statistical parameters – This group of metrics includes accuracy 
+(ACC), sensitivity (SE), positive predictive value (PPV), F1 score, 
+specificity (SP), and negative predictive value (NPV). These pa-
+rameters, defined by Eqs. (5)–(10), are commonly used in the field 
+of EHG to evaluate the accuracy of uterine contraction detection 
+or classification. 
+𝐴𝐶𝐶=
+𝑇𝑃
+𝑇𝑃+ 𝐹𝑃+ 𝐹𝑁⋅100,
+(5)
+𝑆𝐸=
+𝑇𝑃
+𝑇𝑃+ 𝐹𝑁⋅100,
+(6)
+𝑃𝑃𝑉=
+𝑇𝑃
+𝑇𝑃+ 𝐹𝑃⋅100,
+(7)
+𝐹1 = 2 ⋅𝑃𝑃𝑉⋅𝑆𝐸
+𝑃𝑃𝑉+ 𝑆𝐸=
+2 ⋅𝑇𝑃
+2 ⋅𝑇𝑃+ 𝐹𝑃+ 𝐹𝑁⋅100,
+(8)
+𝑆𝑃=
+𝑇𝑁
+𝑇𝑁+ 𝐹𝑃⋅100,
+(9)
+𝑁𝑃𝑉=
+𝑇𝑁
+𝑇𝑁+ 𝐹𝑁⋅100,
+(10)
+where
+– True Positive (TP): Represents correct detection or classifi-
+cation.
+– False Positive (FP): Refers to incorrect detection of the 
+presence of a contraction, or in the case of classification, 
+the model incorrectly evaluates that an instance belongs to 
+a category when it does not.
+– False Negative (FN): Indicates a missed contraction, or in 
+classification, the model fails to identify an instance as 
+belonging to a category when it actually does.
+– True Negative (TN): Represents the correct identification of 
+the absence of contractions, or in classification, the model 
+correctly identifies that an instance does not belong to a 
+category [70,71].
+• Area under the curve (AUC) – The AUC is a metric used to evalu-
+ate the performance of classification models, particularly binary 
+classifiers. It is defined as the area under the Receiver Operating 
+Characteristic (ROC) curve, which depicts the relationship be-
+tween the true positive rate (TPR) and the false positive rate (FPR) 
+at various decision thresholds (see Eq. (11)). The AUC measures 
+the model’s ability to distinguish between classes, is independent 
+of the classification threshold, and is useful for evaluating models 
+in cases of class imbalance. The AUC value ranges from 0 to 1, 
+with higher values indicating better model performance [72]. 
+𝐴𝑈𝐶= ∫
+1
+0
+TPR(FPR) 𝑑(FPR),
+(11)
+• Average silhouette width (ASW) – ASW is a metric used to evaluate 
+the quality of clustering. It quantifies how well individual objects 
+are assigned to their respective clusters compared to other clusters 
+(see Eqs. (12) and (13)). The ASW value ranges from −1 to 1, 
+where higher values indicate better-defined and more cohesive 
+clustering. 
+𝐴𝑆𝑊= 1
+𝑛
+𝑛
+∑
+𝑖=1
+𝑠(𝑖),
+(12)
+where 𝑛 is the number of objects in the cluster and 𝑠(𝑖) is the 
+silhouette width for an individual object 𝑖 and is defined as: 
+𝑠(𝑖) =
+𝑏(𝑖) −𝑎(𝑖)
+max(𝑎(𝑖), 𝑏(𝑖)),
+(13)
+where 𝑎(𝑖) is the average distance of object 𝑖 to other objects in the 
+same cluster and 𝑏(𝑖) is the average distance of object 𝑖 to objects 
+in the nearest neighboring cluster [73].
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+9 
+K. Barnova et al.
+Table 4
+Overview of filters used for EHG preprocessing.
+ Author, year
+Bandwidth 
+(Hz)
+Data
+ 
+ Hao et al. [54], 2019
+0–3
+20 private records
+ 
+ Hao et al. [74], 2019
+34 private records
+ 
+ Song et al. [75], 2021
+54 private records
+ 
+ Du et al. [46], 2022
+112 private records
+ 
+ Shen et al. [76], 2023
+Icelandic
+ 
+ Shulgin et al. [77], 2014
+0.1–0.9
+Private records, TPEHG 
+ Parameshwari et al. [78], 2020
+40 private records
+ 
+ Esgalhado et al. [4], 2020
+0.1–1
+Icelandic
+ 
+ Esgalhado et al. [32], 2020
+Icelandic
+ 
+ Batista et al. [15], 2021
+Icelandic
+ 
+ Muszynski et al. [79], 2018
+0.1–3
+Icelandic
+ 
+ Ye-Lin et al. [52], 2014
+0.1–4
+12 private records
+ 
+ Altini et al. [60], 2017
+37 private records
+ 
+ Mas-Cabo et al. [80], 2018
+Icelandic
+ 
+ Mas-Cabo et al. [38], 2019
+88 private records
+ 
+ Cheng et al. [61], 2022
+0.2–1
+74 private records
+ 
+ Tylcz et al. [59], 2019
+0.2–3
+68 private records
+ 
+ Chendeb et al. [30], 2010
+0.2–6
+Private records
+ 
+ Lemancewicz et al. [48], 2015
+0.24–4
+60 private records
+ 
+ Mischi et al. [65], 2017
+0.3–0.8
+58 private records
+ 
+ Li et al. [64], 2024
+0.3–3
+3 private records
+ 
+ Garcia-Gonzalez et al. [81], 2013
+0.3–4
+16 private records
+ 
+ Lucovnik et al. [53], 2011
+0.34–1 
+88 private records
+ 
+ Vasak et al. [51], 2013
+119 private records
+ 
+ Zhang et al. [82], 2022
+219 private records
+ 
+TPEHG – Term–Preterm Electrohysterogram Database.
+4.2. Preprocessing
+Preprocessing is an essential step in the analysis of EHG signals. The 
+primary objective of preprocessing is to remove unwanted interferences 
+while preserving the useful signal that represents uterine activity. 
+Common sources of interference include baseline wander, power line 
+noise, maternal/fetal motion artifacts, and maternal/fetal respiratory 
+activity, as discussed in Section 2.2.
+In the field of EHG analysis, preprocessing typically involves the 
+use of frequency-selective filters. A low-pass filter (LPF) with a cutoff 
+frequency of 3 Hz has been widely employed [46,54,74–76]. Alter-
+natively, band-pass filters (BPF) are used to retain specific frequency 
+bands with varying bandwidths which are summarized in Table 4.
+4.3. Extraction methods
+Preprocessing alone may not be sufficient to eliminate all interfering 
+signals, particularly maternal or fetal cardiac activity. To address this, 
+some studies have employed additional filtering techniques such as the 
+Wiener filter [83] or the median filter [46,54,74,75] to enhance the 
+quality of EHG signals.
+However, due to the overlap of mECG, fECG, and EHG signals 
+in both the time and frequency domains, advanced signal processing 
+methods are often necessary for their effective separation. This sub-
+section provides an overview of studies that applied these advanced 
+signal processing or ML-based methods, as summarized in Table 5. 
+Additionally, since abdominal recordings can be used to extract fECG 
+and mECG signals alongside EHG, a column has been included in the 
+table to indicate whether this aspect was addressed by the respective 
+authors.
+4.3.1. Wavelet transform for signal extraction
+The wavelet transform (WT) is an advanced signal processing
+method that provides a time–frequency representation of the input 
+signal. It enables the analysis of both slowly and rapidly changing signal 
+components, making it particularly suitable for non-stationary signals. 
+Proper functioning of the WT algorithm requires optimal parameter 
+settings, including the wavelet type and the number of decomposition 
+levels [84]. However, these settings may differ from case to case.
+The effectiveness of WT in removing interference from EHG signals 
+was demonstrated in a study by Limem et al. [85]. The study found that 
+the quality of extraction was significantly influenced by the choice of 
+the mother wavelet and the number of decomposition levels. Optimal 
+results were achieved using the Daubechies 4 wavelet with three decom-
+position levels, yielding an average SNR of 8.35 dB. A key advantage of 
+WT is its ability to eliminate interference while preserving the essential 
+characteristics of the useful signal.
+Additionally, a toolbox called Uterine Explorer was developed by 
+Batista et al. [33] for processing multichannel EHG signals using WT 
+and visualizing the results, achieving the best outcomes with the com-
+plex Morlet 15-1 wavelet. In subsequent research, Batista et al. in-
+troduced a graphical tool called Contractiongram [15], based on the
+Daubechies 10 wavelet, which simplifies the interpretation of EHG data 
+recorded throughout pregnancy.
+Further advancements in EHG signal processing were made by Ter-
+rien et al. [86], who designed a comprehensive interface for processing, 
+analyzing, and storing EHG signals. Their system incorporated multiple 
+methods, including WT, and supported the processing of EHG signals 
+recorded under diverse experimental conditions.
+4.3.2. Empirical mode decomposition for signal extraction
+Empirical mode decomposition (EMD), like WT, enables the de-
+composition of a complex input signal into simpler components called 
+intrinsic mode functions (IMFs). These IMFs are typically ordered by 
+frequency from highest to lowest. The extracted signal can be ob-
+tained by selecting a single IMF or summing multiple suitable IMFs. By 
+summing all IMFs, the original input signal can be reconstructed [87].
+Li et al. [64] implemented EMD in the wearable fetal monitoring 
+system FetalCare for simultaneous fECG and EHG signal recording. The 
+EMD algorithm extracted EHG signals by summing the first six IMFs, 
+while the fast independent component analysis (FastICA) algorithm 
+extracted fECG signals. Testing on three pregnant women during the 
+38th–40th week of gestation demonstrated a CCI of 0.8 for uterine 
+contraction detection compared to CTG recordings, and an ACC of 
+97.97% for fetal QRS (fQRS) complex detection. The system leveraged 
+cloud services for data storage and visualization, offering secure and 
+low-maintenance functionality.
+Taralunga et al. [69] validated EMD for EHG signal extraction 
+using synthetic data with varying SNR levels. Synthetic signals were 
+generated by combining one record from the TPEHG database [50] 
+with interference at five different SNR levels. The average 𝜖 was 0.14. 
+The study highlighted that EMD requires no a priori knowledge of the 
+signal. Further improvement could be achieved with an automated IMF 
+selection algorithm or by combining EMD with other methods.
+Hassan et al. [88] combined EMD with canonical correlation anal-
+ysis (CCA) to enhance extraction performance. CCA, based on the 
+blind source separation principle, separated uterine bursts from noise 
+within overlapping frequency bands, while EMD removed residual 
+interference. The advantages of this approach included effective in-
+terference removal, preservation of the EHG signal’s characteristics, 
+computational simplicity, and suitability for preprocessing before EHG 
+segmentation.
+Chkeir et al. [89] combined EMD with the Savitzky-Golay (SG) filter 
+to enhance noise removal. The method was tested on four synthetic and 
+one real EHG signal, achieving an SNR of 18.98 dB. The strength of 
+EMD lies in its ability to automatically adapt to the characteristics of 
+the signal and noise.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+10 
+K. Barnova et al.
+Table 5
+Overview of the available EHG extraction algorithms.
+ Author, year
+Extraction
+algorithm
+Parameter settings
+Data
+Simultaneous 
+extraction of
+mECG/fECG 
+Results
+ 
+ Limem et al. [85]
+WT
+Daubechies 4 wavelet,
+3 private records
+No/No
+SNR = 8.35 dB 
+ (2015)
+3 decomposition levels
+ 
+ Batista et al. [33]
+WT
+Complex Morlet 15-1 wavelet,
+TPEHG
+No/No
+–
+ 
+ (2016)
+various decomposition levels
+Icelandic
+ 
+ Batista et al. [15]
+WT
+Daubechies 10 wavelet,
+Icelandic
+No/No
+–
+ 
+ (2021)
+4 decomposition levels
+ 
+ Li et al. [64]
+(2024)
+EMD
+IMF1–IMF6
+3 private records
+No/Yes
+CCI = 0.8
+ 
+ Taralunga et al. [69]
+(2015)
+EMD
+Various IMFs without noise
+1 TPEHG record
+with 5 noise levels
+No/No
+𝜖 = 0.14
+ 
+ Hassan et al. [88]
+(2011)
+CCA-EMD
+Various IMFs without noise
+6 private records
+No/No
+–
+ 
+ Chkeir et al. [89]
+(2010)
+EMD-SG
+Various IMFs without noise
+4 synthetic records, 
+1 private record
+No/No
+SNR = 18.98 dB 
+ Ye-Lin et al. [52]
+QDA
+Not specified
+12 private records
+No/No
+ACC = 92.20% 
+ (2014)
+SVM
+ACC = 83.60% 
+ 
+LDA
+ACC = 79.40% 
+WT — wavelet transform, EMD — empirical mode decomposition, CCA — canonical correlation analysis, SG — Savitzky–Golay filter,
+QDA — quadratic discriminant analysis, SVM — support vector machine, LDA — linear discriminant analysis, SNR — signal-to-noise ratio,
+IMFs – intrinsic mode functions, TPEHG – Term–Preterm Electrohysterogram Database, mECG – maternal ECG, fECG – fetal ECG,
+CCI – contraction consistency index, 𝜖 – estimation error, ACC – accuracy.
+4.3.3. Quadratic discriminant analysis for signal extraction
+The quadratic discriminant analysis (QDA) classifier is based on the 
+supervised learning technique and uses a quadratic decision space. The 
+principle of the method is to calculate the distance between the means 
+of different classes and then calculate the distance between the mean 
+and the sample of each class. Finally, a space with lower dimension is 
+created while preserving important information, which maximizes the 
+variance between individual classes and minimizes the variance within 
+a class [90].
+The QDA method was tested by Ye-Lin et al. [52] in classifying 
+EHG signal segments into two groups representing artifacted and non-
+artifacted segments. In total, eleven spectral, temporal and nonlinear 
+signal features were extracted for classification, but the highest accu-
+racy (ACC = 92.20%) was achieved when using only seven of them due 
+to better generalization ability. Moreover, the QDA method surpassed 
+the classification success rate performed by the support vector machine 
+(SVM) method with an ACC value of  83.60% and by linear discriminant 
+analysis (LDA) with an ACC of  79.40%.
+4.4. Uterine contractions detection
+After extracting EHG signals, the detection of uterine contractions 
+becomes a critical step as they provide valuable information about 
+the pregnancy, including the risk of preterm birth, the presence of 
+complications, and the progression of labor [61].
+In some studies [44,65,80], uterine contractions were detected man-
+ually by experts based on significant changes in amplitude and fre-
+quency relative to the basal tone. Other studies [47,77,78,81] focused 
+on extracting the EHG signal envelope for subsequent analysis. Quan-
+titative analysis of EHG parameters has also been used for contraction 
+detection, employing metrics such as:
+• Amplitude and baseline changes [78].
+• Power density spectrum and peak frequency [51].
+• Zero-crossing rate and signal power [75].
+• Entropy values [91].
+• Correlation coefficients [59,79].
+Advanced signal processing and ML-based methods have further re-
+fined contraction detection, as outlined in this subsection. An overview 
+of these methods is provided in Table 6, summarizing the approaches 
+and their key outcomes.
+4.4.1. Wavelet transform for contractions detection
+In addition to its application in EHG signal extraction, the WT 
+method, specifically wavelet energy determination, has proven effec-
+tive for automatic detection of uterine contractions. Esgalhado et al. [4] 
+demonstrated that the Morlet wavelet offers a good compromise be-
+tween bandwidth and contraction duration, making it suitable for this 
+task.
+Moreover, the Morlet wavelet has been effectively used for wavelet 
+coherence analysis based on continuous WT. Hassan et al. [56] used 
+this approach to detect correlations between bursts of uterine elec-
+trical activity recorded from different abdominal locations during the 
+same contraction, highlighting the utility of WT in analyzing spatially 
+distributed uterine signals.
+4.4.2. Multilayer perceptron for contractions detection
+Multilayer perceptron (MLP) is a feedforward neural network with 
+one or more hidden layers. A characteristic feature of MLP is that each 
+neuron in a given layer is fully connected to all neurons in the previous 
+layer [92].
+In a study by Chendeb et al. [30], MLP was effectively used for 
+detecting and classifying EHG signal segments into several categories, 
+including contractions, fetal movements, Alvarez waves, LDBF waves, 
+and noise. The methodology involved first applying the wavelet packet 
+transform (WPT) to decompose the signal into frequency components. 
+Subband energies were then calculated and used as features (wavelet 
+subband energy detection–WSED) for detecting contractions through 
+the dynamic cumulative sum (DCS) method. Finally, MLP was em-
+ployed for classification, assigning detected contractions to their respec-
+tive categories.
+When tested on real data, MLP achieved an ACC of 93.20%, sig-
+nificantly outperforming the SVM classifier, which achieved an ACC 
+of 79.20%. The study suggested that further improvements could be 
+realized by optimizing the selection of wavelet bases.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+11 
+K. Barnova et al.
+Table 6
+Overview of the available uterine contractions detection algorithms.
+ Author, year
+Signal
+processing
+Feature
+engineering
+Detection
+algorithm
+Feature domain
+No. of
+features
+Data
+Data
+balancing
+Results
+ 
+ Esgalhado et al. [4]
+(2020)
+WPT
+–
+WT
+–
+–
+Icelandic
+–
+ACC = 92.28% 
+ Chendeb et al. [30]
+WPT
+WSED
+DCS-MLP
+Frequency
+3
+Private records
+Part-synth
+ACCHO = 93.20% 
+ (2010)
+DCS-SVM
+ACCHO = 79.20% 
+ Peng et al. [93]
+(2019)
+BPF
+–
+CNN
+–
+–
+Icelandic
+Part-synth
+ACCCV = 88.00%
+SECV = 82.00% 
+SPCV = 93.00%
+ 
+ Hao et al. [94]
+BPF
+–
+CNN
+–
+–
+20 private records
+Part-synth
+ACCCV = 93.00% 
+ (2019)
+Icelandic
+ACCCV = 93.00% 
+ Du et al. [46]
+(2022)
+LPF,
+median
+filter
+–
+SVM
+Decision tree
+ANN
+CNN
+Time, frequency, 
+entropy, nonlinear
+13
+112 private records
+Part-synth
+ACC = 85.00% 
+ACC = 79.00%
+ACC = 75.00%
+ACC = 73.00%
+ 
+ Hao et al. [74]
+(2019)
+LPF,
+median
+filter
+–
+Decision trees
+Time, frequency, 
+entropy, nonlinear
+14
+34 private records
+–
+ACC = 81.00% 
+SE = 84.00% 
+PPV = 80.00% 
+SP = 78.00% 
+NPV = 83.00% 
+AUC = 0.75
+ 
+ Esgalhado et al. 
+[32]
+(2020)
+WT
+–
+Hierar. 
+clustering
+k-means
+k-medoids
+Frequency
+7
+Icelandic
+–
+ASW = 0.49
+ASW = 0.28
+ASW = 0.31
+ 
+WPT – wavelet packet transform, BPF – band-pass filter, LPF – low-pass filter, WSED – wavelet subband energy detection,
+WT — wavelet transform, DCS — dynamic cumulative sum, MLP — multilayer perceptron, SVM — support vector machine, ACC — accuracy,
+CNN — convolutional neural network, ANN – artificial neural network, SE — sensitivity, SP — specificity, Part-synth – Partition-synthesis,
+PPV — positive predictive value, NPV — negative predictive value, AUC — area under the curve, ASW — average silhouette width,
+CV — cross-validation, HO — held-out test.
+4.4.3. Convolutional neural network for contractions detection
+A convolutional neural network (CNN) is a deep, feedforward, 
+multi-layer network with a general structure consisting of an input 
+layer, several hidden layers, and an output layer. Hidden layers typ-
+ically include convolutional layers, activation layers, pooling layers, 
+fully connected layers, and normalization layers. The key advantage 
+of CNNs lies in their convolutional layers, which extract important 
+features from the input data to create feature maps [95].
+In a study by Peng et al. [93], a CNN model with 11 layers 
+was developed to detect uterine contractions from EHG signals. Input 
+signals were divided into segments of 10 s, 20 s, 30 s, and 60 s. These 
+segments were converted into images, normalized, and classified using 
+the CNN. The best results (ACC = 88.00%) were achieved using 60 s 
+segments when tested on data from the Icelandic database [58].
+Hao et al. [94] evaluated a CNN model on both Icelandic database
+[58] and 20 real-world recordings. They found the best results with 
+45 s segments, achieving an ACC of 93.00% in both cases. One major 
+benefit of CNNs highlighted in their study is the elimination of the need 
+for separate feature extraction and selection steps, as these processes 
+are integrated into the CNN structure. This simplifies signal processing 
+compared to conventional ML-based algorithms.
+4.4.4. Support vector machine for contractions detection
+The primary objective of the support vector machine (SVM) algo-
+rithm is to construct a hyperplane that optimally divides the feature 
+space. This is achieved by maximizing the minimum distance between 
+the hyperplane and the nearest data points on either side, creating the 
+widest possible margin around the hyperplane [96].
+SVM has been shown to be an effective classifier for detecting EHG 
+signal segments that contain or do not contain uterine contractions. In 
+a study by Du et al. [46], 112 real recordings from pregnancies at 38 
+to 42 weeks of gestation were analyzed. A total of 13 features were 
+extracted from the time, frequency, entropy, and nonlinear domains for 
+classification. The SVM algorithm with a radial basis function achieved 
+an ACC of 85.00%, outperforming other classifiers, including: Decision 
+tree (ACC = 79.00%), CNN (ACC = 73.00%), and artificial neural 
+network (ANN) with 27 neurons in the hidden layer and sigmoid and 
+pureline activation functions (ACC = 75.00%).
+4.4.5. Decision trees for contractions detection
+The architecture of decision trees consists of nodes and edges, 
+where each node represents a signal feature. The root node is the top-
+level node with no input edges, marking the beginning of the decision 
+process. Internal nodes have one input edge and one or more output 
+edges, while leaf nodes have no output edges, representing the end of 
+the decision process [97].
+Hao et al. [74] tested decision trees for uterine contraction recog-
+nition. Fourteen features from the time, frequency, nonlinear, and 
+entropy domains were used to classify EHG signal segments as contain-
+ing or not containing uterine contractions. The decision tree algorithm 
+achieved an ACC of 81.00%. Among the features, power and sample 
+entropy were identified as having the greatest influence on accu-
+rate contraction detection. Additionally, the placement of the sensing 
+electrodes significantly affected detection accuracy, emphasizing the 
+importance of proper electrode positioning.
+4.4.6. Hierarchical clustering for contractions detection
+Hierarchical clustering groups objects based on their similarity, ei-
+ther by progressively merging individual objects into larger groups (ag-
+glomerative approach) or by dividing larger groups into smaller ones 
+(partitioning approach). The result of the analysis is a dendrogram, 
+which visually represents the hierarchical structure of the clusters and 
+their mutual similarities [98].
+Esgalhado et al. [32] applied hierarchical clustering (linkage clus-
+tering) for uterine contraction detection. Seven features from the fre-
+quency domain were used for clustering, resulting in five distinct 
+clusters:
+• Cluster 1: Outliers containing a spectral peak at high frequencies.
+• Cluster 2: Observations with multiple frequency peaks lacking 
+clear physiological interpretation.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+12 
+K. Barnova et al.
+• Cluster 3: Braxton-Hicks contractions.
+• Clusters 4 and 5: Alvarez waves.
+The efficiency of the clustering was assessed using the ASW, which 
+reached an average value of 0.49 for the five clusters. For comparison, 
+alternative clustering methods, k-means and k-medoids, achieved lower 
+average ASW values of 0.28 and 0.31, respectively. A key advantage 
+of the hierarchical clustering approach was its ability to classify con-
+tractions using the full spectrum rather than selecting only specific 
+points, providing deeper insights into the electrophysiological nature 
+of different types of contractions.
+4.5. Term/preterm birth prediction
+One of the most active areas of research in the field of EHG is 
+the classification of term and preterm recordings. Earlier studies of 
+EHG signals [18] revealed significant electrophysiological changes in 
+the uterus preceding spontaneous preterm labor. These changes are 
+characterized by more intense contractions, a greater prevalence of 
+higher frequencies, faster and more coordinated activity propagation, 
+and stronger interconnections between different uterine regions. Tem-
+poral, spectral, nonlinear, and bivariate analyses of EHG signals thus 
+provide valuable information for predicting preterm labor.
+For the classification of term and preterm recordings, some re-
+searchers [48,65,82,99] employed statistical methods that compared 
+features extracted from the frequency, time, entropy, nonlinear, or 
+information-theoretic domains.
+A growing number of studies have focused on implementing AI and 
+ML-based algorithms, as summarized in Table 7. These approaches offer 
+the potential for faster and more accurate preterm labor predictions, 
+which can be critical in emergency situations where timely medical 
+intervention is essential [100].
+4.5.1. Artificial neural network for preterm birth prediction
+Artificial neural networks (ANNs) are computational models in-
+spired by the way the human brain processes information. ANNs consist 
+of artificial neurons connected in a structured network, where each 
+neuron receives input signals, modifies them using weight coefficients 
+and a transfer function, and passes the processed signals onward. 
+Through learning, the network adjusts these weights to effectively solve 
+specific tasks based on prior experience [101].
+Diab et al. [41] employed a simple perceptron for the binary classi-
+fication of term and preterm EHG recordings. The optimal input to the 
+ANN consisted of 10 features derived from the frequency domain. Using 
+fewer features resulted in a high error rate. The method was tested 
+on 20 real recordings and 30 simulated recordings, achieving an ACC 
+of 96.70%. The authors suggested that using a multilayer perceptron 
+(MLP) could further improve classification accuracy.
+Naeem et al. [102] tested a traditional feedforward backpropaga-
+tion ANN for term/preterm classification. They evaluated 14 features 
+from the time, frequency, entropy, and nonlinear domains, identify-
+ing 8 entropy- and nonlinear-based features as the most effective. 
+The traditional ANN achieved an ACC of 92.30%, outperforming both 
+the cascade-forward backpropagation ANN (ACC = 87.70%) and the 
+Kohonen self-organizing ANN (ACC = 68.50%).
+4.5.2. Multilayer perceptron for preterm birth prediction
+Beyond its application in detecting uterine contractions, the MLP 
+has also proven effective for classifying term/preterm EHG recordings. 
+In a study by Mas-Cabo et al. [103], an MLP model with a hyperbolic 
+tangent activation function and a backpropagation training algorithm 
+was employed. In order to reduce feature dimensionality and pre-
+vent overfitting, principal component analysis (PCA) was used. The 
+study used unbalanced data from the TPEHG database [50], which 
+was balanced using the synthetic minority over-sampling technique 
+(SMOTE) [104].
+A total of 72 features were extracted, encompassing time, frequency, 
+and nonlinear domains of the EHG signal, as well as 5 clinical features 
+(e.g., maternal age, parity, previous abortions). Among 10 proposed 
+models, the best-performing variant used a multi-channel approach 
+incorporating 16 signal features and 5 clinical features, achieving an 
+ACC of 87.90%. The inclusion of clinical data significantly improved 
+classification accuracy. For this reasons, the authors recommended 
+incorporating additional obstetrical markers, such as cervical length, 
+fetal fibronectin, or interleukin 6, in future research to further enhance 
+classification performance.
+4.5.3. Spiking neural network for preterm birth prediction
+Spiking neural networks (SNNs) are a type of network that does not 
+process data using continuous values, but works with discrete impulses 
+or spikes. Neurons only emit spikes when a certain threshold potential 
+is reached, which saves energy and allows for more efficient real-time 
+information processing [105].
+Veena et al. [83] implemented SNNs within an automated preterm 
+prediction system. The metaheuristic seagull optimization algorithm 
+(SOA) was used to optimize the SNN parameters. Using four features 
+from the time, frequency, and entropy domains, ACC = 98.35% was 
+achieved, which surpassed the performance of decision tree:
+ACC = 90.53%, k-nearest neighbors (k-NN): ACC = 93.21%, and SVM: 
+ACC = 95.41%.
+4.5.4. Convolution neural network for preterm birth prediction
+Convolution neural network has proven to be a universal approach 
+suitable for both uterine contraction detection and term/preterm EHG 
+record classification, as shown in the study by Deng et al. [106]. It 
+was a very deep CNN with VGG-Net architecture requiring a large 
+amount of data for effective operation. Therefore, it was combined 
+with transfer learning (fine tune technique) pre-trained on large sample 
+data. Recurrence plot analysis was also implemented to obtain the 
+nonlinear structural information characteristics in high-dimensional 
+space. The approach was tested on the TPEHG database [50], which 
+achieved ACC = 97.00% and F1 = 96.97% for the validation data set. 
+Data imbalance was solved through a specific approach that involved 
+selecting equal numbers of term and preterm EHG data for training 
+and testing. The advantage of CNN was the simplification of feature 
+extraction and selection, when these steps are part of the CNN structure.
+4.5.5. Temporal convolution network for preterm birth prediction
+A temporal convolution network (TCN) is a specialized type of 
+CNN designed for processing temporal sequences. Unlike recurrent 
+methods, TCNs utilize convolutional layers to process all time steps 
+simultaneously, making them more efficient at capturing long-term 
+dependencies [107].
+Fischer et al. [108] employed a TCN to predict preterm birth using 
+an end-to-end learning approach with interpretability. The model was 
+tested on unbalanced data from the TPEHG database [50]. Instead 
+of oversampling to balance the data, the authors implemented cost-
+sensitive learning by adjusting class weights in the loss function. The 
+best performance was achieved by the TCN model combined with 7 
+clinical features and sample entropy, yielding an AUC of 0.578. This 
+significantly outperformed the long short-term memory (LSTM) model, 
+which achieved an AUC of 0.423 with the same feature set.
+4.5.6. Radial basis function network for preterm birth prediction
+Radial basis function network (RBFN) is a special type of feedfor-
+ward network containing only three layers (input, hidden, and output) 
+and a radial basis as an activation function. The advantage of the 
+network is universal approximation and higher learning rate [126].
+RBFN was shown to be the most suitable solution among six other 
+ANNs for detecting preterm births in a study by Fergus et al. [109]. 
+Due to the use of unbalanced data, the SMOTE technique [104] was 
+applied for balancing. Applying LDA with a forward search for feature 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+13 
+K. Barnova et al.
+Table 7
+Overview of the available term/preterm birth prediction algorithms.
+ Author, year
+Signal
+processing
+Feature
+engineering
+Classification
+algorithm
+Feature domain
+No. of
+features
+Data
+Data
+balancing
+Results
+ 
+ Diab et al. [41]
+BPF
+–
+ANN
+Frequency
+10
+20 private records
+–
+ACCCV = 96.70% 
+ (2010)
+30 synthetic records
+ 
+ Naeem et al. [102]
+BPF
+–
+ANN
+Time, frequency
+14
+TPEHG
+–
+ACCCV = 92.30% 
+ (2014)
+Cascade ANN
+entropy, nonlinear
+ACCCV = 87.70% 
+ 
+Kohen ANN
+ACCCV = 68.50% 
+ Mas-Cabo et al. 
+[103]
+BPF
+PCA
+MLP
+Time, frequency,
+21
+TPEHG
+SMOTE
+ACCHO = 87.90% 
+ 
+SEHO = 84.40% 
+ (2019)
+clinical, nonlinear
+SPHO = 89.20% 
+ 
+PPVHO = 88.70% 
+ Veena et al. [83]
+Wiener
+SOA
+SNN
+Time, frequency,
+4
+TPEHGT
+–
+ACC = 98.35% 
+ (2024)
+filter
+Decision tree
+entropy
+ACC = 90.53% 
+ 
+k-NN
+ACC = 93.21% 
+ 
+SVM
+ACC = 95.41% 
+ Deng et al. [106]
+(2021)
+–
+–
+CNN
+–
+–
+TPEHG
+PDS
+ACCHO = 97.00% 
+ Fischer et al. [108]
+BPF
+–
+TCN
+Frequency, entropy,
+15
+TPEHG
+CSW
+AUCCV = 0.578 
+ (2023)
+LSTM
+clinical
+AUCCV = 0.423 
+ Fergus et al. [109]
+BPF
+LDA
+ANN-RBFN-RandNN
+Time, frequency,
+13
+TPEHG
+SMOTE
+SEHO = 91.00% 
+ (2016)
+nonlinear
+SPHO = 84.00% 
+ Goldsztejn et al. [110]
+BPF,
+–
+RNN-BILSTM
+Time–frequency
+–
+TPEHG
+WCELF
+SECV = 39.70% 
+ 
+SPCV = 90.00% 
+ (2023)
+STFT
+TPEHGT
+PPVCV = 48.00% 
+ 
+NPVCV = 86.50% 
+ Acharya et al. [100]
+BPF,
+PSO
+SVM
+Time, frequency,
+8
+TPEHG
+ADASYN
+ACCCV = 96.25% 
+ (2017)
+EMD,
+entropy
+SECV = 95.08% 
+ 
+WPT
+SPCV = 97.33% 
+ Cheng et al. [61]
+BPF
+SFS
+SVM
+Frequency, entropy
+5-7
+55 private records
+–
+ACCCV = 90.50% 
+ (2022)
+SECV = 93.20% 
+ 
+SPCV = 86.70% 
+ Janjarasjitt [111]
+WT,
+SFS
+SVM
+Time
+9–11
+TPEHG
+–
+ACCCV = 97.76% 
+ (2022)
+EMD
+ACCCV = 96.19% 
+ Far et al. [112]
+BPF,
+–
+SVM
+Time, frequency,
+3
+TPEHG
+–
+ACCCV = 99.70% 
+ (2022)
+EMD
+Decision tree
+entropy
+ACCCV = 98.70% 
+ 
+k-NN
+ACCCV = 96.60% 
+ Borowska et al. [49]
+(2018)
+–
+RQA,
+PCA
+SVM
+Entropy, nonlinear
+5
+20 private records
+–
+ACCCV = 83.32% 
+ Xu et al. [113]
+BPF,
+HVG
+SVM
+Time–frequency
+–
+TPEHG
+Part-synth
+ACCCV = 91.00% 
+ (2022)
+STFT
+SECV = 89.00% 
+ 
+SPCV = 93.00% 
+ Morales et al. [114]
+BPF,
+–
+SVM
+Time, frequency,
+7–13
+TPEHG
+PDS
+ACCHO = 88.52% 
+ (2023)
+WT
+k-NN
+entropy,
+TPEHGT
+ACCHO = 51.04% 
+ 
+Decision tree
+time–frequency
+ACCHO = 47.91% 
+ Degbedzui et al. [115]
+BPF
+–
+SVM
+Time–frequency
+1
+TPEHG
+ADASYN
+ACCHO = 99.74% 
+ (2020)
+k-NN
+ACCHO = 96.16% 
+ Sadi et al. [116]
+BPF,
+–
+SVM
+Frequency,
+8
+TPEHG
+Undersamp
+ACCCV = 95.70% 
+ (2017)
+HHT
+Time–frequency
+SECV = 98.40% 
+ 
+SPCV = 93.00% 
+ 
+(continued on next page)
+ranking resulted in the selection of four features from the time and 
+entropy domains, which were then used for classification. To improve 
+the performance of the approach, the authors added nine additional 
+features that represented the clinical domain and combined individual 
+ANNs. The best combination was Levenberg–Marquardt trained feedfor-
+ward ANN, RBFN and Random NN (RandNN), achieving: SE = 91.00%, 
+SP = 84.00%, and AUC = 0.940. However, to avoid testing on syntheti-
+cally generated data using SMOTE [104], it is necessary to obtain more 
+data from premature infants and test the algorithm on them.
+4.5.7. Recurrent neural network for preterm birth prediction
+Recurrent neural networks (RNNs) are fully connected networks 
+that utilize cyclic connections, enabling neurons to retain information 
+about previous inputs. This architecture allows for bidirectional infor-
+mation flow, where signals propagate both forward and backward—
+from higher layers to lower layers [127].
+Goldsztejn et al. [110] proposed a deep learning approach for pre-
+dicting preterm births, combining RNN with bidirectional long short-
+term memory (BILSTM). Short-time Fourier transform (STFT) was ap-
+plied to the EHG signals, transforming them into a time–frequency 
+representation that was used as input to the network. A key advantage 
+of this architecture was its ability to automatically learn relevant 
+frequency-domain features directly from the data, eliminating the need 
+for handcrafted feature extraction.
+The model was tested on the TPEHG [50] and TPEHGT [66] 
+datasets, using a weighted cross-entropy loss function (WCELF) to ad-
+dress data imbalance. Incorporating clinical data into the classification 
+model improved the area under the curve (AUC) value from 0.740 to 
+0.780. Additionally, spectral features were found to be more predictive 
+than temporal features. To further enhance prediction accuracy, the 
+inclusion of additional clinical features, such as cervical length or 
+fibronectin alpha, was recommended.
+4.5.8. Support vector machine for preterm birth prediction
+The widely tested SVM algorithm has proven effective for both 
+uterine contraction detection and term/preterm EHG recording classi-
+fication.
+The performance of several types of SVM (e.g. cubic, fine Gaussian, 
+or quadratic) was compared in the study by Morales et al. [114]. The 
+algorithms were applied to data from two public datasets TPEHG [50] 
+and TPEHGT [66], where in the former the data was balanced by select-
+ing an equal number of term and preterm records. A total of 33 features 
+were extracted from the time, frequency, time–frequency and entropy 
+domains, and 7–13 suitable features were selected. It was shown that 
+especially WT and entropy-based features can be suitable descriptors 
+for the analysis of EHG signals. The best results (ACC = 88.52%) were 
+achieved by the quadratic SVM variant. On the contrary, in the study by 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+14 
+K. Barnova et al.
+Table 7 (continued).
+ Author, year
+Signal
+processing
+Feature
+engineering
+Classification
+algorithm
+Feature domain
+No. of
+features
+Data
+Data
+balancing
+Results
+ 
+ Ren et al. [117]
+(2015)
+BPF,
+EMD
+–
+AdaBoost
+Random forest
+Bayesian network
+SLR
+SVM
+MLP
+Entropy
+2
+TPEHG
+SMOTE
+AUCCV = 0.986
+AUCCV = 0.957
+AUCCV = 0.912
+AUCCV = 0.874
+AUCCV = 0.847
+AUCCV = 0.764
+ 
+ Far et al. [118]
+BPF,
+–
+AdaBoost
+Time, entropy,
+6
+TPEHG (< 26 w.)
+SASYNO
+ACCCV = 95.00%  
+ (2023)
+EMD
+time–frequency,
+TPEHG (≥ 26 w.)
+ACCCV = 93.00%  
+ 
+nonlinear
+ 
+ Chowdhury et al. [119]
+BPF
+–
+Random forest
+Time, entropy,
+6
+TPEHG
+SMOTE
+ACCCV = 89.00% 
+ (2024)
+clinical
+TPEHGT
+SECV = 85.87%
+ 
+ 
+PPVCV = 88.76% 
+ You et al. [120]
+BPF,
+–
+Random forest
+Time, frequency,
+6
+TPEHG
+SMOTE
+ACCCV = 93.18% 
+ (2019)
+MEMD
+RandSub
+entropy
+ACCCV = 94.66% 
+ Nieto-del-Amor et al. [121]
+BPF
+GA
+LDA
+Time, frequency,
+12
+TPEHG
+SMOTE
+ACCCV = 89.20% 
+ (2021)
+SECV = 98.40%
+ 
+ 
+entropy, nonlinear, 
+TPEHGT
+PPVCV = 83.20% 
+ 
+clinical 
+F1CV = 90.10%
+ 
+ 
+SPCV = 79.90%
+ 
+ Nieto-del-Amor et al. [122]BPF
+GA
+LDA
+Time, frequency,
+22
+TPEHG
+SMOTE
+ACCCV = 88.77% 
+ (2021)
+LR
+entropy, nonlinear,
+29
+TPEHGT
+ACCCV = 87.42% 
+ 
+k-NN
+clinical
+40
+ACCCV = 82.92% 
+ Nieto-del-Amor et al. [123]BPF
+GA
+LDA
+Time, frequency,
+58
+TPEHG
+Undersamp
+SECV = 89.80%
+ 
+ (2022)
+entropy, nonlinear,
+TPEHGT
+PPVCV = 84.50% 
+ 
+clinical
+F1CV = 79.60%
+ 
+ Saleem et al. [124]
+LPF
+–
+QDA
+Time
+6
+TPEHGT
+–
+ACC = 91.00%
+ 
+ (2020)
+SE = 94.00%
+ 
+ 
+SP = 95.00%
+ 
+ Jager et al. [66]
+BPF
+SFS
+QDA
+Frequency, entropy
+3
+TPEHG
+ADASYN
+ACCCV = 96.33% 
+ (2018)
+SECV = 94.14%
+ 
+ 
+SPCV = 98.47%
+ 
+ Shahrdad et al. [125]
+STFT
+LPC
+GMM
+Frequency
+8
+TPEHG
+RUSBoost
+ACC = 89.00%
+ 
+ (2018)
+SE = 90.00%
+ 
+ 
+SP = 89.00%
+ 
+WPT — wavelet packet transform, BPF — band-pass filter, STFT — short-time Fourier transform, EMD — empirical mode decomposition,
+WT — wavelet transform, HHT — Huang–Hilbert transform, PCA — principal component analysis, SOA — seagull optimization algorithm,
+LDA — linear discriminant analysis, PSO — particle swarm optimization, SFS — sequential forward selection, RQA — recurrence quantification analysis,
+PCA — principal component analysis, HVG — horizontal visibility graph, ANN — artificial neural network, LPF — low-pass filter,
+MEMD — multivariate empirical mode decomposition, k-NN — k-nearest neighbors, MLP – multilayer perceptron, SNN — spiking neural network,
+SVM — support vector machine, CNN — convolutional neural network, TCN — temporal convolution network, LSTM — long short-term memory,
+RBFN — radial basis function network, RandNN — randon neural network, RNN – recurrent neural network, SLR — simple logistic regression,
+BILSTM — bidirectional long short-term memory, AdaBoost — adaptive boosting, SFS — sequential forward selection, LR — logistic regression,
+LPC – linear predictive coding, GMM – Gaussian mixture model, QDA – quadratic discriminant analysis, GA – genetic algorithm, ACC – accuracy,
+SE – sensitivity, SP – specificity, PPV – positive predictive value, AUC – area under the curve, NPV – negative predictive value, F1 – F1 score,
+TPEHG – Term–Preterm Electrohysterogram Database, TPEHGT – Term–Preterm Electrohysterogram Dataset with Tocogram,
+SMOTE – synthetic minority oversampling, PDS – proportional data selection, CSW – cost-sensitive weighting, Part-synth – Partition-synthesis,
+WCELF — weighted cross-entropy loss function, ADASYN – adaptive synthetic sampling approach, Undersamp — undersampling, HO — held-out test,
+SASYNO — self-adaptive synthetic over-sampling method, RUSBoost — boosting by random undersampling, CV — cross-validation.
+Degbedzui et al. [115], the most suitable variant of SVM using Gaussian 
+function kernel with ACC value = 99.74%. The authors proposed an 
+approach that used only one feature called the centroid frequency.
+A similar comparison of three different kernel functions of SVM 
+algorithm (linear, radial basis function, and polynomial) on TPEHG
+database [50] was presented by Sadi et al. [116]. The researchers used 
+a balanced dataset through undersampling. Unlike the previous study, 
+however, the input signal was first decomposed into IMFs using Huang–
+Hilbert transform (HHT), and then eight features were extracted from 
+the time–frequency and frequency domains from the two most relevant 
+IMFs (IMF3 and IMF5). The best performance was achieved using linear 
+SVM with a two-channel combination, yielding an ACC = 95.70%. The 
+approach excelled in terms of high performance, low computational 
+demands, did not require expert assistance, and appeared promising 
+for use in outpatient clinics and telemedicine.
+The SVM algorithm is often combined with other algorithms to 
+improve performance, especially in term/preterm EHG recording clas-
+sification. This is primarily because SVM, on its own, lacks mechanisms 
+to identify the most relevant features for classification. By combining it 
+with other algorithms, it becomes possible to select an optimal subset 
+of features, thereby reducing redundancy and improving accuracy.
+• Particle swarm optimization (PSO) — Acharya et al. [100] com-
+bined SVM with a radial basis function kernel and the PSO 
+algorithm to select eight significant features, evaluated using the 
+Bhattacharyya technique. This approach achieved high classifica-
+tion accuracy (ACC = 96.25%) and was noted for its simplicity 
+and cost-effectiveness.
+• Sequential forward selection (SFS) – Cheng et al. [61] combined 
+SVM with SFS to identify the optimal feature set, achieving an 
+ACC of 90.50%. The study also revealed that using the entire EHG 
+signal outperformed analyzing individual contraction segments.
+• Signal decomposition methods — Far et al. [112] used EMD to 
+decompose input signals and extracted three features from the 
+first two IMFs for SVM classification. This method achieved an 
+impressive ACC of 99.70%, outperforming EMD-decision tree 
+(ACC = 98.70%) and EMD-k-NN (ACC = 96.60%). Moreover, 
+Janjarasjitt et al. [111] applied EMD and WT for signal decompo-
+sition and time-domain feature extraction, enhancing prediction 
+accuracy to ACC = 96.19% (EMD-SFS-SVM) and ACC = 97.76% 
+(WT-SFS-SVM). Finally, Sadi et al. [116] applied HHT for signal 
+decomposition and used linear SVM with two IMFs, achiev-
+ing ACC = 95.70%. This low-complexity approach was deemed 
+suitable for outpatient and telemedicine applications.
+• Recurrence quantification analysis (RQA) — Borowska et al. [49] 
+combined SVM with RQA for feature extraction but achieved 
+lower accuracy (ACC = 79.27%). Adding PCA algorithm improved 
+results slightly to ACC = 83.32%.
+• Time–frequency domain and horizontal visibility graph (HVG) – 
+Xu et al. [113] used HVG to convert EHG signals into graph 
+representations, extracting 152 features. The best results (ACC =
+91.00%) were obtained using SVM with a radial basis function 
+and optimized parameters.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+15 
+K. Barnova et al.
+4.5.9. Adaptive boosting for preterm birth prediction
+Adaptive boosting (AdaBoost) is a boosting method that creates a 
+strong classifier by combining multiple weaker models. It iteratively 
+focuses on difficult-to-classify cases by adjusting the weights of training 
+examples, and the final prediction is determined through a weighted 
+vote [128].
+Ren et al. [117] applied AdaBoost for term/preterm classification, 
+using entropy-based features from 10 IMFs obtained via EMD. The 
+study, which used SMOTE [104] for data balancing, achieved the high-
+est AUC (0.986) compared to other tested classifiers, such as random 
+forest (AUC = 0.957), Bayesian network (AUC = 0.912), simple logistic 
+regression (SLR) (AUC = 0.874), and SVM (AUC = 0.847).
+Far et al. [118] used AdaBoost on data from the TPEHG database, 
+dividing records into two groups based on gestational age (before and 
+after 26 weeks). The classifier achieved high accuracy for both groups: 
+ACC = 95.00% (before 26 weeks) and ACC = 93.00% (after 26 weeks). 
+The self-adaptive synthetic over-sampling method (SASYNO) [129] was 
+employed to balance the dataset, and features were extracted from 
+time, frequency, entropy, and nonlinear domains.
+4.5.10. Random forest for preterm birth prediction
+Random forest is an ensemble method that combines multiple de-
+cision trees, each trained on a different random sample of data and a 
+randomly selected subset of variables. For classification tasks, predic-
+tions are made through majority voting, which enhances accuracy and 
+stability while reducing the risk of overfitting [130].
+Chowdhury et al. [119] applied random forest for term/preterm 
+EHG signal classification, testing on the TPEHG [50] and TPEHGT [66] 
+databases. Using the SMOTE technique [104] for balancing and six 
+features from the time, entropy, and clinical domains, the model 
+achieved an ACC of 89.00%. The authors recommended expanding 
+future datasets to include other delivery types, such as induced and 
+cesarean deliveries, to broaden the model’s applicability.
+In a study by You et al. [120], random forest was combined with 
+multivariate empirical mode decomposition (MEMD). In this combina-
+tion, random forest achieved an ACC of 93.18%, though it was slightly 
+outperformed by the random subspace (RandSub) algorithm, which 
+reached an ACC of 94.66%.
+4.5.11. Linear discriminant analysis for preterm birth prediction
+The objective of the linear discriminant analysis (LDA) classifier 
+is to find a linear combination of features that effectively separates 
+individual classes. This is achieved by transforming the data to max-
+imize variability between classes while minimizing variability within 
+classes [90].
+In a study by Nieto-del-Amor et al. [121], LDA was combined with 
+a genetic algorithm (GA) for feature selection, optimizing classification 
+performance by reducing redundancy and maximizing the information 
+provided by selected features. Testing was conducted on data from the
+TPEHG [50] and TPEHGT [66] databases, balanced using the SMOTE 
+technique [104]. Out of 46 extracted features, GA identified 12 optimal 
+features from the frequency, entropy, nonlinear, and clinical domains. 
+The study highlighted the significance of entropy measures, particu-
+larly bubble and dispersion entropy, which outperformed conventional 
+linear features.
+In a comparative study [122], GA-LDA achieved an ACC of 88.77%, 
+outperforming GA combined with logistic regression (LR) (ACC =
+87.42%) and GA-k-NN (ACC = 82.92%). However, in their follow-up 
+study [123], the authors noted that SMOTE [104] might overestimate 
+the generalization ability of models. They tested GA-LDA with various 
+resampling techniques, including undersampling, oversampling, and 
+hybrid methods. The combination of GA-LDA with undersampling 
+was found to be the most effective, providing the most accurate 
+identification of preterm births.
+4.5.12. Quadratic discriminant analysis for preterm birth prediction
+QDA method has demonstrated effectiveness in classifying term 
+versus preterm births, as highlighted by Saleem et al. [124]. This 
+study quantified the coupling between electrical (EHG) and mechanical 
+(TOCO) uterine activity by analyzing signals during both contracting 
+and non-contracting (dummy) intervals. Six time-domain features, in-
+cluding Granger causality and directionality indices, were used for 
+classification. The results showed higher accuracy when features from 
+both EHG and TOCO signals were combined (ACC = 91.00%) compared 
+to using only EHG features (ACC = 84.00%). The authors recommended 
+exploring shorter recording segments to enhance clinical applicability.
+Jager et al. [66] further investigated QDA in combination with 
+SFS for the selection of relevant features, and found that analyzing 
+dummy intervals yielded comparable or slightly better classification 
+performance than contracting intervals, suggesting the utility of these 
+intervals for predictive modeling.
+4.5.13. Gaussian mixture model for preterm birth prediction
+The Gaussian mixture model (GMM) is a probabilistic model that 
+assumes data samples originate from a mixture of finite Gaussian 
+distributions. It assigns samples to classes based on their probability 
+of belonging to individual Gaussian components [131].
+Shahrdad et al. [125] applied GMM to data from the TPEHG
+database [50], using the boosting by random undersampling (RUS-
+Boost) method to address dataset imbalance. Linear predictive coding 
+(LPC) was used for feature extraction, yielding eight features from 
+the frequency domain (8th-order LPC coefficients). The classification 
+results were influenced by incomplete clinical data, which was missing 
+for some records. Separate analyses were conducted based on the 
+availability of clinical information, with higher accuracy achieved for 
+data with clinical information (ACC = 89.00%) compared to data 
+without clinical information (ACC = 74.30%).
+4.6. Labor/non-labor records classification
+Analyzing the characteristics of uterine contractions can provide 
+valuable insights into distinguishing labor from non-labor states. Simi-
+lar to term/preterm classification, this task has been approached using 
+statistical methods that compare features from the time and entropy 
+domains [65,76], as well as nonlinear correlation analysis [132]. This 
+subsection highlights studies where AI and ML-based algorithms were 
+applied, as summarized in Table 8.
+4.6.1. Extreme learning machine for labor classification
+Extreme learning machine (ELM) is a feedforward network with a 
+single hidden layer. Unlike traditional ANNs, which iteratively optimize 
+all parameters, ELM randomly sets hidden neuron weights and opti-
+mizes only the output layer. This enables high learning speed while 
+maintaining generalization ability [133].
+Chen et al. [134] applied ELM for pregnancy/labor EHG classifi-
+cation, combining it with EMD and HHT methods. EMD decomposed 
+EHG signals into three IMFs, and HHT was applied to IMF1 to derive 
+an analytical function and its amplitude. This single feature was used 
+for classification with an ELM containing 20 neurons and a sigmoidal 
+transfer function. The approach achieved an ACC of 88.00%, excelling 
+in speed and generalization compared to traditional algorithms.
+4.6.2. Support vector machine for labor classification
+SVM with a radial basis function kernel was effective for labor 
+prediction in a study by Cheng et al. [61], achieving an ACC of 
+96.40%. SFS algorithm identified the optimal feature set, narrowing 
+131 extracted features to 5–11 time-, frequency-, and entropy-based 
+features. Data balancing was achieved through undersampling, and 
+novel cross-entropy and multichannel entropy features significantly 
+improved classification accuracy for labor/non-labor records.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+16 
+K. Barnova et al.
+Table 8
+Overview of the available labor/non-labor records classification algorithms.
+ Author, year
+Signal
+processing
+Feature
+engineering
+Classification
+algorithm
+Feature domain
+No. of
+features
+Data
+Data
+balancing
+Results
+ 
+ Chen et al. [134]
+BPF,
+–
+ELM
+Time
+1
+Icelandic
+–
+ACCCV = 88.00% 
+ (2017)
+HHT
+SECV = 91.30% 
+ 
+SPCV = 85.19% 
+ Cheng et al. [61]
+BPF
+SFS
+SVM
+Time, frequency,
+5-11
+55 private records
+Undersamp
+ACCCV = 96.40% 
+ 
+SECV = 88.90% 
+ (2022)
+entropy
+SPCV = 97.80% 
+ 
+AUCCV = 0.956 
+ Altini et al. [60]
+(2017)
+BPF
+–
+Random forest
+Time, frequency,
+clinical
+11
+37 private records
+–
+ACCCV = 87.00% 
+ Alamedine et al. 
+[57]
+BPF
+BPSO
+QDA
+Frequency, entropy,
+10
+Icelandic
+–
+ACCCV = 88.72% 
+ (2013)
+k-NN
+nonlinear,
+10
+ACCCV = 84.96% 
+ 
+LDA
+time–frequency
+8
+ACCCV = 83.71% 
+ Tylcz et al. [59]
+BPF,
+–
+GMM
+Time, frequency,
+5
+68 private records
+SMOTE
+ACC = 76.20% 
+ (2019)
+WT
+entropy, nonlinear
+SE = 80.70%
+ 
+ 
+SP = 76.30%
+ 
+BPF — band-pass filter, HHT — Huang–Hilbert transform, WT — wavelet transform, SFS — sequential forward selection, CV — cross-validation,
+BPSO — binary particle swarm optimization, ELM — extreme learning machine, SVM — support vector machine, k-NN — k-nearest neighbors
+QDA – quadratic discriminant analysis, , LDA – linear discriminant analysis, GMM – Gaussian mixture model, ACC – accuracy, SE – sensitivity,
+SP – specificity, AUC – area under the curve, Undersamp – undersampling, SMOTE – synthetic minority oversampling technique.
+4.6.3. Random forest for labor classification
+Altini et al. [60] demonstrated the suitability of random forest 
+for labor/non-labor classification using a wearable sensor. The study 
+evaluated various feature combinations:
+• Gestational age only: ACC = 68.00%.
+• EHG features only: ACC = 71.00%.
+• mHR features only: ACC = 71.00%.
+• EHG + mHR features: ACC = 82.00%.
+• All three (gestational age, EHG, and mHR): ACC = 87.00%.
+Longer signal segments (20 min) enabled effective pattern detection 
+of uterine contractions without manual segmentation.
+4.6.4. Quadratic discriminant analysis for labor classification
+QDA was identified as the best-performing algorithm for labor/preg-
+nancy contraction classification in a comparative study by Alame-
+dine et al. [57]. Using 10 features selected via binary PSO (BPSO), 
+QDA achieved an ACC of 88.72%, outperforming: (1) BPSO with k-NN: 
+ACC = 84.96% and (2) BPSO with LDA: ACC = 83.71%. Key features 
+included variance entropy and the eighth decile of power spectral 
+density. In a follow-up study [135], the most discriminating features 
+identified were the nonlinear correlation coefficient, sample entropy, 
+variance entropy, and the first decile of power spectral density.
+4.6.5. Gaussian mixture model for labor classification
+Tylcz et al. [59] applied GMM to classify EHG signal segments 
+as imminent labor or pregnancy. Model parameters were optimized 
+using the Bayesian information criterion. The dataset, consisting of 
+68 real records, was balanced using SMOTE [104] to address the 
+overrepresentation of pregnancy samples. Five features from the time, 
+frequency, entropy, and nonlinear domains were used, achieving an 
+ACC of 76.20%. However, false detections caused by artifacts signifi-
+cantly impacted overall accuracy, highlighting the need for improved 
+artifact removal in future studies.
+5. Summary of evidence
+This section summarizes the principal findings in the field of EHG 
+signal processing and analysis, with particular emphasis on the re-
+ported performance of classification algorithms and the signal features 
+most frequently used in the literature. In addition, a comparison of 
+the performance across different feature domains is provided, along 
+with a discussion of how selected features may reflect underlying 
+physiological or pathological phenomena. 
+5.1. Algorithms’ performance
+A comparative evaluation of the most effective computational meth-
+ods in EHG research is presented in Table 9. This table summarizes the 
+top-performing algorithms across three primary application domains: 
+uterine contraction detection, term versus preterm birth prediction, and 
+classification of labor versus non-labor records. The included methods 
+were evaluated using publicly available datasets, with ACC metrics 
+reported as presented in the original studies.
+In the domain of uterine contraction detection, both the WT-based 
+approach [4] and the CNN-based method [93] demonstrated strong 
+performance, achieving accuracy rates of 92.28% and 88.00%, re-
+spectively, on the Icelandic dataset. These results indicate that both 
+traditional signal processing techniques and deep learning models can 
+be highly effective for this task. The WT method benefits from its ca-
+pacity to extract time–frequency characteristics that are well-suited for 
+identifying the non-stationary patterns of uterine contractions. Mean-
+while, the CNN-based model leverages its ability to automatically learn 
+discriminative features directly from the data, making it a competitive 
+alternative.
+In the context of preterm birth prediction, a number of computa-
+tional methods have demonstrated high performance across different 
+EHG datasets. The results can be meaningfully grouped according to the 
+dataset used: TPEHG, TPEHGT, and a combined dataset (TPEHG + TPE-
+HGT). The TPEHG dataset has yielded the highest reported accuracies. 
+The standard SVM-based classifier presented in [115] achieved 99.74% 
+accuracy, making it the top-performing method overall. Similarly, the 
+BPF-EMD-SVM hybrid model in [112] reached an accuracy of 99.70%. 
+Additionally, the BPF, EMD, and decision tree-based approach [112] 
+also demonstrated strong results, with an accuracy of 98.70%. Us-
+ing the extended TPEHGT dataset, the hybrid Wiener filter-SOA-SNN 
+developed in [83] achieved an accuracy of 98.35%, followed by a 
+standard SVM classifier combined with a Wiener filter from the same 
+study, which reached 95.41%. When both datasets were combined, 
+the performance slightly decreased. The BPF-GA-LDA method [121] 
+achieved 89.20%, and the BPF-random forest classifier [119] reached 
+89.00%. 
+In the area of labor versus non-labor classification, two computa-
+tional methods have demonstrated comparably strong performance on 
+the Icelandic dataset. The BPF-BPSO-QDA approach [57] achieved the 
+highest accuracy of 88.72%, closely followed by the BPF-HHT-ELM 
+method [134] with an accuracy of 88.00%.
+Overall, the reviewed methods demonstrated that both classical ML 
+models and advanced hybrid or deep learning approaches can achieve 
+high accuracy across different EHG classification tasks. These find-
+ings emphasize the need for continued benchmarking on standardized 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+17 
+K. Barnova et al.
+Table 9
+Comparison of top-performing algorithms for uterine contraction detection, term/preterm classification, and labor/non-
+labor classification based on shared publicly available datasets (Icelandic, TPEHG, TPEHGT).
+ Research area
+Algorithm, source
+Dataset
+Accuracy
+ 
+ Contractions detection
+WPT-WT [4]
+Icelandic
+ACC = 92.28% 
+ Contractions detection
+BPF-CNN [93]
+Icelandic
+ACCCV = 88.00% 
+ Preterm birth prediction
+SVM [115]
+TPEHG
+ACCHO = 99.74% 
+ Preterm birth prediction
+BPF-EMD-SVM [112]
+TPEHG
+ACCCV = 99.70% 
+ Preterm birth prediction
+BPF-EMD-Decision tree [112]
+TPEHG
+ACCCV = 98.70% 
+ Preterm birth prediction
+Wiener filter-SOA-SNN [83]
+TPEHGT
+ACC = 98.35% 
+ Preterm birth prediction
+Wiener filter-SVM [83]
+TPEHGT
+ACC = 95.41% 
+ Preterm birth prediction
+BPF-GA-LDA [121]
+TPEHG+TPEHGT
+ACCCV = 89.20% 
+ Preterm birth prediction
+BPF-Random forest [119]
+TPEHG+TPEHGT
+ACCCV = 89.00% 
+ Labor classification
+BPF-BPSO-QDA [57]
+Icelandic
+ACCCV = 88.72% 
+ Labor classification
+BPF-HHT-ELM [134]
+Icelandic
+ACCCV = 88.00% 
+WPT – wavelet packet transform, WT – wavelet transform, BPF – band-pass filter, CNN – convolutional neural network,
+SVM – support vector machine, EMD – empirical mode decomposition, SOA – seagull optimization algorithm, ACC – 
+accuracy,
+SNN – Spiking neural network, GA –genetic algorithm, LDA – linear discriminant analysis, HHT – Huang–Hilbert transform,
+ELM – extreme learning machine, BPSO – binary particle swarm optimization, QDA – quadratic discriminant analysis,
+TPEHG – Term–Preterm Electrohysterogram Database, TPEHGT – Term–Preterm Electrohysterogram Dataset with 
+Tocogram,
+CV – cross-validation, HO – held-out test.
+datasets to further validate and generalize algorithmic effectiveness in 
+clinical applications. In addition to factors such as dataset and algo-
+rithm selection, the identification of significant signal features plays a 
+crucial role in determining overall classification performance.
+5.2. Significant EHG features
+Based on the reviewed literature, several categories of features have 
+proven to be significant for achieving high classification accuracy in 
+EHG-based algorithms. These features were derived from multiple do-
+mains, including time, frequency, time–frequency, entropy, nonlinear, 
+and clinical. A summary of these significant features is presented in 
+Table 10. This table provides an overview of the research areas where 
+these features have been used, listing the specific studies that presented 
+their use.
+The time domain features focused on capturing the amplitude, vari-
+ability, and temporal trends of the EHG signal. Metrics such as root 
+mean square, log detector, mean absolute value, difference absolute 
+standard deviation, and average amplitude change were fundamental 
+in classification tasks, offering essential insights into uterine activity. 
+Among all feature categories, time-domain features were the most 
+consistently used across high-performing classification models and con-
+tributed significantly to prediction accuracy. These features effectively 
+reflected the strength and duration of uterine contractions, typically 
+increasing as labor approached.
+In the frequency domain, key features such as median, mean, and 
+peak frequency were among the most influential. Frequency-domain 
+features were commonly integrated alongside time-domain metrics, 
+providing complementary information. They were associated with phys-
+iological phenomena such as the firing rate of myometrial cells and the 
+propagation speed of action potentials. Higher frequency components 
+were generally linked to term labor and effective uterine contractions, 
+whereas lower frequency components were more indicative of preterm 
+or disorganized uterine activity.
+The time–frequency domain leveraged methods such as the HHT, 
+STFT, and WT to capture both temporal and spectral characteristics 
+of the EHG signal. Although less frequently employed, these features 
+enabled detailed analyses of the temporal evolution of signal energy 
+across different frequency bands. This facilitated the detection of tran-
+sient bursts and nonstationary changes in uterine activity, offering a 
+more comprehensive representation of contraction dynamics.
+In the nonlinear domain, features were designed to capture the 
+complex, chaotic, or fractal nature of uterine electrical activity, which 
+linear methods often fail to address. Metrics such as time reversibility, 
+the Lyapunov exponent, and Katz’s fractal dimension provided valuable 
+insights, particularly for identifying irregular or unpredictable con-
+traction patterns. These features described the intrinsic dynamics of 
+uterine signals and demonstrated strong predictive power, especially 
+in detecting abnormal behaviors associated with preterm labor.
+Entropy-based features quantified the complexity and irregularity 
+of the EHG signal. Measures such as sample entropy and fuzzy en-
+tropy were particularly effective in characterizing the non-stationary 
+nature of uterine contractions. While entropy-based features rarely 
+outperformed other domains individually, they contributed meaningful 
+complementary information when combined with other feature types. 
+Higher entropy values were typically observed in early pregnancy, re-
+flecting disorganized and asynchronous uterine activity, whereas lower 
+values near term indicated more synchronized and regular contractions.
+Lastly, clinical features provided important contextual information 
+that enhanced the performance of classification models. Variables such 
+as gestational age, maternal age, parity, and history of abortions were 
+commonly included. Although used in a smaller number of studies, 
+their integration significantly improved predictive accuracy by linking 
+EHG-derived signals to specific physiological or pathological states, 
+such as preterm labor. Table 11 provides an overview of the main 
+feature domains analyzed and their physiological relevance.
+In conclusion, models that integrated features from multiple
+domains—particularly time, frequency, and nonlinear—achieved the 
+highest predictive performance. This underscores the importance of 
+multimodal feature fusion in the classification of labor and the pre-
+diction of preterm birth.
+6. Discussion
+Although many recent studies have demonstrated encouraging re-
+sults in signal extraction, uterine contractions detection, preterm birth 
+prediction, and labor classification using EHG signals, these outcomes 
+do not yet guarantee clinical readiness. Both methodological limitations 
+and key decisions regarding analysis strategies need to be addressed 
+prior to clinical or wearable deployment.
+• Segmental vs. Global EHG Analysis — While many EHG studies 
+focused on detecting and analyzing uterine contractions, an al-
+ternative approach emerged—the global (end-to-end) analysis of 
+entire EHG recordings regardless of contraction presence. This 
+method, as adopted in studies such as [103,106,108,110], relied 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+18 
+K. Barnova et al.
+Table 10
+Summary of significant features used in EHG-based classification tasks.
+ Feature
+Feature
+domain
+Contractions
+detection
+Preterm birth prediction
+Labor classification 
+ Root mean square
+Time
+✓ [46,74]
+✓ [83,102,103,109,111,112,114,118,120]
+✓ [60,61]
+ 
+ Standard deviation
+Time
+✓ [46,74]
+✓ [100]
+
+ 
+ Log detector
+Time
+✓ [46,74]
+✓ [109,111,119]
+
+ 
+ Mean absolute value
+Time
+✓ [46,74]
+✓ [109,111]
+
+ 
+ Difference absolute stand. dev.
+Time
+✓ [46,74]
+✓ [109,111]
+
+ 
+ Average amplitude change
+Time
+✓ [46,74]
+✓ [109,111]
+
+ 
+ Variance
+Time
+✓ [74]
+✓ [109,111]
+
+ 
+ Mean absolute deviation
+Time
+
+✓ [100]
+
+ 
+ Zero-crossing
+Time
+
+✓ [102,111,114]
+
+ 
+ Mean crossing rate
+Time
+
+
+✓ [60]
+ 
+ Peak-to-peak amplitude
+Time
+
+✓ [103,119,123]
+
+ 
+ Interquartile range
+Time
+
+✓ [100]
+
+ 
+ Normalized range
+Time
+
+
+✓ [60]
+ 
+ Max Hilbert amplit. of IMFs
+Time
+
+
+✓ [134]
+ 
+ Maternal HR-derived features
+Time
+
+
+✓ [60]
+ 
+ Contractions-derived
+Time
+
+✓ [119]
+
+ 
+ Detrended fluctuation analysis
+Time
+
+
+✓ [59]
+ 
+ Waveform length
+Time
+
+✓ [111]
+
+ 
+ Slope sign change
+Time
+
+✓ [111]
+
+ 
+ Time-domain energy
+Time
+
+✓ [119]
+
+ 
+ Granger causality index
+Time
+
+✓ [124]
+
+ 
+ Directionality index
+Time
+
+✓ [124]
+
+ 
+ Median frequency
+Frequency
+✓ [46,74]
+✓ [66,83,102,103,108,109,116,120]
+
+ 
+ Mean frequency
+Frequency
+
+✓ [102,103,114,120,123]
+✓ [57,59]
+ 
+ Peak frequency
+Frequency
+✓ [46,74]
+✓ [61,83,102,103,108,109,114,116,120]
+✓ [57,60,61]
+ 
+ Dominant frequency
+Frequency
+
+✓ [103,121,123]
+✓ [60]
+ 
+ High-/low-frequency ratio
+Frequency
+
+✓ [103,123]
+
+ 
+ Spectral distance metrics
+Frequency
+
+✓ [116]
+
+ 
+ Centroid frequency
+Frequency
+
+✓ [115]
+
+ 
+ Frequency-domain energy
+Frequency
+✓ [30,46,123]
+✓ [100]
+
+ 
+ Power
+Frequency
+✓ [46]
+
+✓ [60]
+ 
+ Peak power
+Frequency
+
+✓ [66,116]
+
+ 
+ Spectral deciles
+Frequency
+
+✓ [41,103,121,123]
+✓ [57]
+ 
+ Spectral moment ratio
+Frequency
+
+✓ [121,123]
+
+ 
+ Discrete cosine transform
+Frequency
+
+✓ [102]
+
+ 
+ Mean Teager-Kaiser energy
+Frequency
+
+✓ [100,112,118,123]
+
+ 
+ Linear predict. coding coeff.
+Frequency
+
+✓ [125]
+
+ 
+ STFT-derived
+Time–
+frequency
+
+✓ [110]
+
+ 
+ WT-derived
+Time–
+frequency
+
+✓ [114,118]
+✓ [57]
+ 
+ HHT-derived
+Time–
+frequency
+
+✓ [116]
+
+ 
+ Time reversibility
+Nonlinear
+✓ [46,74]
+✓ [102,103,123]
+✓ [57,61]
+ 
+ Lyapunov exponent
+Nonlinear
+✓ [46,74]
+✓ [102]
+✓ [57]
+ 
+ Correlation dimension
+Nonlinear
+
+✓ [102]
+
+ 
+ Nonlinear correlation analysis
+Nonlinear
+
+
+✓ [59]
+ 
+ Phase space reconstruction
+Nonlinear
+
+✓ [102]
+
+ 
+ Singular spectrum analysis
+Nonlinear
+
+✓ [102]
+
+ 
+ Amplit. adjus. Fourier transf.
+Nonlinear
+
+✓ [102]
+
+ 
+ Lempel–Ziv complexity
+Nonlinear
+
+✓ [103,123]
+
+ 
+ Poincaré plot metrics
+Nonlinear
+
+✓ [103,123]
+
+ 
+ 
+(continued on next page)
+on fixed-length segments (e.g., 30 min) to predict outcomes 
+like preterm birth, without requiring contraction annotation. 
+The advantages of global analysis included robustness to an-
+notation variability, reduced preprocessing complexity, and the 
+ability to capture baseline uterine excitability or long-term trends. 
+However, it risked diluting key electrophysiological signatures lo-
+calized within contractions. In contrast, segmental approaches—
+widely applied in contraction detection studies (e.g., [30,46,
+74])—targeted high-SNR periods, offering more physiologically 
+relevant and interpretable features, especially in relation to la-
+bor onset. Yet they depended on reliable contraction labeling, 
+which was often manual or TOCO-based, and may have missed 
+pathological patterns outside contractions. Both strategies have 
+unique strengths. Global analysis favors automation and broader 
+signal context, while segmental analysis yields precise, clinically-
+aligned insights. Choosing between these approaches depends 
+on the clinical goal, but integrating both may offer the most 
+comprehensive solution.
+• Real-Time Applicability – One of the most critical aspects for future 
+clinical deployment is real-time feasibility. While signal process-
+ing and classification tasks performed offline have demonstrated 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+19 
+K. Barnova et al.
+Table 10 (continued).
+ Feature
+Feature
+domain
+Contractions
+detection
+Preterm birth prediction
+Labor classification 
+ Higuchi’s fractal dimension
+Nonlinear
+
+✓ [103]
+
+ 
+ Maximum fractal length
+Nonlinear
+
+✓ [109]
+
+ 
+ Fractal dimension
+Nonlinear
+
+✓ [100]
+
+ 
+ Recurrence rate
+Nonlinear
+
+✓ [49]
+
+ 
+ Determinism
+Nonlinear
+
+✓ [49]
+
+ 
+ Laminarity
+Nonlinear
+
+✓ [49]
+
+ 
+ Katz fractal dimension
+Nonlinear
+
+✓ [118,121,123]
+
+ 
+ Hurst exponent
+Nonlinear
+
+✓ [118]
+
+ 
+ Sample entropy
+Entropy
+✓ [46,74]
+✓ [61,66,83,100,108,109,112,120,123]
+✓ [57,59,61,114] 
+ Cross sample entropy
+Entropy
+
+✓ [61]
+
+ 
+ Approximate entropy
+Entropy
+
+✓ [102,120]
+✓ [59]
+ 
+ Cross approximate entropy
+Entropy
+
+✓ [61]
+✓ [61]
+ 
+ Spectral entropy
+Entropy
+
+✓ [103,123]
+
+ 
+ Fuzzy entropy
+Entropy
+
+✓ [100,103,114,121,123]
+
+ 
+ Recurrence density entropy
+Entropy
+
+✓ [49]
+
+ 
+ Variance entropy
+Entropy
+
+
+✓ [57]
+ 
+ Permutation entropy
+Entropy
+
+✓ [114]
+
+ 
+ Dispersion entropy
+Entropy
+
+✓ [114,123]
+
+ 
+ Bubble entropy
+Entropy
+
+✓ [114,121,123]
+
+ 
+ Phase entropy
+Entropy
+
+✓ [114]
+
+ 
+ Shannon entropy
+Entropy
+
+✓ [118,119]
+
+ 
+ Maternal age
+Clinical
+
+✓ [103,108,123]
+
+ 
+ Parity
+Clinical
+
+✓ [103,108,123]
+
+ 
+ Previous abortions
+Clinical
+
+✓ [103,108,123]
+
+ 
+ Gestational age
+Clinical
+
+✓ [103,108,121,123]
+✓ [60]
+ 
+ Weight
+Clinical
+
+✓ [103,108,123]
+
+ 
+ Bleeding first trimester
+Clinical
+
+✓ [108]
+
+ 
+ Bleeding second trimester
+Clinical
+
+✓ [108]
+
+ 
+ Diabetes
+Clinical
+
+✓ [108]
+
+ 
+ Funneling
+Clinical
+
+✓ [108]
+
+ 
+ Hypertension
+Clinical
+
+✓ [108]
+
+ 
+ Placental position
+Clinical
+
+✓ [108]
+
+ 
+ Smoker
+Clinical
+
+✓ [108]
+
+ 
+IMFs – intrinsic mode functions, HR – heart rate, STFT – short-time Fourier transform, WT – wavelet transform, HHT – Huang–Hilbert transform.
+Table 11
+Mapping of EHG feature domains to their physiological interpretation.
+ Feature domain
+Example features
+Physiological interpretation
+ 
+ Time
+Root mean square,
+variance,
+mean absolute value
+Strength and duration of uterine contractions
+ 
+ Frequency
+Median frequency, 
+mean frequency, 
+peak frequency
+Myometrial firing rate and propagation speed, 
+term vs. preterm contraction patterns
+ 
+ Time–frequency
+STFT-derived,
+WT-derived, 
+HHT-derived
+Transient and nonstationary patterns of uterine 
+contractions, 
+contraction dynamics
+ 
+ Nonlinear
+Time reversibility,
+Lyapunov exponent,
+Katz’s fractal 
+dimension
+Irregularity and intrinsic dynamics of uterine activity, 
+abnormal or preterm patterns
+ 
+ Entropy
+Sample entropy, 
+fuzzy entropy, 
+approximate entropy
+Organization and synchronization of uterine activity,
+early vs. near-term pregnancy
+ 
+ Clinical
+Gestational age,
+parity,
+maternal age
+Uterine activity linked to physiological and 
+pathological states
+ 
+STFT – short-time Fourier transform, WT – wavelet transform, HHT – Huang–Hilbert transform.
+high performance, real-time evaluation remains largely unex-
+plored. Classical ML algorithms such as SVM, decision trees, and 
+random forests are generally lightweight and can be implemented 
+in real-time on embedded platforms, assuming efficient feature 
+extraction. Neural networks-based architectures, such as ANNs and 
+CNNs models, have shown superior accuracy, especially for con-
+traction detection and preterm birth prediction. Nevertheless, 
+these models typically require high computational resources and 
+are better suited to offline analysis or real-time deployment on 
+high-performance edge devices. SNNs are inherently efficient and 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+20 
+K. Barnova et al.
+well-suited for low-power, real-time signal processing, especially 
+in wearable applications. Their event-driven architecture allows 
+for asynchronous computation, which is advantageous for long-
+term, continuous monitoring. Additionally, some end-to-end time 
+series models, such TCNs, can process input sequences in par-
+allel, making them more efficient for streaming data. However, 
+real-time latency still depends on input window size.
+• Limited and Unbalanced Data Availability — Another critical limi-
+tation of current ML models is their frequent application to small 
+and imbalanced datasets. Publicly available EHG datasets typi-
+cally comprise a limited number of samples, with a marked un-
+derrepresentation of pathological cases—such as preterm births—
+relative to normal term pregnancies. This class imbalance can lead 
+to biased models that disproportionately favor the majority class, 
+thereby distorting the estimation of actual clinical risk. Several 
+studies have attempted to address this issue using various data 
+balancing strategies, including oversampling techniques such as 
+SMOTE [59,103,109,117,119–122] and ADASYN [66,100,115], 
+as well as undersampling approaches [61,116,123] to equalize 
+class distributions. However, the impact of these techniques on 
+model generalization is seldom evaluated in a standardized or 
+reproducible manner. Moreover, the risk of overfitting remains 
+high, particularly when models are trained and validated on small 
+or non-independent subsets of data, often relying solely on k-fold 
+cross-validation instead of evaluation on an independent hold-out 
+test set. Crucially, external validation—i.e., testing on completely 
+unseen data from a different population or institution—is rarely 
+performed, which significantly limits the generalizability and 
+translational potential of the proposed models.
+• Models’ Interpretability – Despite its recognized importance for 
+building clinical trust in AI systems, interpretability remains con-
+spicuously absent from current EHG-based studies. While most 
+current studies focus on maximizing classification performance, 
+only a limited number have integrated explainable artificial intel-
+ligence (XAI) techniques to elucidate decision-making processes. 
+For instance, Kuppala et al. [136] applied Shapley additive ex-
+planations (SHAP) to a GraphSAGE-based classifier for preterm 
+birth prediction. Similarly, Kang et al. [137] explored phase 
+synchronization between EHG and TOCO signals for preterm birth 
+prediction, using SHAP to interpret the contribution of individual 
+mean phase coherence features to the ML model’s predictions. 
+These initial efforts underscore the growing recognition of XAI 
+as a critical component in advancing both the transparency and 
+clinical applicability of EHG-based predictive models.
+• Challenges Hindering Clinical Translation – Despite significant
+progress in EHG signal acquisition, signal processing, and ML-
+based classification, the clinical translation of EHG into rou-
+tine obstetric care remains limited. Multiple interrelated barri-
+ers contribute to this translational gap. One of the major lim-
+itations is the absence of standardized and clinically endorsed 
+protocols for electrode placement, signal acquisition, prepro-
+cessing, and interpretation. This lack of harmonized guidelines 
+results in substantial variability across studies and hinders the 
+development of unified clinical recommendations. Consequently, 
+obstetricians often lack clear decision-making frameworks for 
+incorporating EHG data into clinical practice, leading to hes-
+itancy in adopting the technology due to concerns about di-
+agnostic responsibility and potential medicolegal consequences 
+in the absence of validated guidelines and formal training. In 
+addition, current EHG-based systems are rarely integrated with 
+existing obstetric monitoring infrastructure, making their deploy-
+ment challenging—particularly in low-resource settings, where 
+ease of use and compatibility are critical. Most algorithms are 
+also not implemented in real-time processing hardware, which 
+further limits their clinical applicability. Finally, the majority 
+of current studies rely on small, often imbalanced or synthet-
+ically augmented datasets that fail to reflect the full spectrum 
+of physiological and pathological uterine activity across diverse 
+populations and gestational stages. This severely limits both 
+model generalizability and clinical credibility. Moreover, the 
+interpretability of ML models remains inadequate for clinical 
+settings, where transparent and explainable decision-making is 
+essential to gain physician acceptance and trust.
+• Technical Challenges in Practical Deployment – Beyond these clin-
+ical and methodological barriers, further technical constraints 
+arise from computational and hardware limitations. Many current 
+models, especially deep neural networks, exceed the process-
+ing power, memory capacity, and energy budgets of embed-
+ded and portable platforms. Real-time operation under such con-
+straints demands hardware-aware optimization—such as pruning, 
+quantization, and streamlined inference—to reduce latency and 
+power consumption without degrading accuracy [138]. Algorithm 
+choice must match device capabilities: lightweight ML models are 
+viable for low-power devices, whereas deep architectures require 
+high-performance edge or cloud infrastructure. Moreover, current 
+EHG datasets do not yet meet the technical data requirements 
+for large-scale deployment—they remain small, heterogeneous, 
+and often lack standardized recording formats or consistent label-
+ing, which complicates model generalization, signal fusion, and 
+benchmarking across devices [139].
+7. Future directions
+Although recent studies have shown encouraging progress in EHG 
+signal acquisition, processing, and classification, several overarching 
+research gaps still limit the generalizability and clinical applicability 
+of current systems:
+1. Data and methodological standardization: Publicly available
+datasets remain limited in population diversity, clinical settings, 
+and obstetric risk profiles. In addition, variability in contraction 
+annotation, artifact labeling, electrode placement, and acquisi-
+tion protocols hinders reproducibility and direct comparison of 
+results.
+2. Model transparency and validation: Many high-performing mod-
+els, particularly deep learning architectures, lack interpretabil-
+ity, which limits clinician trust. External validation across in-
+dependent, diverse cohorts is also rare, reducing confidence in 
+model generalizability.
+3. Clinical and technical translation: Current systems are seldom 
+integrated into obstetric workflows or compatible with existing 
+monitoring infrastructure. Real-time feasibility and optimiza-
+tion for wearable or embedded platforms remain underexplored, 
+hindering routine clinical deployment.
+Addressing these gaps will require coordinated multicenter efforts to 
+establish standardized acquisition and validation frameworks, develop 
+interpretable and trustworthy models, and ensure practical integration 
+into clinical workflows. These priorities form the foundation for the 
+research directions outlined below.
+• Ensure Standardization – The current methodology for EHG lacks 
+uniform guidelines, particularly regarding the number and place-
+ment of sensing electrodes. Additionally, inconsistent use of test 
+records and evaluation approaches for algorithm performance 
+complicates comparisons across studies and limits clinical appli-
+cability. Standardized protocols for measurement and analysis 
+are essential to ensure consistency, facilitate clinical translation, 
+and advance EHG’s adoption into routine practice. Importantly, 
+such standardization could serve as the foundation for develop-
+ing clinically validated guidelines and formal recommendations, 
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+21 
+K. Barnova et al.
+which are currently lacking. Their absence contributes to hes-
+itancy among healthcare providers to adopt EHG, due to con-
+cerns about diagnostic responsibility and potential medicolegal 
+consequences.
+• Extend Data Collection – Despite the availability of four pub-
+licly accessible datasets, the field suffers from a lack of large-
+scale, high-quality, and well-annotated data encompassing a wide 
+range of physiological and pathological conditions across differ-
+ent stages of pregnancy and labor. Addressing these limitations 
+is crucial for robust algorithm validation. Moreover, the reliance 
+on synthetic data generated via oversampling techniques like 
+SMOTE [104] introduces potential biases and overestimation of 
+classifier performance [19,112]. Future efforts should prioritize 
+collecting diverse, balanced datasets to improve reliability. In this 
+context, multicenter prospective studies involving geographically 
+and demographically diverse populations are essential to ensure 
+generalizability and clinical relevance of developed algorithms. 
+Furthermore, federated learning frameworks [140] offer a promis-
+ing approach to enable collaborative model training across insti-
+tutions without the need for direct data sharing, thus addressing 
+both data privacy concerns and the challenge of data heterogene-
+ity. Integrating these strategies may significantly accelerate the 
+clinical translation of EHG-based diagnostic systems.
+• Deploy Multimodal Integration and Signal Fusion – Integration of 
+EHG with complementary physiological signals offers significant 
+potential for improving predictive accuracy and enabling context-
+aware pregnancy monitoring [141]. Among the most common 
+combinations are electrical signals – NI-fECG and mECG, which 
+are readily accessible from abdominal recordings along with EHG 
+component and provide concurrent information on fHR, mHR, 
+and uterine activity without requiring additional sensors [12,13] 
+Similarly, maternal respiration can be estimated from the same 
+abdominal recordings by isolating low-frequency baseline modu-
+lations (typically 0.1–1 Hz) using envelope extraction or filtering 
+techniques. Beyond cardiac and respiratory signals, additional 
+wearable modalities such as maternal oxygen saturation (SpO2), 
+body temperature, and mobility/activity monitoring can provide 
+valuable context for interpreting uterine electrical activity. For 
+example, changes in SpO2 or temperature can reflect maternal or 
+fetal stress, while accelerometry-based mobility monitoring can 
+help identify motion artifacts [142]. Optical techniques, including 
+near-infrared spectroscopy (NIRS) [143] and transabdominal fetal 
+pulse oximetry (TfPO) [144,145], can monitor placental and fetal 
+oxygenation, while acoustic modalities such as fPCG [146,147] 
+provide non-invasive access to fHR and breathing patterns. Com-
+bining these modalities with EHG requires effective signal fusion 
+strategies. Feature-level fusion combines features from each modal-
+ity prior to classification, capturing complementary physiological 
+information, whereas decision-level fusion aggregates independent 
+outputs from separate models to improve robustness against noise 
+or missing channels. However, several technical challenges must 
+be addressed: (i) synchronization of signals with different sam-
+pling rates, (ii) mitigation of cross-interference between overlap-
+ping maternal, fetal, and uterine signals, (iii) standardization of 
+heterogeneous clinical data, and (iv) computational and power 
+constraints for real-time fusion in wearable devices.
+• Include Additional Clinical Features – Feature selection plays a 
+critical role in the development of accurate classification models. 
+In the context of EHG signal analysis, features from the time, 
+frequency, entropy, and nonlinear domains have been commonly 
+employed. Moreover, the integration of clinical features has sig-
+nificantly improved classification accuracy in various studies [60,
+103,108,109,121–123]. However, these features have been un-
+derutilized. Incorporating additional obstetrical markers, such as 
+cervical length, fetal fibronectin, interleukin-6, and fibronectin 
+alpha, could further enhance predictive models [103,110]. Future 
+datasets should prioritize including these markers to improve clas-
+sification precision. Additionally, exploring other yet unexplored 
+feature domains could further advance the field and enable more 
+comprehensive predictive systems.
+• Expand Clinical Applications – As part of the efforts to expand 
+clinical applications, a particularly promising direction for future 
+research is the use of EHG in evaluating and predicting outcomes 
+related to labor induction. Several recent studies [148–150] have 
+explored EHG features as biomarkers of uterine responsiveness to 
+pharmacological or mechanical induction methods. For instance, 
+Benalcazar et al. [148] analyzed EHG signals to assess the uterine 
+response to Misoprostol and Dinoprostone using temporal, spec-
+tral, and complexity parameters. They identified signal markers 
+that were predictive of successful labor induction, particularly 
+in cases involving Misoprostol. In a subsequent study [149], 
+the same group developed ANN-based prediction systems that 
+combined EHG and obstetric features to predict induction success 
+across three clinical scenarios. Their results demonstrated that 
+EHG features selected via PSO outperformed traditional obstet-
+ric parameters and enabled early prediction of successful in-
+duction. In another study [150], a SVM-based approach with 
+majority voting aggregation was developed to predict whether 
+term pregnancies would result in spontaneous labor or require 
+late-term induction. The inclusion of obstetrical context alongside 
+EHG features significantly improved prediction accuracy. Another 
+promising direction involves intrapartum applications of EHG. 
+Beyond predicting the outcome of labor induction, EHG may also 
+be used to monitor the electrophysiological response of the uterus 
+during labor itself. This can help identify abnormal progression 
+patterns, such as labor arrest, and may enable earlier clinical 
+interventions aimed at improving maternal and fetal outcomes. 
+Taken together, these findings point to the untapped potential of 
+EHG in guiding individualized labor management.
+• Design Hardware-Aware Algorithms – For real-time clinical de-
+ployment, it is essential not only to develop computationally 
+efficient algorithms, but also to consider their compatibility with 
+target hardware platforms from the early stages of development. 
+While many high-performing models have been evaluated in of-
+fline settings using standard PCs or cloud infrastructures, their 
+translation to embedded or wearable systems imposes constraints 
+such as limited memory, reduced processing power, and en-
+ergy consumption requirements. Future research should therefore 
+focus on hardware-aware optimization strategies, including prun-
+ing, quantization, or low-power event-driven processing, which 
+can significantly reduce computational demands and enable real-
+time execution on constrained platforms. Additionally, the de-
+velopment of standardized real-time processing pipelines and 
+benchmarking tools would facilitate objective comparisons across 
+studies and platforms, thereby accelerating the clinical translation 
+of EHG-based monitoring systems.
+• Develop Automatic EHG Segmentation – Another promising area of 
+exploration is the application of deep learning for the automatic 
+segmentation and interpretation of EHG signals. Traditional anal-
+ysis methods often rely on manual or semi-automated processing, 
+which can be time-consuming, subjective, and difficult to scale 
+in clinical settings. In contrast, recent developments [151] in 
+semantic segmentation techniques enable the identification of 
+physiologically relevant EHG components—such as bursts, base-
+lines, or noise segments—directly from raw data. These models 
+can improve signal interpretability, enhance robustness against 
+artifacts, and reduce the burden on clinical staff. Ultimately, such 
+tools open the way for real-time, automated EHG monitoring 
+systems that could support clinical decision-making and remote 
+care applications.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+22 
+K. Barnova et al.
+• Enhancing Trust and Interpretability – To facilitate widespread 
+clinical adoption of AI-driven systems in obstetrics, particularly 
+those based on EHG, models must be not only accurate but also 
+interpretable and trustworthy. Simple systems based on familiar 
+guidelines are easier for clinicians to understand, while more 
+complex deep learning-based systems often lack transparency. 
+This ‘‘black box’’ nature poses significant challenges for health-
+care applications, where decisions must be explainable and defen-
+sible. To overcome this limitation, future research should focus on 
+integrating XAI techniques that provide human-understandable 
+justifications for model outputs. Moreover, large language models 
+(LLMs) should be incorporated into the clinical decision-making 
+workflow as interpretable interfaces between clinicians and com-
+plex EHG classifiers. These models should be used to generate 
+natural-language explanations of AI outputs, contextualize pre-
+dictions with clinical narratives, and assist with summarizing 
+signal patterns and risk profiles. Such approaches should enhance 
+clinical trust, transparency, and overall clinical usability.
+8. Conclusion
+This review highlighted the transformative potential of EHG as 
+a non-invasive, reliable, and clinically relevant tool for monitoring 
+uterine activity and predicting obstetric outcomes. Advances in signal 
+processing and AI/ML-based algorithms have significantly improved 
+the accuracy and efficiency of EHG in tasks such as uterine contraction 
+detection, term/preterm labor prediction, and labor/non-labor classi-
+fication. However, the lack of standardized measurement protocols, 
+limited access to large and diverse datasets, and inconsistent evaluation 
+methodologies present significant challenges.
+To fully realize the potential of EHG, future research should pri-
+oritize standardization, the creation of comprehensive datasets that 
+include diverse physiological and pathological conditions, and the 
+integration of clinical features and heart rate information derived 
+from the NI-fECG signals. The development of wearable devices and 
+telemedicine solutions could further revolutionize prenatal care, im-
+proving accessibility and comfort for pregnant women.
+By addressing these challenges, EHG has the potential to become 
+an integral part of modern obstetrics, providing critical insights into 
+maternal and fetal health while facilitating early detection and inter-
+vention in high-risk pregnancies.
+CRediT authorship contribution statement
+Katerina Barnova: Writing – review & editing, Writing – original 
+draft, Visualization, Validation, Methodology, Investigation, Formal 
+analysis, Conceptualization. Radek Martinek: Supervision, Project ad-
+ministration, Funding acquisition. Jitka Horakova: Writing – review & 
+editing, Validation. Ondrej Simetka: Writing – review & editing, Val-
+idation. Radana Vilimkova Kahankova: Writing – review & editing, 
+Writing – original draft, Visualization, Formal analysis.
+Data/code availability statement
+Not applicable.
+Declaration of competing interest
+The authors declare that they have no known competing finan-
+cial interests or personal relationships that could have appeared to 
+influence the work reported in this paper.
+Acknowledgments
+This article was co-funded by the European Union under the RE-
+FRESH – Research Excellence For Region Sustainability and High-tech 
+Industries project number CZ.10.03.01/00/22_003/0000048 via the 
+Operational Programme Just Transition. This article was supported by 
+the Ministry of Education of the Czechia (Project No. SP2025/021).
+Data availability
+Not applicable.
+References
+[1] Garfield Robert E, Maner William L. Physiology and electrical activity of uterine 
+contractions. In: Seminars in cell & developmental biology, vol. 18, Elsevier; 
+2007, p. 289–95. http://dx.doi.org/10.1016/j.semcdb.2007.05.004.
+[2] Moghaddam Tahereh Galini, Moslemizadeh Nargess, Seifollahpour Zahra, Shah-
+hosseini Zohreh, Danesh Mahmonir. Uterine contractions’ pattern in active 
+phase of labor as a predictor of failure to progress. Glob J Health Sci 
+2014;6(3):200. http://dx.doi.org/10.5539/gjhs.v6n3p200.
+[3] Cohen Wayne R. Clinical assessment of uterine contractions. Int J Gynecol Obs 
+2017;139(2):137–42. http://dx.doi.org/10.1002/ijgo.12270.
+[4] Esgalhado Filipa, Batista Arnaldo G, Mourino Helena, Russo Sara, dos Reis Cata-
+rina R Palma, Serrano Fatima, Vassilenko Valentina, Duarte Ortigueira Manuel. 
+Automatic contraction detection using uterine electromyography. Appl Sci 
+2020;10(20):7014. http://dx.doi.org/10.3390/app10207014.
+[5] Vlemminx Marion WC, Thijssen Kirsten MJ, Bajlekov Galin I, Diele-
+man Jeanne P, Van Der Hout-Van M Beatrijs, Jagt Der, Oei S Guid. 
+Electrohysterography for uterine monitoring during term labour compared 
+to external tocodynamometry and intra-uterine pressure catheter. Eur J Obs 
+Gynecol Reprod Biol 2017;215:197–205. http://dx.doi.org/10.1016/j.ejogrb.
+2017.05.027.
+[6] Bode Otto. Das elektrohysterogramm. Arch Gynakol 1931;146(1):123–8. http:
+//dx.doi.org/10.1007/BF01809524.
+[7] Steer Charles M, Hertsch George J. Electrical activity of the human uterus 
+in labor: the electrohysterograph. Am J Obs Gynecol 1950;59(1):25–40. http:
+//dx.doi.org/10.1016/0002-9378(50)90337-1.
+[8] Vlemminx Marion WC, Rabotti Chiara, van der Hout-van M Beatrijs, Oei S Guid, 
+et al. Clinical use of electrohysterography during term labor: a systematic 
+review on diagnostic value, advantages, and limitations. Obs Gynecol Surv 
+2018;73(5):303–24. http://dx.doi.org/10.1097/ogx.0000000000000560.
+[9] Thijssen Kirsten MJ, Vlemminx Marion WC, Westerhuis Michelle EMH, Diele-
+man Jeanne P, Van der Hout-Van M Beatrijs, Oei S Guid, et al. Uterine 
+monitoring techniques from patients’ and users’ perspectives. Am J Perinatol 
+Rep 2018;8(03):e184–91. http://dx.doi.org/10.1055/s-0038-1669409.
+[10] Reinhard Joscha, Hayes-Gill Barrie R, Schiermeier Sven, Hatzmann Hendrike, 
+Heinrich Tomas M, Louwen Frank. Intrapartum heart rate ambiguity: a compar-
+ison of cardiotocogram and abdominal fetal electrocardiogram with maternal 
+electrocardiogram. Gynecol Obstet Invest 2013;75(2):101–8. http://dx.doi.org/
+10.1159/000345059.
+[11] Bin Queyam Abdullah, Kumar Pahuja Sharvan, Singh Dilbag. Quantification 
+of feto-maternal heart rate from abdominal ECG signal using empirical mode 
+decomposition for heart rate variability analysis. Technologies 2017;5(4):68. 
+http://dx.doi.org/10.3390/technologies5040068.
+[12] Frenken Maria WE, Van Der Woude Daisy AA, Vullings Rik, Oei Swan G, 
+Van Laar Judith OEH. Implementation of the combined use of non-invasive 
+fetal electrocardiography and electrohysterography during labor: A prospective 
+clinical study. Acta Obs Gynecol Scand 2023;102(7):865–72. http://dx.doi.org/
+10.1111/aogs.14571.
+[13] Warmerdam GJJ, Vullings R, Van Laar JOEH, Bergmans JWM, Schmitt L, 
+Oei SG, et al. Detection rate of fetal distress using contraction-dependent 
+fetal heart rate variability analysis. Physiol Meas 2018;39(2):025008. http:
+//dx.doi.org/10.1088/1361-6579/aaa925.
+[14] Martinek Radek, Ladrova Martina, Sidikova Michaela, Jaros Rene, Behbe-
+hani Khosrow, Kahankova Radana, Kawala-Sterniuk Aleksandra. Advanced 
+bioelectrical signal processing methods: Past, present, and future approach—
+Part III: Other biosignals. Sensors 2021;21(18):6064. http://dx.doi.org/10.
+3390/s21186064.
+[15] Batista Arnaldo G, Cebola Ricardo, Esgalhado Filipa, Russo Sara, dos Reis Cata-
+rina R Palma, Serrano Fatima, Vassilenko Valentina, Ortigueira Manuel. The 
+contractiongram: A method for the visualization of uterine contraction evolution 
+using the electrohysterogram. Biomed Signal Process Control 2021;67:102531. 
+http://dx.doi.org/10.1016/j.bspc.2021.102531.
+[16] Vinken Maartje PGC, Rabotti Chiara, Mischi Massimo, Oei S Guid. Accuracy of 
+frequency-related parameters of the electrohysterogram for predicting preterm 
+delivery: a review of the literature. Obs Gynecol Surv 2009;64(8):529–41. 
+http://dx.doi.org/10.1097/OGX.0b013e3181a8c6b1.
+[17] Jossou Thierry R, Et-Tahir Aziz, Tahori Zakaria, El Ouadi Abdelmajid, Mede-
+nou Daton, Bybi Abdelmajid, Fagbemi Latif, Sbihi Mohamed, Piaggio Davide. 
+Electrodes in external electrohysterography: a systematic literature review. 
+Biophys Rev 2021;13:405–15. http://dx.doi.org/10.1007/s12551-021-00805-w.
+[18] Garcia-Casado Javier, Ye-Lin Yiyao, Prats-Boluda Gema, Mas-Cabo Javier, 
+Alberola-Rubio Jose, Perales Alfredo. Electrohysterography in the diagnosis of 
+preterm birth: a review. Physiol Meas 2018;39(2):02TR01. http://dx.doi.org/
+10.1088/1361-6579/aaad56.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+23 
+K. Barnova et al.
+[19] Xu Jinshan, Chen Zhenqin, Lou Hangxiao, Shen Guojiang, Pumir Alain. Review 
+on EHG signal analysis and its application in preterm diagnosis. Biomed 
+Signal Process Control 2022;71:103231. http://dx.doi.org/10.1016/j.bspc.2021.
+103231.
+[20] Huber Carola, Shazly Sherif A, Ruano Rodrigo. Potential use of electrohys-
+terography in obstetrics: a review article. J Maternal-Fetal Neonatal Med 
+2021;34(10):1666–72. http://dx.doi.org/10.1080/14767058.2019.1639663.
+[21] Devedeux Dominique, Marque Catherine, Mansour Souheil, Germain Guy, Duch-
+ene Jacques. Uterine electromyography: a critical review. Am J Obstet Gynecol 
+1993;169(6):1636–53. http://dx.doi.org/10.1016/0002-9378(93)90456-s.
+[22] Liu Linkun, Pu Yujian, Fan Junzhe, Yan Yu, Liu Wenpeng, Luo Kailong, 
+Wang Yiwen, Zhao Guanlin, Chen Tupei, Puiu Poenar Daniel, et al. Wearable 
+sensors, data processing, and artificial intelligence in pregnancy monitoring: a 
+review. Sensors 2024;24(19):6426. http://dx.doi.org/10.3390/s24196426.
+[23] Sousa CMMFC. Electrohysterogram signal component cataloging with spectral 
+and time-frequency methods [Master’s thesis], Lisbon, Portugal: Universidade 
+Nova de Lisboa; 2015.
+[24] Jezewski Janusz, Horoba Krzysztof, Matonia Adam, Wrobel Janusz. Quantitative 
+analysis of contraction patterns in electrical activity signal of pregnant uterus 
+as an alternative to mechanical approach. Physiol Meas 2005;26(5):753. http:
+//dx.doi.org/10.1088/0967-3334/26/5/014.
+[25] Vrhovec Jerneja, Lebar Alenka Macek. An uterine electromyographic activity 
+as a measure of labor progression. Appl EMG Clin Sport Med 2012;243–68. 
+http://dx.doi.org/10.5772/25526.
+[26] Khalil Mohamad, Duchene Jacques. Uterine EMG analysis: a dynamic ap-
+proach for change detection and classification. IEEE Trans Biomed Eng 
+2000;47(6):748–56. http://dx.doi.org/10.1109/10.844224.
+[27] Martens S. Extraction of the fetal ECG and the uterine contraction EMG from 
+simulated abdominal recordings by principal component analysis [Master’s 
+thesis], Technische Universiteit Eindhoven; 2003.
+[28] Alvarez H, Caldeyro R. Contractility of the human uterus recorded by new 
+methods. Surg Gynecol Obstet 1950;91(1):1–13.
+[29] Russo Sara, Batista Arnaldo, Esgalhado Filipa, Palma dos Reis Catarina R, 
+Serrano Fatima, Vassilenko Valentina, Ortigueira Manuel. Alvarez waves in 
+pregnancy: a comprehensive review. Biophys Rev 2021;13:563–74. http://dx.
+doi.org/10.1007/s12551-021-00818-5.
+[30] Chendeb Marwa, Khalil Mohamad, Hewson David, Duchen Jacques, et al. 
+Classification of non stationary signals using multiscale decomposition. J 
+Biomed Sci Eng 2010;3(02):193. http://dx.doi.org/10.4236/jbise.2010.32025.
+[31] Hicks JB. On the contraction of the uterus throughout pregnancy. Trans Obs 
+Soc Lond 1872;13.
+[32] Esgalhado Filipa, Batista Arnaldo G, Mourino Helena, Russo Sara, Dos Reis Cata-
+rina R Palma, Serrano Fatima, Vassilenko Valentina, Ortigueira Manuel. 
+Uterine contractions clustering based on electrohysterography. Comput Biol 
+Med 2020;123:103897. http://dx.doi.org/10.1016/j.compbiomed.2020.103897.
+[33] Batista Arnaldo G, Najdi Shirin, Godinho Daniela M, Martins Catarina, 
+Serrano Fatima C, Ortigueira Manuel D, Rato Raul T. A multichannel time–
+frequency and multi-wavelet toolbox for uterine electromyography processing 
+and visualisation. Comput Biol Med 2016;76:178–91. http://dx.doi.org/10.
+1016/j.compbiomed.2016.07.003.
+[34] Ziani Said. Enhancing fetal electrocardiogram classification: A hybrid approach 
+incorporating multimodal data fusion and advanced deep learning models. Mul-
+timedia Tools Appl 2024;83(18):55011–51. http://dx.doi.org/10.1007/s11042-
+023-17305-6.
+[35] Agostinelli Angela, Grillo Marla, Biagini Alessandra, Giuliani Corrado, Bu-
+rattini Luca, Fioretti Sandro, Di Nardo Francesco, Giannubilo Stefano R, 
+Ciavattini Andrea, Burattini Laura. Noninvasive fetal electrocardiography: an 
+overview of the signal electrophysiological meaning, recording procedures, 
+and processing techniques. Ann Noninvasive Electrocardiol 2015;20(4):303–13. 
+http://dx.doi.org/10.1111/anec.12259.
+[36] Ziani Said, M Suchetha, Rizal Achmad. Time-scale image analysis for detection 
+of fetal electrocardiogram. Multimedia Tools Appl 2024;83(13):39755–77. http:
+//dx.doi.org/10.1007/s11042-023-17165-0.
+[37] Skowronski Mark D, Harris John G, Marossero Dorothee E, Edwards Rodney K, 
+Euliano Tammy Y. Prediction of intrauterine pressure from electrohysterography 
+using optimal linear filtering. IEEE Trans Biomed Eng 2006;53(10):1983–9. 
+http://dx.doi.org/10.1109/TBME.2006.877104.
+[38] Mas-Cabo Javier, Prats-Boluda Gema, Perales Alfredo, Garcia-Casado Javier, 
+Alberola-Rubio Jose, Ye-Lin Yiyao. Uterine electromyography for discrimination 
+of labor imminence in women with threatened preterm labor under tocolytic 
+treatment. Med Biol Eng Comput 2019;57:401–11. http://dx.doi.org/10.1007/
+s11517-018-1888-y.
+[39] Euliano Tammy Y, Marossero Dorothee, Nguyen Minh Tam, Euliano Neil R, 
+Principe Jose, Edwards Rodney K. Spatiotemporal electrohysterography patterns 
+in normal and arrested labor. Am J Obstet Gynecol 2009;200(1):54–e1. http:
+//dx.doi.org/10.1016/j.ajog.2008.09.008.
+[40] Rabotti Chiara, Mischi Massimo, van Laar Judith OEH, Oei Guid S, 
+Bergmans Jan WM. Estimation of internal uterine pressure by joint ampli-
+tude and frequency analysis of electrohysterographic signals. Physiol Meas 
+2008;29(7):829. http://dx.doi.org/10.1088/0967-3334/29/7/011.
+[41] Diab Mohamad O, El-Merhie Amira, El-Halabi Nour, Khoder Layal, et al. Classi-
+fication of uterine EMG signals using supervised classification method. Biomed 
+Sci Eng 2010;3(9):837–42. http://dx.doi.org/10.4236/jbise.2010.39113.
+[42] Verdenik Ivan, Pajntar Marjan, Leskosek Brane. Uterine electrical activity 
+as predictor of preterm birth in women with preterm contractions. Eur J 
+Obs Gynecol Reprod Biol 2001;95(2):149–53. http://dx.doi.org/10.1016/s0301-
+2115(00)00418-8.
+[43] Kandil Mohamed, Emarh Mohamed, Ellakwa Hamed. Abdominal electromyog-
+raphy in laboring and non-laboring pregnant women at term and its clinical 
+implications. Arch Gynecol Obstet 2013;288:293–7. http://dx.doi.org/10.1007/
+s00404-013-2757-4.
+[44] Alberola-Rubio Jose, Prats-Boluda Gema, Ye-Lin Yiyao, Valero J, Perales A, 
+Garcia-Casado 
+J. 
+Comparison 
+of 
+non-invasive 
+electrohysterographic 
+recording techniques for monitoring uterine dynamics. Med Eng Phys 
+2013;35(12):1736–43. http://dx.doi.org/10.1016/j.medengphy.2013.07.008.
+[45] Rabotti Chiara, Mischi Massimo, Oei S Guid, Bergmans Jan WM. Noninvasive 
+estimation of the electrohysterographic action-potential conduction velocity. 
+IEEE Trans Biomed Eng 2010;57(9):2178–87. http://dx.doi.org/10.1109/TBME.
+2010.2049111.
+[46] Du Mengqing, Qiu Qian, Hao Dongmei, Zhou Xiya, Yang Lin, Liu Xiaohong. 
+Recognition of uterine contractions with electrohysterogram and exploring the 
+best electrode combination. Technol Health Care 2022;30(S1):235–42. http:
+//dx.doi.org/10.3233/THC-228022.
+[47] Horoba Krzysztof, Jezewski Janusz, Kupka Tomasz, Matonia Adam, Czaban-
+ski Robert, Roj Dawid. Electrical activity of uterus as reliable information 
+on contractions during pregnancy and labour. In: Information technologies 
+in medicine: 5th international conference, ITIB 2016 kamien slaski, Poland, 
+June 20-22, 2016 proceedings, volume 1. Springer; 2016, p. 353–66. http:
+//dx.doi.org/10.1007/978-3-319-39796-2_29.
+[48] Lemancewicz A, Borowska M, Kuc P, Jasinska E, Laudanski P, Laudanski T, 
+et al. Early diagnosis of threatened premature labor by electrohysterographic 
+recordings-the use of digital signal processing. Biocybern Biomed Eng 2015;5. 
+http://dx.doi.org/10.1016/j.bbe.2015.11.005.
+[49] Borowska Marta, Brzozowska Ewelina, Kuć Paweł, Oczeretko Edward, Mos-
+dorf Romuald, Laudański Piotr. Identification of preterm birth based on 
+RQA analysis of electrohysterograms. Comput Methods Programs Biomed 
+2018;153:227–36. http://dx.doi.org/10.1016/j.cmpb.2017.10.018.
+[50] Fele-Zorz Gasper, Kavsek Gorazd, Novak-Antolic Ziva, Jager Franc. A compar-
+ison of various linear and non-linear signal processing techniques to separate 
+uterine EMG records of term and pre-term delivery groups. Med Biol Eng 
+Comput 2008;46:911–22. http://dx.doi.org/10.1007/s11517-008-0350-y.
+[51] Vasak Blanka, Graatsma Elisabeth M, Hekman-Drost Elske, Eijkemans Mar-
+inus J, Van Leeuwen Jules H Schagen, Visser Gerard H, Jacod Benoit C. 
+Uterine electromyography for identification of first-stage labor arrest in term 
+nulliparous women with spontaneous onset of labor. Am J Obstet Gynecol 
+2013;209(3):232–e1. http://dx.doi.org/10.1016/j.ajog.2013.05.056.
+[52] Ye-Lin Yiyao, Garcia-Casado Javier, Prats-Boluda Gema, Alberola-Rubio Jose, 
+Perales Alfredo. Automatic identification of motion artifacts in EHG record-
+ing for robust analysis of uterine contractions. Comput Math Methods Med 
+2014;2014(1):470786. http://dx.doi.org/10.1155/2014/470786.
+[53] Lucovnik Miha, Kuon Ruben J, Chambliss Linda R, Maner William L, 
+Shi Shao-Qing, Shi Leili, Balducci James, Garfield Robert E. Use of uterine 
+electromyography to diagnose term and preterm labor. Acta Obs Gynecol Scand 
+2011;90(2):150–7. http://dx.doi.org/10.1111/j.1600-0412.2010.01031.x.
+[54] Hao Dongmei, An Yang, Qiao Xiangyun, Qiu Qian, Zhou Xiya, Peng Jin. 
+Development of electrohysterogram recording system for monitoring uterine 
+contraction. J Heal Eng 2019;2019(1):4230157. http://dx.doi.org/10.1155/
+2019/4230157.
+[55] Maul Holger, Maner William L, Olson Gayle, Saade George R, Garfield Robert E. 
+Non-invasive transabdominal uterine electromyography correlates with the 
+strength of intrauterine pressure and is predictive of labor and delivery. J 
+Maternal-Fetal Neonatal Med 2004;15(5):297–301. http://dx.doi.org/10.1080/
+14767050410001695301.
+[56] Hassan M, Terrien J, Karlsson B, Marque C. Application of wavelet coherence 
+to the detection of uterine electrical activity synchronization in labor. IRBM 
+2010;31(3):182–7. http://dx.doi.org/10.1016/j.irbm.2009.12.004.
+[57] Alamedine Dima, Khalil Mohamad, Marque Catherine. Comparison of different 
+EHG feature selection methods for the detection of preterm labor. Comput Math 
+Methods Med 2013;2013(1):485684. http://dx.doi.org/10.1155/2013/485684.
+[58] Alexandersson Asgeir, Steingrimsdottir Thora, Terrien Jeremy, Marque Cather-
+ine, Karlsson Brynjar. The icelandic 16-electrode electrohysterogram database. 
+Sci Data 2015;2(1):1–9. http://dx.doi.org/10.1038/sdata.2015.17.
+[59] Tylcz Jean-Baptiste, Muszynski Charles, Dauchet Josephine, Istrate Dan, Mar-
+que Catherine. An automatic method for the segmentation and classification of 
+imminent labor contraction from electrohysterograms. IEEE Trans Biomed Eng 
+2019;67(4):1133–41. http://dx.doi.org/10.1109/TBME.2019.2930618.
+[60] Altini Marco, Rossetti Elisa, Rooijakkers Michiel, Penders Julien, 
+Lanssens 
+Dorien, 
+Grieten 
+Lars, 
+Gyselaers 
+Wilfried. 
+Combining 
+electrohysterography and heart rate data to detect labour. In: 2017 IEEE 
+eMBS international conference on biomedical & health informatics. IEEE; 
+2017, p. 149–52. http://dx.doi.org/10.1109/BHI.2017.7897227.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+24 
+K. Barnova et al.
+[61] Cheng Anyi, Yao Yang, Jin Yibin, Chen Chuan, Vullings Rik, Xu Lin, Mis-
+chi Massimo. Novel multichannel entropy features and machine learning for 
+early assessment of pregnancy progression using electrohysterography. IEEE 
+Trans Biomed Eng 2022;69(12):3728–38. http://dx.doi.org/10.1109/TBME.
+2022.3176668.
+[62] Hayes-Gill Barrie R. Monica healthcare: From the research laboratory to 
+commercial reality—A real-life case study. Heal Technol Lett 2021;8(1):1–10. 
+http://dx.doi.org/10.1049/htl2.12004.
+[63] Mhajna Muhammad, Schwartz Nadav, Levit-Rosen Lorinne, Warsof Steven, 
+Lipschuetz Michal, Jakobs Martin, Rychik Jack, Sohn Christof, Yagel Simcha. 
+Wireless, remote solution for home fetal and maternal heart rate monitoring. 
+Am J Obs Gynecol 2020;2(2):100101. http://dx.doi.org/10.1016/j.ajogmf.2020.
+100101.
+[64] Li Hao, Liu Liheng, Zhao Jun, Li Zhuo, Liu Ming, Li Tingting, Zhang Jiarong, 
+Hong Zhiliang, Xu Jiawei. FetalCare: A home telemonitoring system for wear-
+able fetal-ECG and EHG acquisition during pregnancy. IEEE Sensors J 2024. 
+http://dx.doi.org/10.1109/JSEN.2024.3374332.
+[65] Mischi Massimo, Chen Chuan, Ignatenko Tanya, de Lau Hinke, Ding Beijing, 
+Oei SG Guid, Rabotti Chiara. Dedicated entropy measures for early assess-
+ment of pregnancy progression from single-channel electrohysterography. IEEE 
+Trans Biomed Eng 2017;65(4):875–84. http://dx.doi.org/10.1109/TBME.2017.
+2723933.
+[66] Jager Franc, Libensek Sonja, Gersak Ksenija. Characterization and au-
+tomatic classification of preterm and term uterine records. PLoS One 
+2018;13(8):e0202125. http://dx.doi.org/10.1371/journal.pone.0202125.
+[67] Jager Franc. An open dataset with electrohysterogram records of pregnancies 
+ending in induced and cesarean section delivery. Sci Data 2023;10(1):669. 
+http://dx.doi.org/10.1038/s41597-023-02581-6.
+[68] Martinez M, Calpe J, Soria E, Guerrero JF, Camps G, Gomez L. Methods to 
+evaluate the performance of fetal electrocardiogram extraction algorithms. In: 
+Computers in cardiology 2001. vol. 28 (cat. no. 01CH37287). IEEE; 2001, p. 
+253–6. http://dx.doi.org/10.1109/CIC.2001.977640.
+[69] Taralunga Dragos Daniel, Ungureanu Mihaela, Hurezeanu Bogdan, Gussi Ilinca, 
+Strungaru Rodica. Empirical mode decomposition applied for non-invasive 
+electrohysterograhic signals denoising. In: 2015 37th annual international 
+conference of the IEEE engineering in medicine and biology society. IEEE; 2015, 
+p. 4134–7. http://dx.doi.org/10.1109/EMBC.2015.7319304.
+[70] Tait Kathryn-Ann, Khan Jan Sher, Alqahtani Fehaid, Shah Awais Aziz, Khan Fa-
+dia Ali, Rehman Mujeeb Ur, Boulila Wadii, Ahmad Jawad. Intrusion detection 
+using machine learning techniques: an experimental comparison. In: 2021 
+international congress of advanced technology and engineering. IEEE; 2021, 
+p. 1–10. http://dx.doi.org/10.48550/arXiv.2105.13435.
+[71] Barnova Katerina, Martinek Radek, Jaros Rene, Kahankova Radana, Behbe-
+hani Khosrow, Snasel Vaclav. System for adaptive extraction of non-invasive 
+fetal electrocardiogram. Appl Soft Comput 2021;113:107940. http://dx.doi.org/
+10.1016/j.asoc.2021.107940.
+[72] Carrington Andre M, Manuel Douglas G, Fieguth Paul W, Ramsay Tim, Os-
+mani Venet, Wernly Bernhard, Bennett Carol, Hawken Steven, Magwood Olivia, 
+Sheikh Yusuf, et al. Deep ROC analysis and AUC as balanced average accuracy, 
+for improved classifier selection, audit and explanation. IEEE Trans Pattern 
+Anal Mach Intell 2022;45(1):329–41. http://dx.doi.org/10.1109/TPAMI.2022.
+3145392.
+[73] Batool Fatima, Hennig Christian. Clustering with the average silhouette width. 
+Comput Statist Data Anal 2021;158:107190. http://dx.doi.org/10.1016/j.csda.
+2021.107190.
+[74] Hao Dongmei, Qiu Qian, Zhou Xiya, An Yang, Peng Jin, Yang Lin, 
+Zheng Dingchang. Application of decision tree in determining the importance 
+of surface electrohysterography signal characteristics for recognizing uterine 
+contractions. Biocybern Biomed Eng 2019;39(3):806–13. http://dx.doi.org/10.
+1016/j.bbe.2019.06.008.
+[75] Song Xiaoxiao, Qiao Xiangyun, Hao Dongmei, Yang Lin, Zhou Xiya, Xu Yuhang, 
+Zheng Dingchang. Automatic recognition of uterine contractions with electro-
+hysterogram signals based on the zero-crossing rate. Sci Rep 2021;11(1):1956. 
+http://dx.doi.org/10.1038/s41598-021-81492-1.
+[76] Shen Junhua, Liu Yan, Zhang Meiyu, Pumir Alain, Mu Liangshan, Li Baohua, 
+Xu Jinshan. Multi-channel electrohysterography enabled uterine contraction 
+characterization and its effect in delivery assessment. Comput Biol Med 
+2023;167:107697. http://dx.doi.org/10.1016/j.compbiomed.2023.107697.
+[77] Shulgin Vyacheslav, Shepel Olga. Electrohysterographic signals processing for 
+uterine activity detection and characterization. In: 2014 IEEE 34th international 
+scientific conference on electronics and nanotechnology. IEEE; 2014, p. 269–72. 
+http://dx.doi.org/10.1109/ELNANO.2014.6873918.
+[78] Parameshwari R, Devi S Shenbaga. Acquisition and analysis of electrohystero-
+gram signal. J Med Syst 2020;44(3). http://dx.doi.org/10.1007/s10916-020-
+1523-y.
+[79] Muszynski C, Happillon T, Azudin K, Tylcz J-B, Istrate D, Marque C. Auto-
+mated electrohysterographic detection of uterine contractions for monitoring of 
+pregnancy: feasibility and prospects. BMC Pregnancy Childbirth 2018;18:1–8. 
+http://dx.doi.org/10.1186/s12884-018-1778-1.
+[80] Mas-Cabo Javier, Ye-Lin Yiyao, Garcia-Casado Javier, Alberola-Rubio Jose, 
+Perales Alfredo, Prats-Boluda Gema. Uterine contractile efficiency indexes for 
+labor prediction: A bivariate approach from multichannel electrohysterographic 
+records. Biomed Signal Process Control 2018;46:238–48. http://dx.doi.org/10.
+1016/j.bspc.2018.07.018.
+[81] Garcia-Gonzalez Maria-Teresa, Charleston-Villalobos Sonia, Vargas-Garcia C, 
+Gonzalez-Camarena Ramon, Aljama-Corrales Tomas. Characterization of EHG 
+contractions at term labor by nonlinear analysis. In: 2013 35th annual inter-
+national conference of the IEEE engineering in medicine and biology society. 
+IEEE; 2013, p. 7432–5. http://dx.doi.org/10.1109/EMBC.2013.6611276.
+[82] Zhang Yajun, Hao Dongmei, Yang Lin, Zhou Xiya, Ye-Lin Yiyao, Yang Yimin. 
+Assessment of features between multichannel electrohysterogram for dif-
+ferentiation of labors. Sensors 2022;22(9):3352. http://dx.doi.org/10.3390/
+s22093352.
+[83] Veena A, Gowrishankar S. An automated pre-term prediction system using 
+EHG signal with the aid of deep learning technique. Multimedia Tools Appl 
+2024;83(2):4093–113. http://dx.doi.org/10.1007/s11042-023-15665-7.
+[84] Mallat Stephane. A wavelet tour of signal processing. Academic Press; 1999, 
+http://dx.doi.org/10.1016/B978-0-12-374370-1.X0001-8.
+[85] Limem Manel, Hamdi Mohamed Ali. Uterine electromyography signals denois-
+ing using discrete wavelet transform. In: 2015 international conference on 
+advances in biomedical engineering. IEEE; 2015, p. 101–3. http://dx.doi.org/
+10.1109/ICABME.2015.7323261.
+[86] Terrien Jeremy, Marque Catherine, Gondry Jean, Steingrimsdottir Thora, 
+Karlsson Brynjar. Uterine electromyogram database and processing func-
+tion interface: An open standard analysis platform for electrohysterogram 
+signals. Comput Biol Med 2010;40(2):223–30. http://dx.doi.org/10.1016/j.
+compbiomed.2009.11.019.
+[87] Norden E Huang, Zheng Shen, Steven R Long, Manli C Wu, Hsing H Shih, 
+Quanan Zheng, Nai-Chyuan Yen, Chi Chao Tung, Henry H Liu. The empirical 
+mode decomposition and the Hilbert spectrum for nonlinear and non-stationary 
+time series analysis. Proc R Soc Lond 1998;454(1971):903–95. http://dx.doi.
+org/10.1098/rspa.1998.0193.
+[88] Hassan Mahmoud, Boudaoud Sofiane, Terrien Jeremy, Karlsson Brynjar, Mar-
+que Catherine. Combination of canonical correlation analysis and empirical 
+mode decomposition applied to denoising the labor electrohysterogram. IEEE 
+Trans Biomed Eng 2011;58(9):2441–7. http://dx.doi.org/10.1109/TBME.2011.
+2151861.
+[89] Chkeir Aly, Marque C, Terrien J, Karlsson B. Denoising electrohysterogram via 
+empirical mode decomposition. In: PSSNIP biosig. and biorobot. conf. 2010, p. 
+32–5.
+[90] Wang Sheng, Lu Jianfeng, Gu Xingjian, Du Haishun, Yang Jingyu. Semi-
+supervised linear discriminant analysis for dimension reduction and classifi-
+cation. Pattern Recognit 2016;57:179–89. http://dx.doi.org/10.1016/j.patcog.
+2016.02.019.
+[91] Chen Zhenqin, Wang Mengying, Zhang Meiyu, Huang Wei, Feng Yan, Xu Jin-
+shan. Automatic detection and characterization of uterine contraction using 
+electrohysterography. Biomed Signal Process Control 2024;90:105840. http:
+//dx.doi.org/10.1016/j.bspc.2023.105840.
+[92] Sharkawy Abdel-Nasser. Principle of neural network and its main types. J Adv 
+Appl Comput Math 2020;7:8–19. http://dx.doi.org/10.15377/2409-5761.2020.
+07.2.
+[93] Peng Jin, Hao Dongmei, Liu Haipeng, Liu Juntao, Zhou Xiya, Zheng Dingchang. 
+Preliminary study on the efficient electrohysterogram segments for recognizing 
+uterine contractions with convolutional neural networks. BioMed Res Int 
+2019;2019(1):3168541. http://dx.doi.org/10.1155/2019/3168541.
+[94] Hao Dongmei, Peng Jin, Wang Ying, Liu Juntao, Zhou Xiya, Zheng Dingchang. 
+Evaluation of convolutional neural network for recognizing uterine contractions 
+with electrohysterogram. Comput Biol Med 2019;113:103394. http://dx.doi.
+org/10.1016/j.compbiomed.2019.103394.
+[95] Dhillon Anamika, Verma Gyanendra K. Convolutional neural network: a review 
+of models, methodologies and applications to object detection. Prog Artif Intell 
+2020;9(2):85–112. http://dx.doi.org/10.1007/s13748-019-00203-0.
+[96] Salcedo-Sanz Sancho, Rojo-Alvarez Jose Luis, Martinez-Ramon Manel, Camps-
+Valls Gustavo. Support vector machines in engineering: an overview. Wiley 
+Interdiscip Rev: Data Min Knowl Discov 2014;4(3):234–67. http://dx.doi.org/
+10.1002/widm.1125.
+[97] Maimon Oded Z, Rokach Lior. Data mining with decision trees: theory and 
+applications, vol. 81, World Scientific; 2014, http://dx.doi.org/10.1142/9097.
+[98] Nielsen Frank, Nielsen Frank. Hierarchical clustering. Introd HPC MPI Data Sci 
+2016;195–211. http://dx.doi.org/10.1007/978-3-319-21903-5_8.
+[99] Pirnar Ziga, Jager Franc, Gersak Ksenija. Characterization and separation of 
+preterm and term spontaneous, induced, and cesarean EHG records. Com-
+put Biol Med 2022;151:106238. http://dx.doi.org/10.1016/j.compbiomed.2022.
+106238.
+[100] Acharya U Rajendra, Sudarshan Vidya K, Rong Soon Qing, Tan Zechariah, 
+Lim Choo Min, Koh Joel EW, Nayak Sujatha, Bhandary Sulatha V. Automated 
+detection of premature delivery using empirical mode and wavelet packet 
+decomposition techniques with uterine electromyogram signals. Comput Biol 
+Med 2017;85:33–42. http://dx.doi.org/10.1016/j.compbiomed.2017.04.013.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+25 
+K. Barnova et al.
+[101] Ertel Wolfgang. Introduction to artificial intelligence. Springer; 2018, http:
+//dx.doi.org/10.1007/978-3-658-43102-0.
+[102] Naeem Safaa M, Seddik Ahmed F, Eldosoky Mohamed A. New technique based 
+on uterine electromyography nonlinearity for preterm delivery detection. J Eng 
+Technol Res 2014;6(7):107–14. http://dx.doi.org/10.5897/JETR2013.0332.
+[103] Mas-Cabo Javier, Prats-Boluda Gema, Garcia-Casado Javier, Alberola-
+Rubio Jose, Perales Alfredo, Ye-Lin Yiyao. Design and assessment of a 
+robust and generalizable ANN-based classifier for the prediction of premature 
+birth by means of multichannel electrohysterographic records. J Sensors 
+2019;2019(1):5373810. http://dx.doi.org/10.1155/2019/5373810.
+[104] Chawla Nitesh V, Bowyer Kevin W, Hall Lawrence O, Kegelmeyer W Philip. 
+SMOTE: synthetic minority over-sampling technique. J Artificial Intelligence 
+Res 2002;16:321–57. http://dx.doi.org/10.1613/jair.953.
+[105] Gerstner Wulfram, Kistler Werner M. Spiking neuron models: single neurons, 
+populations, plasticity. Cambridge University Press; 2002, http://dx.doi.org/10.
+1017/CBO9780511815706.
+[106] Deng Yanjun, Zhang Yefei, Wu Shenguan, Shao Lihuan, Zhang Xiaohong. EHG-
+based preterm delivery prediction algorithm driven by transfer learning. In: 
+Computer methods in medicine and health care. IOS Press; 2021, p. 61–70. 
+http://dx.doi.org/10.3233/ATDE210243.
+[107] Lea Colin, Flynn Michael D, Vidal Rene, Reiter Austin, Hager Gregory D. 
+Temporal convolutional networks for action segmentation and detection. In: 
+Proceedings of the IEEE conference on computer vision and pattern recognition. 
+2017, p. 156–65. http://dx.doi.org/10.1109/CVPR.2017.113.
+[108] Fischer Anne M, Rietveld AL, Teunissen PW, Bakker PCAM, Hoogendoorn Mark. 
+End-to-end learning with interpretation on electrohysterography data to predict 
+preterm birth. Comput Biol Med 2023;158:106846. http://dx.doi.org/10.1016/
+j.compbiomed.2023.106846.
+[109] Fergus Paul, Idowu Ibrahim, Hussain Abir, Dobbins Chelsea. Advanced artificial 
+neural network classification for detecting preterm births using EHG records. 
+Neurocomputing 2016;188:42–9. http://dx.doi.org/10.1016/j.neucom.2015.01.
+107.
+[110] Goldsztejn Uri, Nehorai Arye. Predicting preterm births from electrohysterogram 
+recordings via deep learning. PLoS One 2023;18(5):e0285219. http://dx.doi.
+org/10.1371/journal.pone.0285219.
+[111] Janjarasjitt Suparerk. Comparison of wavelet-based decomposition and em-
+pirical mode decomposition of electrohysterogram signals for preterm birth 
+classification. ETRI J 2022;44(5):826–36. http://dx.doi.org/10.4218/etrij.2021-
+0220.
+[112] Mohammadi Far Somayeh, Beiramvand Matin, Shahbakhti Mohammad, Au-
+gustyniak Piotr. Prediction of preterm delivery from unbalanced EHG database. 
+Sensors 2022;22(4):1507. http://dx.doi.org/10.3390/s22041507.
+[113] Xu Jinshan, Wang Mengting, Zhang Jinpeng, Chen Zhenqin, Huang Wei, 
+Shen Guojiang, Zhang Meiyu. Network theory based EHG signal analysis 
+and its application in preterm prediction. IEEE J Biomed Health Inform 
+2022;26(7):2876–87. http://dx.doi.org/10.1109/JBHI.2022.3140427.
+[114] Romero-Morales Hector, Munoz-Montes de Oca Jenny Noemi, Mora-
+Martinez Rodrigo, Mina-Paz Yecid, Reyes-Lagos Jose Javier. Enhancing 
+classification of preterm-term birth using continuous wavelet transform 
+and entropy-based methods of electrohysterogram signals. Front Endocrinol 
+2023;13:1035615. http://dx.doi.org/10.3389/fendo.2022.1035615.
+[115] Degbedzui Derek Kweku, Yuksel Mehmet Emin. Accurate diagnosis of term–
+preterm births by spectral analysis of electrohysterography signals. Comput Biol 
+Med 2020;119:103677. http://dx.doi.org/10.1016/j.compbiomed.2020.103677.
+[116] Sadi-Ahmed Nafissa, Kacha Baya, Taleb Hamza, Kedir-Talha Malika. Relevant 
+features selection for automatic prediction of preterm deliveries from pregnancy 
+electrohysterograhic (EHG) records. J Med Syst 2017;41:1–13. http://dx.doi.
+org/10.1007/s10916-017-0847-8.
+[117] Ren Peng, Yao Shuxia, Li Jingxuan, Valdes-Sosa Pedro A, Kendrick Keith M. 
+Improved prediction of preterm delivery using empirical mode decomposition 
+analysis of uterine electromyography signals. PLoS One 2015;10(7):e0132116. 
+http://dx.doi.org/10.1371/journal.pone.0132116.
+[118] Mohammadi Far Somayeh, Beiramvand Matin, Shahbakhti Mohammad, Au-
+gustyniak Piotr. Prediction of preterm labor from the electrohysterogram signals 
+based on different gestational weeks. Sensors 2023;23(13):5965. http://dx.doi.
+org/10.3390/s23135965.
+[119] Chowdhury Rubana Hoque, Hossain Quazi Delwar, Ahmad Mohiuddin. Auto-
+mated method for uterine contraction extraction and classification of term vs. 
+pre-term EHG signals. IEEE Access 2024. http://dx.doi.org/10.1109/ACCESS.
+2024.3384258.
+[120] You Jiwoo, Kim Youngjoo, Seok Woojoon, Lee Seungmin, Sim Donggyu, 
+Park Kwang Suk, Park Cheolsoo. Multivariate time–frequency analysis of 
+electrohysterogram for classification of term and preterm labor. J Electr Eng 
+Technol 2019;14:897–916. http://dx.doi.org/10.1007/s42835-019-00118-9.
+[121] Nieto-del Amor Felix, Beskhani Raja, Ye-Lin Yiyao, Garcia-Casado Javier, Diaz-
+Martinez Alba, Monfort-Ortiz Rogelio, Diago-Almela Vicente Jose, Hao Dong-
+mei, Prats-Boluda Gema. Assessment of dispersion and bubble entropy measures 
+for enhancing preterm birth prediction based on electrohysterographic signals. 
+Sensors 2021;21(18):6071. http://dx.doi.org/10.3390/s21186071.
+[122] Nieto-del Amor Felix, Prats-Boluda Gema, Martinez-De-Juan Jose Luis, Diaz-
+Martinez Alba, Monfort-Ortiz Rogelio, Diago-Almela Vicente Jose, Ye-Lin Yiyao. 
+Optimized feature subset selection using genetic algorithm for preterm labor 
+prediction based on electrohysterography. Sensors 2021;21(10):3350. http://
+dx.doi.org/10.3390/s21103350.
+[123] Nieto-del Amor Felix, Prats-Boluda Gema, Garcia-Casado Javier, Diaz-
+Martinez Alba, Diago-Almela Vicente Jose, Monfort-Ortiz Rogelio, Hao Dong-
+mei, Ye-Lin Yiyao. Combination of feature selection and resampling methods 
+to predict preterm birth based on electrohysterographic signals from imbalance 
+data. Sensors 2022;22(14):5098. http://dx.doi.org/10.3390/s22145098.
+[124] Saleem Saqib, Saeed Ahmed, Usman Shabnam, Ferzund Javed, Arshad Jahangir, 
+Mirza Jawad, Manzoor Tareq. Granger causal analysis of electrohysterographic 
+and tocographic recordings for classification of term vs. preterm births. Bio-
+cybern Biomed Eng 2020;40(1):454–67. http://dx.doi.org/10.1016/j.bbe.2020.
+01.007.
+[125] Shahrdad Mehdi, Amirani Mehdi Chehel. Detection of preterm labor by 
+partitioning and clustering the EHG signal. Biomed Signal Process Control 
+2018;45:109–16. http://dx.doi.org/10.1016/j.bspc.2018.05.044.
+[126] Wu Yue, Wang Hui, Zhang Biaobiao, Du K-L. Using radial basis function 
+networks for function approximation and classification. Int Sch Res Not 
+2012;2012(1):324194. http://dx.doi.org/10.5402/2012/324194.
+[127] Bhattacharyya Siddhartha. Neural networks: evolution, topologies, learning 
+algorithms and applications. In: Cross-disciplinary applications of artificial 
+intelligence and pattern recognition: advancing technologies. IGI Global; 2012, 
+p. 450–98. http://dx.doi.org/10.4018/978-1-61350-429-1.ch024.
+[128] Freund Yoav, Schapire Robert E. A decision-theoretic generalization of 
+on-line learning and an application to boosting. J Comput System Sci 
+1997;55(1):119–39. http://dx.doi.org/10.1006/jcss.1997.1504.
+[129] Gu Xiaowei, Angelov Plamen P, Soares Eduardo A. A self-adaptive syn-
+thetic over-sampling technique for imbalanced classification. Int J Intell Syst 
+2020;35(6):923–43. http://dx.doi.org/10.1002/int.22230.
+[130] Breiman Leo. Random forests. Mach Learn 2001;45:5–32. http://dx.doi.org/10.
+1023/A:1010933404324.
+[131] Wan Huan, Wang Hui, Scotney Bryan, Liu Jun. A novel Gaussian mixture model 
+for classification. In: 2019 IEEE international conference on systems, man and 
+cybernetics. IEEE; 2019, p. 3298–303. http://dx.doi.org/10.1109/SMC.2019.
+8914215.
+[132] Hassan Malunoud, Terrien Jeremy, Muszynski Charles, Alexandersson As-
+geir, Marque Catherine, Karlsson Brynjar. Better pregnancy monitoring using 
+nonlinear correlation analysis of external uterine electromyography. IEEE 
+Trans Biomed Eng 2012;60(4):1160–6. http://dx.doi.org/10.1109/TBME.2012.
+2229279.
+[133] Ding Shifei, Zhao Han, Zhang Yanan, Xu Xinzheng, Nie Ru. Extreme learning 
+machine: algorithm, theory and applications. Artif Intell Rev 2015;44:103–15. 
+http://dx.doi.org/10.1007/s10462-013-9405-z.
+[134] Chen Lili, Hao Yaru. Feature extraction and classification of EHG between 
+pregnancy and labour group using Hilbert-huang transform and extreme learn-
+ing machine. Comput Math Methods Med 2017;2017(1):7949507. http://dx.doi.
+org/10.1155/2017/7949507.
+[135] Alamedine Dima, Diab Ahmad, Muszynski Charles, Karlsson Brynjar, Khalil Mo-
+hamad, Marque Catherine. Selection algorithm for parameters to characterize 
+uterine EHG signals for the detection of preterm labor. Signal Image Video 
+Process 2014;8:1169–78. http://dx.doi.org/10.1007/s11760-014-0655-2.
+[136] Kuppala Nandini, Monish Gv, Nivedha V, Pinnenti Balu, Amrutha V. Preterm 
+birth prediction using graphsage and electrohysterogram data. In: 2025 eleventh 
+international conference on bio signals, images, and instrumentation. IEEE; 
+2025, p. 1–9. http://dx.doi.org/10.1109/ICBSII65145.2025.11013392.
+[137] Kang Jae-Hwan, Jeon Young-Ju, Lee In-Seon, Kim Junsuk. Characteristics 
+of phase synchronization in electrohysterography and tocodynamometry for 
+preterm birth prediction. Heliyon 2024;10(22). http://dx.doi.org/10.1016/j.
+heliyon.2024.e40433.
+[138] Hawks Benjamin, Duarte Javier, Fraser Nicholas J, Pappalardo Alessandro, 
+Tran Nhan, Umuroglu Yaman. Ps and qs: Quantization-aware pruning for 
+efficient low latency neural network inference. Front Artif Intell 2021;4:676564. 
+http://dx.doi.org/10.3389/frai.2021.676564.
+[139] Arora Anmol, Alderman Joseph E, Palmer Joanne, Ganapathi Shaswath, 
+Laws Elinor, Mccradden Melissa D, Oakden-Rayner Lauren, Pfohl Stephen R, 
+Ghassemi Marzyeh, Mckay Francis, et al. The value of standards for 
+health datasets in artificial intelligence-based applications. Nature Med 
+2023;29(11):2929–38. http://dx.doi.org/10.1038/s41591-023-02608-w.
+[140] Li Qinbin, Wen Zeyi, Wu Zhaomin, Hu Sixu, Wang Naibo, Li Yuan, 
+Liu Xu, He Bingsheng. A survey on federated learning systems: Vision, hype 
+and reality for data privacy and protection. IEEE Trans Knowl Data Eng 
+2021;35(4):3347–66. http://dx.doi.org/10.1109/TKDE.2021.3124599.
+[141] Ng Li Mun, Jumadi Nur Anida, Ali Junaid. Non-invasive fetal well-being 
+monitoring based signals approaches: A mini review. J Adv Res Appl Sci Eng 
+Technol 2024;63(1):164–76. http://dx.doi.org/10.37934/araset.63.1.164176.
+[142] Park Young-Geun, Lee Sangil, Park Jang-Ung. Recent progress in wireless 
+sensors for wearable electronics. Sensors 2019;19(20):4353. http://dx.doi.org/
+10.3390/s19204353.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+26 
+K. Barnova et al.
+[143] Razem Katja, Kocijan Jus, Podbregar Matej, Lucovnik Miha. Near-infrared spec-
+troscopy of the placenta for monitoring fetal oxygenation during labour. PLoS 
+One 2020;15(4):e0231461. http://dx.doi.org/10.1371/journal.pone.0233830.
+[144] Fong Daniel D, Srinivasan Vivek J, Vali Kourosh, Ghiasi Soheil. Optode design 
+space exploration for clinically-robust non-invasive fetal oximetry. In: ACM 
+transactions on embedded computing systems, vol. 18, 2019, p. 1–22. http:
+//dx.doi.org/10.1145/3358207.
+[145] Fong Daniel D, Vali Kourosh, Ghiasi Soheil. Contextually-aware fetal sensing 
+in transabdominal fetal pulse oximetry. In: 2020 ACM/IEEE 11th international 
+conference on cyber-physical systems. IEEE; 2020, p. 119–28. http://dx.doi.org/
+10.1109/ICCPS48487.2020.00019.
+[146] Mhajna Muhammad, Schwartz Nadav, Levit-Rosen Lorinne, Warsof Steven, 
+Lipschuetz Michal, Jakobs Martin, Rychik Jack, Sohn Christof, Yagel Simcha. 
+Wireless, remote solution for home fetal and maternal heart rate monitoring. 
+Am J Obs Gynecol MFM 2020;2(2):100101. http://dx.doi.org/10.1016/j.ajogmf.
+2020.100101.
+[147] Kovacs Ferenc, Goda Marton Aron, Hosszu Gabor, Telek Tamas. A proposed 
+phonography-based measurement of fetal breathing movement using segmented 
+structures with frequency splitting. In: 2020 42nd annual international confer-
+ence of the IEEE engineering in medicine & biology society. IEEE; 2020, p. 
+4483–6. http://dx.doi.org/10.1109/EMBC44109.2020.9175477.
+[148] Benalcazar-Parra Carlos, Ye-Lin Yiyao, Garcia-Casado Javier, Monfort-Orti Ro-
+gelio, Alberola-Rubio Jose, Perales Alfredo, Prats-Boluda Gema. Electrohystero-
+graphic characterization of the uterine myoelectrical response to labor induction 
+drugs. Med Eng Phys 2018;56:27–35. http://dx.doi.org/10.1016/j.medengphy.
+2018.04.002.
+[149] Benalcazar-Parra Carlos, Ye-Lin Yiyao, Garcia-Casado Javier, Monfort-Ortiz Ro-
+gelio, Alberola-Rubio Jose, Perales Alfredo, Prats-Boluda Gema. Prediction 
+of labor induction success from the uterine electrohysterogram. J Sensors 
+2019;2019(1):6916251. http://dx.doi.org/10.1155/2019/6916251.
+[150] Alberola-Rubio Jose, Garcia-Casado Javier, Prats-Boluda Gema, Ye-Lin Yiyao, 
+Desantes Domingo, Valero Javier, Perales Alfredo. Prediction of labor onset 
+type: Spontaneous vs induced; role of electrohysterography? Comput Methods 
+Programs Biomed 2017;144:127–33. http://dx.doi.org/10.1016/j.cmpb.2017.
+03.018.
+[151] Nieto-del Amor Felix, Ye-Lin Yiyao, Monfort-Ortiz Rogelio, Diago-Almela Vi-
+cente Jose, Modrego-Pardo Fernando, Martinez-de Juan Jose L, Hao Dongmei, 
+Prats-Boluda Gema. Automatic semantic segmentation of EHG recordings by 
+deep learning: An approach to a screening tool for use in clinical practice. 
+Comput Methods Programs Biomed 2024;254:108317. http://dx.doi.org/10.
+1016/j.cmpb.2024.108317.
+Artiϧcial Intelligence In Medicine 171 (2026) 103303 
+27 

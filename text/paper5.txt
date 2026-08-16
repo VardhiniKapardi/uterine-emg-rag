@@ -1,0 +1,1139 @@
+http://www.aimspress.com/journal/MBE
+MBE, 17(4): 3019–3039
+DOI: 10.3934/mbe.2020171
+Received: 31 May 2019
+Accepted: 06 November 2019
+Published: 01 April 2020
+Research article
+Critical analysis of electrohysterographic methods for continuous
+monitoring of intrauterine pressure
+M. J. Rooijakkers1,∗, C. Rabotti2, S. G. Oei3 and M. Mischi2
+1 Bloomlife, Schiepse Bos 6, Genk 3600, Belgium
+2 Signal Processing Systems, University of Technology Eindhoven, Eindhoven 5612 AZ, Netherlands
+3 Perinatology and Obstetrics department, M´axima Medical Center, Veldhoven 5504 DB, Netherlands
+* Correspondence: Tel: +31-6-37337678; Email: michiel@bloomlife.com.
+Abstract: Monitoring the progression of uterine activity provides important prognostic information
+during pregnancy and delivery. Currently, uterine activity monitoring relies on direct or indirect me-
+chanical measurements of intrauterine pressure (IUP), which are unsuitable for continuous long-term
+observation. The electrohysterogram (EHG) provides a non-invasive alternative to the existing meth-
+ods and is suitable for long-term ambulatory use. Several published state-of-the-art methods for EHG-
+based IUP estimation are here discussed, analyzed, optimized, and compared. By means of parameter
+space exploration, key parameters of the methods are evaluated for their relevance and optimal val-
+ues. We have optimized all methods towards higher IUP estimation accuracy and lower computational
+complexity. Their accuracy was compared with the gold standard accuracy of internally measured
+IUP. Their computational complexity was compared based on the required number of multiplications
+per second (MPS). Signiﬁcant reductions in computational complexity have been obtained for all pub-
+lished algorithms, while improving IUP estimation accuracy. A correlation coeﬃcient of 0.72 can be
+obtained using fewer than 120 MPS. We conclude that long-term ambulatory monitoring of uterine
+activity is possible using EHG-based methods. Furthermore, the choice of a base method for IUP
+estimation is less important than the correct selection of electrode positions, ﬁlter parameters, and
+postprocessing methods. The presented review of state-of-the-art methods and applied optimizations
+show that long-term ambulatory IUP monitoring is feasible using EHG measurements.
+Keywords: ambulatory; computational complexity; electrohysterography; intrauterine pressure;
+long-term monitoring; parameter space exploration; pregnancy; uterine activity
+3020
+1. Introduction
+Preterm birth is a major problem in obstetrics, associated with a great majority of perinatal mortality
+and over half of perinatal and long-term morbidity [1,2]. Additionally, over the last couple of decades
+a signiﬁcant increase in the worldwide preterm birth rate is visible [3,4]. Early prediction of the onset
+of preterm delivery by accurate pregnancy monitoring is crucial for prevention of preterm birth [5].
+Early notiﬁcation of problems allows physicians to intervene in a timely manner by prescribing rest,
+progesterone supplements, or tocolytic drugs. These treatments can in turn result in a signiﬁcant re-
+duction of preterm birth rates [5,6].
+Insight into the time to delivery could be obtained by tracking the progression of uterine activity
+during pregnancy, by determining the frequency, duration, and amplitude of uterine contractions [7].
+Accurate monitoring of the intrauterine pressure (IUP), which increases as a result of increased uterine
+activity, is a prerequisite for reliable contraction detection and analysis of additional parameters ex-
+tracted from the EHG. When continuously measured over a prolonged period of time, the frequency,
+duration, and amplitude of uterine contractions can be used to reliably predict preterm delivery and
+prevent preterm birth throughout the last months of pregnancy; to this end ambulatory monitoring is
+required [8–11].
+In clinical practice, the IUP is generally monitored by either indirect or direct measurement. The
+most widely used indirect method is external tocography, which measures the deformation of the ab-
+dominal surface using a tocodynamometer, a strain gauge transducer placed on the abdomen. External
+tocography can be used throughout pregnancy and delivery, as it is non-invasive. Deriving the IUP
+estimate from an indirect mechanical measure, however, is unreliable in obese patients and very sus-
+ceptible to movement artifacts [12, 13]. Patients must therefore remain steady during measurements,
+as movements aﬀect the accuracy of the estimated amplitude, duration, and frequency of contractions.
+Movement artifacts can result in a low sensitivity and speciﬁcity, hampering accurate estimation of the
+uterine activity and the progression of pregnancy, and therefore making tocodynamometry unsuitable
+for long-term and ambulatory measurements.
+A direct, quantitative measurement of the IUP can be obtained by placing an IUP catheter (IUPC)
+in direct contact with the amniotic ﬂuid. The obtained IUP signal is accurate and currently serves as
+the gold-standard measurement. However, IUPC measurement requires rupture of the amniotic mem-
+branes and is thus performed only during delivery. Additionally, the use of an IUPC increases the
+risk of infections and can damage the uterus or the fetus [14,15]. Therefore, an IUPC should only be
+employed during delivery in complicated deliveries that require labor induction or augmentation [16].
+Alternative methods for non-invasive uterine activity monitoring based on the electrohysterogram
+(EHG) are being developed for clinical use [17]. These EHG-based methods use the bio-electrical
+signals generated during contraction in the uterine muscle, or myometrium [18]. Myometrial cells
+can generate action potentials or can be excited by action potentials generated by a neighboring cell,
+resulting in propagation of action potentials through the myometrium. Propagation of action poten-
+tials through an adequate number of cells causes contraction of the uterine muscle and, consequently,
+an increase in IUP. The propagation of action potentials is reﬂected in the spectral properties of the
+EHG signal, whereas the number of cells involved in the contraction is proportional to the amplitude
+of the EHG signal [19]. Therefore, the EHG can be used to estimate the IUP increase associated with
+each contraction, providing essential information on uterine activity [20, 21]. Additionally, the EHG
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3021
+can potentially indicate time to delivery, since the electrical resistance between the myometrial cells is
+relatively high during pregnancy, while at term low-resistance paths form, leading to eﬀective contrac-
+tions [10,22]. The use of abdominal electrodes makes the EHG technique non-invasive and, therefore,
+suitable for long-term uterine observation throughout pregnancy; it allows reliable measurements in
+obese patients and is less susceptible to movement artifacts than external tocography [23,24].
+Various EHG based methods have been proposed to analyze the relation between electrical and me-
+chanical activity of the uterus, comprising statistical approaches [25], ﬁltering techniques [26–32], fast
+Fourier transform, and wavelet transform-based methods [23,33–36], as well as evaluation of nonlinear
+connectivity [9]. However, only recent studies have focused on EHG analysis as an alternative method
+for quantitative IUP estimation [28,29,32,35].
+Jezewski et al. used the root mean square (RMS) value of the EHG to estimate the uterine contrac-
+tion pattern and compared it to a simultaneously recorded external tocogram [27,28]. A high correla-
+tion between the two signals was obtained, showing that the EHG could provide a reliable estimator
+for the the frequency of contractions. Skowronski et al. proposed an optimal linear ﬁltering method
+using the EHG signal magnitude after low-pass ﬁltering, followed by a Wiener ﬁlter, which showed
+a good resemblance to the simultaneously measured IUPC signal [29]. However, the method is un-
+suitable for long-term ambulatory measurements, because the Wiener ﬁlter requires a reference IUPC
+signal recorded during a 10 minute initialization period. Rabotti et al. used a spectrogram-based tech-
+nique to obtain an IUP estimate that showed a high correlation with the simultaneously measured IUPC
+signal [35]. The method mimics the physiologic phenomena underlying the generation and propaga-
+tion of action potentials, applying frequency compensation by scaling all spectrogram frequency bands
+relative to their central frequency. In addition, a second-order model was used to compensate for the
+inﬂuence of muscle fatigue and diﬀerences in electrical conductivity and contractile eﬃciency between
+individuals. Rooijakkers et al. proposed the use of the Teager energy (TE) operator after band-pass
+ﬁltering to estimate the IUP using frequency compensation [32], retaining the original units of mea-
+surement in accordance with standard EMG force estimation [37]. This resulted in a higher correlation
+with the simultaneously measured IUPC signal compared to other algorithms from the literature, at a
+reduced computational complexity.
+The aim of this paper is to determine the best composite method for EHG-based IUP estimation
+in an ambulatory setting by exploring the full design-parameter space deﬁned by state-of-the-art algo-
+rithms from the literature. To this end, the deﬁning parameters of all the algorithms are identiﬁed and,
+after determining the inﬂuence of these parameters, an optimal combination is selected for improved
+IUP estimation accuracy and reduced computational complexity, respectively.
+The paper is structured as follows. Section 2 describes the recently published IUP estimation al-
+gorithms that allow for quantitative IUP estimation and describes their most deﬁning parameters. In
+section 3, a set of quality measures is deﬁned to determine both the estimation accuracy and compu-
+tational complexity. Various techniques used to optimize each method for long-term EHG-based IUP
+estimation are provided in section 4. Section 5 presents the dataset of abdominal EHG measurements
+with simultaneous IUPC recordings that was used for validation. Section 6 shows the inﬂuence of
+the various deﬁning parameters and compares the accuracy and complexity results for all algorithms
+before and after optimization. Finally, section 7 and section 8 contain the discussion and conclusion
+based on the obtained results.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3022
+2. Methods from the literature
+2.1. TE-based IUP estimation
+Rooijakkers et al. proposed the use of the TE operator to calculate a frequency-weighed EHG-based
+estimate of the IUP [32]. As a ﬁrst step, the input signal is downsampled to 4 Hz after applying an
+anti-aliasing ﬁlter at 2 Hz to reduce the algorithm’s computational complexity. Before IUP estimation,
+the inﬂuence of respiration artifacts and morphological changes of the ECG is reduced by band-pass
+ﬁltering to obtain a clean EHG signal. The low and high cut-oﬀfrequencies of this ﬁlter were deﬁned
+at fmin = 0.3 Hz and fmax = 0.8 Hz [32, 38], respectively, providing the ﬁltered EHG signal x f[n],
+where n indicates the sample index. The instantaneous energy of the EHG signal Φ [n] uses the TE
+operator in its most basic form in the discrete time domain [39,40] and is deﬁned as
+Φ [n] = x f[n]2 −xf[n + 1]xf[n −1].
+(2.1)
+The resulting signal Φ [n] spans only three consecutive samples of x f to calculate the instantaneous
+energy of the EHG signal, providing an excellent time resolution. The TE is proportional to both
+the square of the signal amplitude and the square of its frequency, and hence calculates the frequency-
+weighted energy of the EHG signal. Finally, the moving average of Φ [n] is calculated over a 30-second
+interval, after which the square root is taken to obtain the TE-based IUP estimate (IUPTE), deﬁned as
+IUPTE [n] =
+v
+u
+t
+1
+M
++M/2
+X
+m=−M/2
+Φ
+h
+xf[m + n]
+i
+,
+(2.2)
+with, M ≡30 s, where the actual number of samples M depends on the used sampling frequency f s.
+The resulting IUPTE provides a physiology-based frequency-weighed energy estimate while retaining
+the original units of measurement in line with standard EMG force estimation [32,37].
+2.2. Spectrogram-based IUP estimation
+Rabotti et al. proposed the use of the spectrogram to calculate the frequency-weighed energy of the
+EHG signal as an estimate of the IUP [35]. First, the time-frequency representation of the EHG signal
+ρ[n, f] is calculated based on the squared magnitude of the short-time Fourier transform (STFT) with
+a Hamming window w[m] of 70-second length deﬁned as
+ρ[n, f] =
+
++∞
+X
+m=−∞
+x[m]w[m −n]e−j2π fm
+
+2
+.
+(2.3)
+The unnormalized ﬁrst statistical moment Ψ[n] is calculated by scaling ρ[n, f] for each frequency
+interval in the range fmin = 0.3 Hz, fmax = 0.8 Hz by its mean frequency f, as described by
+Ψ [n] =
+fmax
+X
+fmin
+f · ρ n, f.
+(2.4)
+By multiplying the in-band frequency intervals, which results in a band-pass ﬁltering eﬀect, Ψ [n]
+uses the simultaneous change of both the frequency- and amplitude-related features of the EHG signal
+to determine the IUP wave estimate. Finally, a second-order polynomial model is used to improve the
+similarity between the between the ﬁrst statistical moment of the EHG and the IUP reference.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3023
+2.3. RMS-based IUP estimation
+Jezewski et al. proposed a RMS-based IUP estimation algorithm, in which the EHG is ﬁrst band-
+pass ﬁltered between fmin = 0.05 Hz and fmax = 5 Hz, resulting in the ﬁltered signal xf[n] [27, 28].
+Next, an initial IUP estimate d
+IUPRMS is calculated as
+d
+IUPRMS[n] =
+v
+u
+tPn+M/2
+m=n−M/2 xf[m + n]2 · w[m]
+P+M/2
+m=−M/2 w[m]
+,
+(2.5)
+where w[m] is a Hamming window, which is used to smooth the estimate and reduce edge eﬀects; M ≡
+60 s is the length of the Hamming window dependent on f s; and n is incremented in 3-second steps.
+Therefore, the resulting signal d
+IUPRMS[n] has a sampling frequency of 1/3 Hz. Finally, d
+IUPRMS[n] is
+resampled to the original sampling frequency, yielding the RMS IUP estimate IUPRMS[n].
+2.4. Absolute-value-based IUP estimation
+Skowronski et al. proposed a method for IUP estimation based on rectiﬁcation of the EHG signal
+[29], in which the EHG signal is ﬁrst normalized to have zero mean and unity variance. Next, the EHG
+signal is low-pass-ﬁltered with cut-oﬀfrequency fmax = 2 Hz, down-sampled to a sampling frequency
+of 4 Hz, and rectiﬁed to obtain a ﬁrst approximation of the energy in the EHG signal. After low-pass
+ﬁltering with a cut-oﬀfrequency of 0.1 Hz to smooth the EHG energy signal, the signal is further
+downsampled to 0.2 Hz, resulting in the absolute-value-based IUP estimate IUPABS. Finally, a Wiener
+ﬁlter W(n) is used to better predict the IUP from the EHG signal. The Wiener ﬁlter coeﬃcients are
+obtained by reducing the error signal e(n) = d(n) −IUPABS(n) ∗W(n) in 10-minute signal segments for
+each patient in a mean-squared sense. Here, d(n) is the reference IUPC signal, and ∗is the convolution
+operator.
+3. Quality measures
+Quality measures need to be deﬁned to allow comparison of the performance of the various algo-
+rithms and to determine the optimization options for each one.
+3.1. Accuracy measures
+Two diﬀerent measures are used to determine the accuracy of estimating the IUP for the various
+algorithms. Pearson’s correlation coeﬃcient r gives a measure of similarity in shape between the
+estimated and reference IUP waveforms. It is deﬁned as
+r =
+PN
+i=1 (xi −x)(yi −y)
+qPN
+i=1 (xi −x)2
+qPN
+i=1 (yi −y)2
+,
+(3.1)
+with x being the IUP estimate, y the IUPC signal, x and y their respective means, and N the total
+number of samples in the signal. The correlation coeﬃcient r is in the range −1 ≤r ≤1, where a
+higher value deﬁnes a better similarity in shape between the two waveforms. The root-mean-square
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3024
+error (RMSE), which is deﬁned as
+RMSE =
+sPN
+i=1 (yi −xi)2
+N
+,
+(3.2)
+depends not only on similarity in shape but is also inﬂuenced by scaling factors and baseline oﬀset.
+Before comparison, the basal tone of the IUP estimates are removed using the method described in [28],
+and their amplitudes are scaled to best match the IUPC signal. Additionally, the IUP estimate for each
+patient is shifted by a delay τ to compensate for the delay between the increase in bioelectrical activity
+and the resulting pressure increase in the uterus [18]. For each recording, the delay τ is obtained by
+maximizing r between x and ¯x, where τ is in the range of 0 s to 15 s.
+3.2. Complexity measure
+The average number of multiplications per sample (MPS) is used as a measure of computational
+complexity. All operations that are more complex than a multiplication, such as division or square root,
+can be represented by a number of multiplications. Both division and square root have a complexity
+in the order of O [n], where n is the accuracy of a value in number of bits. Assuming an accuracy of
+16 bits for both numerator and denominator, a division and square root are substituted by 9 and 17
+multiplications, respectively [41]. All simple operations, such as addition, subtraction, or bit-shift, are
+estimated but not used in the analysis. The STFT can be represented as a sliding ﬁxed-length window
+for which at each position a fast Fourier transform (FFT) is calculated. When the length of the STFT
+window N is restricted to powers of 2, the number of multiplications of an FFT is in the order of
+O (N/2) log2(N) [42,49]. With a window length N = 2048 samples, as required for the 70 s window
+deﬁned by Rabotti et al., 8194 multiplications are needed to obtain the STFT for a single position of
+the sliding window [43].
+4. Optimization methods
+4.1. Optimization of IUP estimation accuracy
+In an eﬀort to determine the optimal method for EHG-based IUP estimation in an ambulatory set-
+ting, each of the algorithms presented in the previous section was implemented and optimized for
+improved IUP estimation accuracy and reduced computational complexity. To this end, the design pa-
+rameters of each algorithm were selected, as presented in Table 1. Their inﬂuence on each algorithm
+was determined based on the deﬁnition of each parameter as given below. Finally, each algorithm was
+optimized for improved IUP estimation accuracy by maximizing the correlation coeﬃcient r between
+the estimated IUP and the IUPC signal, as described in section 3.
+4.1.1. Preprocessing
+Only Skowronski et al. propose a preprocessing step other than ﬁltering, which consists in nor-
+malization of the signal. However, it should be noted that this step assumes the entire signal segment
+to be available before analysis, which is not feasible in a real-time ambulatory setting. Therefore,
+normalization was omitted from the analysis performed in this paper.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3025
+Table 1. Comparison of IUP estimation algorithms based on their most distinctive parame-
+ters.
+Rooijakkers et al.
+Rabotti et al.
+Jezewski et al.
+Skowronski et al.
+Teager energy
+spectrogram
+root-mean square
+absolute value
+Input fs
+20 Hz
+20 Hz
+20 Hz
+200 Hz
+Preprocessing
+–
+–
+–
+Normalization
+Filtering band
+[0.3 −0.8 Hz]
+[0.3 −0.8 Hz]
+[0.05 −5.0 Hz]
+[0 −2.0 Hz]
+Frequency comp.
+intrinsic
+multiply bands
+–
+–
+IUP smoothing
+30 s mean
+70 s Hanning
+60 s Hamming
+0.1 Hz LP ﬁlter
+Postprocessing
+1st order model
+2nd order model
+1st order model
+Wiener ﬁlter
+Output fs
+4 Hz
+20 Hz
+20 Hz
+0.2 Hz
+4.1.2. Filtering interval
+Only part of the frequency spectrum of abdominally recorded biopotential measurements contains
+information pertaining to EHG signals. In these measurements, neither the upper nor the lower limit of
+EHG signals is exactly deﬁned, and it can vary with the measurement method and electrode placement
+[33,44,45]. Furthermore, various additional signals and artifacts interfering with the EHG signal might
+negatively inﬂuence the accuracy of IUP estimation. These factors have resulted in ﬁlters with cut-oﬀ
+frequencies ranging from fmin = 0 −0.5 Hz and fmax = 0.8 −5 Hz [18, 28, 29, 35, 38, 44–46] for a
+high-pass and low-pass ﬁlter, respectively. Optimizing the cut-oﬀfrequencies of the band-pass ﬁlter
+used for preprocessing was therefore performed in the 0 Hz to 5 Hz frequency range. Additionally,
+the inﬂuence of both the ﬁlter type and order on the optimal location of the cut-oﬀfrequencies was
+investigated.
+4.1.3. Frequency compensation
+The methods of Jezewski et al. and Skowronski et al. have a ﬂat frequency response, whereas the
+methods of Rabotti et al. and Rooijakkers et al. use frequency compensation to mimic the physiological
+frequency dependence of the EHG signal, to obtain a more accurate IUP estimate. All methods were
+tested with and without frequency compensation to determine its inﬂuence.
+A diﬀerentiator can be used to implement a frequency corrective ﬁlter for both the RMS- and
+modulus-based methods, as it introduces a frequency dependence deﬁned by ˙y(t) = f ·y(t) [26,35]. This
+ideal diﬀerentiator can be closely approximated using alternative digital diﬀerentiation techniques [47].
+The spectrogram-based method already contains frequency compensation, which is easily removed by
+omitting the multiplication with f in (2.4) to obtain a result with a ﬂat frequency response. Due to the
+intrinsic frequency weighing of the TE operator, no IUP estimate without frequency compensation can
+be computed for the method proposed by Rooijakkers et al.
+4.1.4. IUP smoothing
+The presented IUP estimation methods either use a low-pass ﬁlter or apply a convolution with
+a window to smooth the ﬁnal IUP estimate. For each method, we optimized the low-pass cut-oﬀ
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3026
+frequency as well as the shape (square or Hamming window) and length M of the averaging window.
+The spectrogram-based method of Rabotti et al. intrinsically contains a smoothing window as part of
+the STFT operation and, low-pass ﬁltering was therefore omitted.
+4.1.5. Postprocessing
+Both Jezewski et al. and Rooijakkers et al. apply a ﬁrst-order model to linearly scale the IUP
+estimate amplitude. Rabotti et al. applies a second-order model that allows for non-linear amplitude
+scaling. Skowronski et al. propose the use of a Wiener ﬁlter to create an improved IUP estimate.
+It should be noted that, as no IUPC reference signal is available in ambulatory measurements, the
+latter postprocessing method is not directly applicable on a per-patient basis in a long-term ambulatory
+setting.
+4.2. Optimization of computational complexity
+For a fair comparison of the computational complexity of the algorithms presented in section 2,
+all algorithms were optimized for reduced computational complexity using a few basic methods. This
+reduction of the complexity was performed with minimal impact on the obtained estimation accuracy
+by limiting any single optimization to a maximum relative decrease in IUP estimation accuracy of 1%.
+As some of the optimizations are algorithm-speciﬁc, not all of them were applied in all cases.
+The most straight-forward method to reduce the computational complexity of the algorithms is
+sample-rate reduction, or decimation, which utilizes a low-pass ﬁlter before downsampling to avoid
+aliasing. The complexity of all operations is reduced after decimation, but an overhead is introduced
+due to the required ﬁltering step. Polyphase ﬁlters can be used to combine downsampling and ﬁltering
+during decimation. This solution results in a reduction in ﬁlter complexity up to the decimation factor
+with respect to straight-forward decimation [48,49].
+The complexity of all the ﬁlters can be reduced by lowering the ﬁlter order, i.e. support width, or
+ﬁlter type. Changing the ﬁlter order aﬀects the amount of retained out-of-band energy, which has a
+direct impact on the optimal cut-oﬀfrequencies. Therefore, the cut-oﬀfrequencies are adjusted to keep
+an optimal IUP estimation accuracy. IIR ﬁlters can be used instead of FIR ﬁlters to reduce the com-
+putational complexity at the cost of possible instability and non-linear phase distortion. Additionally,
+staged FIR ﬁlters can be used with a downsampling step in between to reduce complexity. A signiﬁ-
+cant reduction in support width of the frequency compensation ﬁlter can be obtained without negative
+eﬀects by reducing the relative magnitude error within the frequency band of interest only [47,50].
+Various optimizations can be applied to the STFT calculation used in the spectrogram-based
+method. The overlap of consecutive STFT windows can be reduced from a maximum overlap of N −1
+samples, as proposed by Rabotti et al., to N/2 samples, reducing the number of multiplications by a
+factor of N−1
+N/2 [35]. This results in an implicit downsampling of the signal dependent on both overlap
+factor and window length, and might reduce the estimation accuracy. Additionally, using a rectangular
+window in the STFT of the spectrogram-based IUP estimation reduces the STFT to an FFT, with a
+complexity of O [N], as described in [42].
+Finally, various low-level optimizations can be applied to reduce the algorithm complexity. Sliding
+windows were implemented such that all multiplications by a single value are performed only once.
+In case of a symmetrical window, this reduces the number of multiplications by a factor of 2. For a
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3027
+square window or moving average, the computational load is reduced to a single addition, subtraction,
+and multiplication for each sample. Also, all multiplications and divisions by a power of 2 are replaced
+by a bit-shift operation. Finally, all divisions by a constant K are replaced by a multiplication with a
+precalculated value bK = 1/K.
+Both the complexity measure in section 3.2 and the foregoing optimization steps assume integer
+calculations with a reduced word-length of 16 bits. Such calculations slightly inﬂuence the algorithm
+output accuracy due to (1) feature truncation and (2) variable truncation [51]. These eﬀects, in addition
+to the high-level optimizations for reduced computational complexity may reduce the IUP estimation
+accuracy.
+5. Validation dataset
+The same dataset as described by Rabotti et al. [35] was used for validation of the proposed algo-
+rithms. This dataset contains 21 measurements taken on nine women during labor at full gestation. All
+women signed an informed consent form. Recordings were made using four active unipolar electrodes
+conﬁgured as a diamond on the abdomen, with a ground and reference electrode placed on one side,
+as shown in Figure 1 [35]. The measured signals were bipolarized to eliminate a large portion of the
+noise aﬀecting the EHG, the most important of which are maternal ECG, some movement artifacts,
+and electromagnetic noise [52]. Two bipolar leads L1 and L2 were obtained from the recorded signals
+in a horizontal and vertical direction, respectively. All electrodes, which were contact Ag-AgCl elec-
+trodes, were placed on the abdomen after skin preparation with a mildly abrasive paste to reduce skin
+impedance. The IUP was simultaneously measured by a Koala M1333A IUPC (Philips Medical Sys-
+tems, Best, The Netherlands), which had been medically prescribed for insertion in the patient’s uterine
+cavity. The EHG and IUP were both recorded at 1 kHz with a 20-bit discretization resolution using an
+M-PAQ (Maastricht Instruments B.V., The Netherlands). A subset of 17 recordings from seven patients
+was selected based on the requirements that the reference IUPC recorded a clear IUP waveform and
+that the EHG signal should not contain any signiﬁcant measurement artifacts, e.g., due to broken wires
+or poor contacts. All recordings from a single patient were considered as one measurement, resulting
+in seven measurements ranging from 26 to 138 minutes with a total length of approximately 8 hours
+and 42 min.
+Figure 1. Electrode conﬁguration used for IUP measurements consisting of 4 electrodes
+from which the two bipolar leads L1 and L2 are derived (Modiﬁed from [32]).
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3028
+Both the EHG and IUPC signal were preprocessed prior to comparative analysis. The IUPC signal,
+which is adopted as the gold standard reference, was cleaned to minimize spikes caused by movement
+artifacts, using a non-causal centered median ﬁlter with a length of 5 s [28]. Both bipolar EHG signals
+as well as the IUPC signal were downsampled to 20 Hz using a Kaiser anti-aliasing ﬁlter at 8 Hz with
+a support width of 1 s. This is possible because all EHG signals are present in the 0.1 Hz to 5.0 Hz
+frequency band [18,38,44,45]. The peak spectral energy of the EHG occurs in the 0.42 Hz to 0.78 Hz
+range, depending on gestational age [33]. Figure 2 shows a recording segment with the reference IUPC
+signal as well as the recorded EHG signal.
+10:00
+12:30
+15:00
+17:30
+20:00
+-2
+-1
+0
+1
+2
+3
+4
+IUPC signal
+Bi-polar L1
+Bi-polar L1
+Figure 2. Example signal segment the IUPC signal (scaled) and the EHG signals for bipolar
+leads L1 and L2, respectively.
+6. Results
+The algorithms from the literature were ﬁrst compared prior to optimization for IUP estimation
+accuracy. The correlation coeﬃcient r and RMSE as well as their standard deviations are given in
+Figure 3 for the horizontal (L1) and vertical (L2) channels, respectively. Figure 4 shows an example of
+the IUP estimation results for each of the compared algorithms and a reference IUPC signal.
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Lead 1
+Lead 2
+Correlation coefficient (r)
+TE [32]
+Spectrogram [35]
+RMS [28]
+ABS [29]
+a)
+0
+10
+20
+30
+40
+50
+60
+70
+80
+Lead 1
+Lead 2
+RMSE (mmHg)
+b)
+Figure 3. Comparison of the IUP estimate accuracy by RMSE a) and r b) for the algorithms
+as described in the literature.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3029
+0
+20
+40
+60
+0
+20
+40
+60
+0
+20
+40
+60
+10:00
+12:30
+15:00
+17:30
+20:0
+0
+20
+40
+60
+Figure 4. Example segment of the IUP estimates by each of the compared algorithm for both
+bi-polar leads with the IUPC reference signal: (a) Teager energy, (b) Spectrogram, (c) RMS
+energy, and (d) absolute value base IUP estimate.
+After optimization, the algorithms were again compared on IUP estimation accuracy, the results of
+which are shown in Figure 5. Fractional results for the number of multiplications are possible due to
+changes in the sampling rate as part of the algorithms.
+Table 2 shows the computational complexity of the various algorithms at diﬀerent stages. Because
+the optimizations for improved accuracy result in diﬀerent parameter settings for each lead, the re-
+sulting computational complexity of an algorithm might diﬀer between leads. The subsequent results
+were obtained using the absolute-value-based method, as it slightly outperforms the other methods
+after optimization.
+Figure 6 shows the correlation coeﬃcient r of the estimated IUP with the IUPC as a function of the
+frequency, where the frequency indicates the center of the band-pass ﬁlter used. The cut-oﬀfrequencies
+of the band-pass ﬁlter are set at ±20% of the center frequency, which is selected as a trade-oﬀbetween
+ﬁlter support width and frequency speciﬁcity to evaluate the eﬀect of the local frequency content on
+the IUP estimate. This allows for an analysis of the optimal ﬁltering frequencies that takes into account
+the inﬂuence of both the EHG signal and that of noise and artifacts. It is clear from Figure 6 that the
+signal quality of L2 is better than that of L1 for all patients. Therefore, all further results are given for
+L2 only.
+Figure 7 shows the inﬂuence of applying frequency compensation to the IUP estimation quality as a
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3030
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Lead 1
+Lead 2
+Correlation coefficient (r)
+TE [32]
+Spectrogram [35]
+RMS [28]
+ABS [29]
+0
+10
+20
+30
+40
+50
+60
+70
+80
+Lead 1
+Lead 2
+RMSE (mmHg)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Lead 1
+Lead 2
+Correlation coefficient (r)
+TE [32]
+Spectrogram [35]
+RMS [28]
+ABS [29]
+0
+10
+20
+30
+40
+50
+60
+70
+80
+Lead 1
+Lead 2
+RMSE (mmHg)
+*
+* *
+a)
+c)
+b)
+d)
+*
+* *
+*
+*
+Figure 5. Comparison of the IUP-estimate accuracy for the algorithms after accuracy op-
+timization. (a) and (b) show r and the RMSE for the algorithms before optimization for
+reduced computational complexity, where an * indicates a signiﬁcant (p ≤0.01) improve-
+ment over the original. (c) and (d) show these metrics after this optimization.
+Table 2. Comparison of the computational complexity in MPS of the algorithms in various
+stages of optimization.
+Original
+Opt. accuracy
+Opt. complexity
+L1 & L2
+L1
+L2
+L1
+L2
+TE [32]
+145.8
+1654
+1876
+115.6
+118.4
+Spectrogram [35]
+8251
+8235
+8424
+284.4
+286.6
+RMS [28]
+1183
+2251
+2387
+123.6
+131.1
+ABS [29]
+141.1
+2149
+2345
+112.1
+116.1
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3031
+0.1
+0.2   0.3       0.4  0.5    
+1
+2
+3
+4
+5
+7
+0
+0.2
+0.4
+0.6
+0.8
+1
+Center frequency (Hz)
+Correlation coeﬃcient (r)
+0.1
+0.2
+0.3
+0.4 0.5
+1
+2
+3
+4
+5
+7
+0
+0.2
+0.4
+0.6
+0.8
+1
+Center frequency (Hz)
+Correlation coeﬃcient (r)
+a)
+b)
+Figure 6. (a) and (b) show the correlation coeﬃcient r as a function of the band-pass ﬁlter’s
+center frequency for L1 and L2, respectively. A single gray trace is shown for every patient,
+while the dashed line indicates r for patient 2 showing the inﬂuence of the maternal heart rate
+above 1 Hz and respiration below 0.3 Hz on the IUP estimation accuracy. Additionally, the
+average over the whole dataset for both L1 and L2 is shown by a bold black line.
+function of the low- and high-pass ﬁlter cut-oﬀfrequencies. The eﬀect of the frequency compensation
+is clearly observable, as the IUP estimation quality is no longer aﬀected by low-frequency noise, while
+the high-frequency noise of the ECG and other sources has a larger impact.
+Figure 8 shows the inﬂuence of the choice of smoothing function on the IUP estimation quality. It
+can be observed that a smooth window allows for a slightly better IUP estimation than a square window
+or a low-order IIR ﬁlter.
+Table 3 shows the parameters used for each of the algorithms after optimization for maximum IUP
+estimation accuracy and reduced computational complexity, respectively. The parameters shown for
+all algorithms are for lead L2, as it has proven to provide a signiﬁcantly more accurate IUP estimation
+at a comparable complexity compared to L1.
+7. Discussion
+Accurate continuous monitoring of the uterine activity is crucial for early prediction of the onset of
+preterm labor and prevention of preterm birth. Various non-invasive EHG-based IUP estimators have
+previously been presented allowing for contraction detection and analysis of additional parameters
+extracted from the EHG.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3032
+LP 3dB cut-oﬀ(Hz)
+5
+1
+0.5
+0.1
+0.1
+0.2
+0.3
+HP 3dB cut-oﬀ(Hz)
+0.5
+1
+5 4 3 2
+1
+0.5
+0
+Correlation coeﬃcient (r)
+LP 3dB cut-oﬀ(Hz)
+5
+1
+0.5
+0.1
+0.1
+0.2
+HP 3dB cut-oﬀ(Hz)
+0.3
+0.5
+1
+2
+3
+5 4
+1
+0.5
+0
+Correlation coeﬃcient (r)
+a)
+b)
+Figure 7. IUP estimation quality of L2 as a function of the ﬁlter’s LP and HP cut-oﬀfre-
+quency in case frequency compensation (a) was applied or (b) was omitted.
+Four state-of-the-art methods for EHG-based IUP estimation are discussed in this paper and com-
+pared on IUP estimation accuracy and computational complexity to determine their applicability in a
+truly continuous ambulatory monitoring setting. We have deﬁned the characteristic parameters of all
+methods and determined their inﬂuence on IUP estimation accuracy and computational complexity.
+All methods were optimized within their design space to improve their accuracy with respect to the
+simultaneously recorded IUPC signal and reduce their complexity.
+To optimize the ﬁlter parameters, the inﬂuence of each frequency component in the EHG on the
+IUP estimation accuracy was determined. As previously reported, the EHG signal is present from
+0.05 Hz to beyond 5 Hz with a varying signal-to-noise ratio (SNR) [18]. However, the signal above
+1.2 Hz is typically strongly distorted due to the presence of the maternal ECG modulated by maternal
+breathing. This modulation is visible as amplitude and shape changes in the maternal ECG in phase
+with maternal breathing. Especially in a horizontal bipolar lead, in which the maternal ECG is most
+prominent [32], the eﬀect of the ﬁrst few harmonics of the ECG are clearly visible as dips in the IUP
+estimation accuracy in Figure 6. The accuracy of all signals below 0.3 Hz drops due to the presence
+of non-stationary noise sources, like maternal breathing, electrical activity of other smooth muscles,
+fetal activity, and baseline wander. For most patients, a spectral region is visible between 0.3 Hz and
+1.2 Hz allowing for accurate IUP estimation. However, since no clear general ﬁltering boundary can be
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3033
+20
+40
+100
+120
+0.50
+0.55
+0.60
+0.65
+0.70
+0.75
+60 
+80
+Length of smoothing ﬁlter (s) 
+Correlation coeﬃcient (r)
+Hamming window
+Square window
+1st order filter
+2nd order filter
+3rd order filter
+6th order filter
+Figure 8. Inﬂuence of the choice of smoothing method on IUP estimation accuracy for L2,
+comparing Hamming and square windows of various lengths with an IIR low-pass ﬁlter of
+diﬀerent orders and 3-dB cut-oﬀfrequencies. The 3dB cut-oﬀfrequency of the ﬁlters is
+deﬁned in Hz (1/s).
+deﬁned, a 3rd order IIR ﬁlter was suﬃcient for all methods as both high- and low-pass ﬁlter. Because
+of the smaller contribution of the breathing artifacts and maternal ECG in the vertical measurement
+channel, and possibly due to a more prominent downward propagation direction of action potentials
+through the myometrium during delivery [53,54], the vertical bipolar lead in general allows for a more
+accurate IUP estimation.
+The inﬂuence of applying frequency compensation to mimic the physiological phenomena under-
+ling the generation and propagation of action potentials was also investigated [32, 35]. It reduces the
+inﬂuence of low-frequency noise in favor of higher frequencies, which in the presence of a prominent
+maternal ECG results in a strong reduction in IUP estimation accuracy above 1.2 Hz. For all base
+methods, applying frequency compensation resulted in a small increase of r (± 1%) while reducing the
+optimal cut-oﬀfrequencies of the band-pass ﬁlter. This has the added advantage that the sample rate
+can be further decreased, reducing the computational complexity.
+We obtained the best IUP estimation accuracy using a smoothing window, although the diﬀerence
+is not statistically signiﬁcant compared to the other smoothing methods proposed in the literature.
+The length of the applied window or the order and cut-oﬀfrequency of the applied window, however,
+clearly aﬀect the accuracy and complexity of the IUP estimate. In a low-complexity algorithm it is
+therefore beneﬁcial to apply a square window or low-order low-pass ﬁlter, signiﬁcantly reducing the
+computational complexity. Finally, the choice of a simple postprocessing method can signiﬁcantly
+inﬂuence the accuracy of the IUP estimate without adding much complexity; for instance, simple non-
+linear scaling can improve the correlation coeﬃcient with the IUPC signal by as much as 10%.
+The choice of sampling frequency has no signiﬁcant impact on IUP estimation quality. However, it
+has a big impact on the computational complexity, because the complexity of various parts of the IUP
+estimation algorithms are O
+h
+N2i
+. Therefore, reducing the sampling frequency at every point during
+IUP estimation is paramount, and can be done without signiﬁcant negative eﬀects on estimation accu-
+racy. Reducing the sample rate is the largest contributor to reduction of complexity for all algorithms,
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3034
+Table 3. Parameters for optimized IUP estimation accuracy and computational complexity.
+Rooijakkers et al.
+Rabotti et al.
+Jezewski et al.
+Skowronski et al.
+Teager energy
+spectrogram
+root-mean square
+absolute value
+Optimized for improved IUP estimation accuracy
+Filtering band
+[0.15 −0.8 Hz]
+[0.3 −0.8 Hz]
+[0.25 −0.9 Hz]
+[0.1 −0.8 Hz]
+Filter order
+600-tap FIR
+1300-tap FFT
+360-tap FIR
+800-tap FIR
+Frequency comp.
+yes
+yes
+yes
+yes
+IUP smoothing
+55 s Hamming
+65 s Hamming
+60 s Hamming
+40 s Hamming
+Postprocessing
+2nd order model
+2nd order model
+2nd order model
+2nd order model
+Output fs
+20 Hz
+20 Hz
+20 Hz
+20 Hz
+Optimized for reduced computational complexity
+Filtering band
+[0.15 −0.8 Hz]
+[0.3 −0.8 Hz]
+[0.25 −0.9 Hz]
+[0.1 −0.8 Hz]
+Filter order
+3rd order IIR
+128-tap FFT
+2nd order IIR
+3rd order IIR
+Frequency comp.
+yes
+yes
+yes
+yes
+IUP smoothing
+30 s mean
+40 s mean
+33 s mean
+27 s mean
+Postprocessing
+2nd order model
+2nd order model
+2nd order model
+2nd order model
+Output f s
+1.25 Hz
+1.25 Hz
+1.25 Hz
+1.25 Hz
+especially when applying polyphase ﬁlters for downsampling, reducing the complexity by a factor 4 to
+8 depending on the base method.
+After our reduction of the computational complexity of each algorithm with a minimal loss of accu-
+racy, the absolute-value-based method was found to provide both the highest IUP estimation accuracy
+and the lowest computational complexity. However, the diﬀerence with the other algorithms under
+evaluation is not signiﬁcant in either accuracy or complexity. We can therefore conclude that the
+choice of a base method for IUP estimation is not as important as a correct choice of the ﬁlter cut-oﬀ
+frequencies, which strongly depend on the types of noise and artifacts present in the recordings. Ad-
+ditional parameters which can markedly improve the estimation accuracy are the order of the applied
+smoothing method, and non-linear postprocessing.
+All of the analyzes performed in this paper envision a long-term continuous ambulatory monitor-
+ing environment, which in many cases will consist in measuring many days or weeks before delivery.
+Therefore, only single channel bi-polar EHG derivations were used to limit the computational com-
+plexity in estimating the IUP. Even so, as mentioned previously, only recordings made during delivery
+were used, because this is the only period in which a gold standard reference signal can be obtained.
+The signals which we would observe in an ambulatory setting might, therefore, be diﬀerent in a num-
+ber of ways compared to those in the used dataset. The EHG signal amplitude would be lower, with
+active bursts of uterine activity spaced further apart, shorter, less periodic, and with lower-frequency
+content [22,38]. Additionally, movement artifacts would play a more prominent role as patients are not
+limited in their movement. Any algorithm used earlier during pregnancy should therefore account for
+the changes in signal characteristics by adjusting the parameters of ﬁltering interval, smoothing ﬁlter
+and postprocessing accordingly.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3035
+Apart from optimizations for use earlier during pregnancy, which would require acquisition of ad-
+ditional annotated data earlier in pregnancy, further improvement of the IUP estimation quality can
+possibly be obtained. This can consist in dynamic removal or suppression of the maternal ECG or its
+ﬁrst harmonics, which would allow for use of a wider frequency band in estimating the IUP and is
+applicable throughout pregnancy. However, additional processing can possibly increase the computa-
+tional complexity, and care should be taken to keep the overall complexity as low as possible to allow
+for long-term continuous monitoring.
+8. Conclusion
+Accurate IUP estimation and reliable contraction detection are possible using abdominal EHG
+recordings. When continuously measured throughout the last months of pregnancy, EHG recordings
+can be used to predict preterm delivery in an eﬀort to prevent preterm birth. Based on state-of-the-art
+methods from the literature, a design space exploration was performed to evaluate these methods on
+their suitability for continuous IUP monitoring. This resulted in an improved set of methods with a
+higher correlation with the simultaneously measured IUPC signal at a reduced computational complex-
+ity. We can conclude from the obtained results that a correct choice of the ﬁlter cut-oﬀfrequencies,
+the order of the applied smoothing, and the postprocessing method, based on the signal characteris-
+tics, is more important than the base energy estimation method. Although only by a small margin, the
+optimized absolute-value-based method was found to provide both the highest IUP estimation accu-
+racy (r = 0.72) and lowest computational complexity (112.1 MPS). Because of its low computational
+complexity, it would be possible to obtain a continuous IUP estimate over a prolonged period of time
+in an ambulatory setting using this method. We can therefore conclude that long-term ambulatory
+monitoring of the uterine activity is possible using EHG-based methods.
+Acknowledgments
+This work was supported by the Dutch technology foundation STW and the NWO(TTW) HTSM
+grant 14663 (EWAM).
+Conﬂict of Interest
+The authors declare that there is no conﬂict of interest.
+References
+1.
+D. R. Mattison, K. Damus, E. Fiore, J. Petrini, C. Alter, Preterm delivery: A public health per-
+spective, Paediatr. Perinat. Epidemiol., 15 (2001), 7–16.
+2.
+R. L. Goldberg, E. M. McClure, Preterm Birth: Prevention and Management, John Wiley & Sons,
+(2010), 22–38.
+3.
+R. L Goldenberg, J. F. Culhane, J. D. Iams, R. Romero, Epidemiology and causes of preterm birth,
+The Lancet, 371 (2008), 75–84.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3036
+4.
+H. Blencowe, S. Cousens, M. Z. Oestergaard, D. Chou, A. B. Moller, R. Narwal, et al., National,
+regional, and worldwide estimates of preterm birth rates in the year 2010 with time trends since
+1990 for selected countries: A systematic analysis and implications, The Lancet, 379 (2012),
+2162–2172.
+5.
+K. Flood, F. D. Malone, Prevention of preterm birth, Semin. Fetal Neonat. Med., 17 (2012), 58–63.
+6.
+M. J. Corwin, S. M. Mou, S. G. Sunderji, S. Gall, H. How, V. Patel, et al., Multicenter randomized
+clinical trial of home uterine activity monitoring: Pregnancy outcomes for all women randomized,
+Am. J. Obstet. Gynecol., 175 (1996),1281–1285.
+7.
+D. L. Bentley, J. L. Bentley, D. L. Watson, R. A. Welch, R. W. Martin, K. S. Gookin, et al.,
+Relationship of uterine contractility to preterm labor, Obstet. Gynecol., 76 (1990), 36S–38S.
+8.
+M. Lucovnik, R. J. Kuon, L. R. Chambliss, W. L. Maner, S. Q. Shi, L. Shi, et al., Use of uterine
+electromyography to diagnose term and preterm labor. Acta Obstet. Gynecol. Scand., 90 (2011),
+150–157.
+9.
+A. Diab, M. Hassan, C. Marque, B. Karlsson, Quantitative performance analysis of four methods
+of evaluating signal nonlinearity: Application to uterine emg signals, 2012 Annual International
+Conference of the IEEE Engineering in Medicine and Biology Society, 2012. Available from:
+https://ieeexplore.ieee.org/abstract/document/6346113.
+10. H. de Lau, C. Rabotti, N. Haazen, S. G. Oei, M. Mischi, Towards improving uterine electrical ac-
+tivity modelling and electrohysterography: ultrasonic quantiﬁcation of uterine movements during
+labor, Acta Obstet. Gynecol. Scand., 92 (2013), 1323–1326.
+11. H. de Lau, K. T. Yang, C. Rabotti, M. Vlemminx, G.Bajlekov, M. Mischi, et al., Toward a new
+modality for detecting a uterine rupture: electrohysterogram propagation analysis during trial of
+labor after cesarean, J. Matern. Fetal Neonat. Med., 30 (2017), 574–579.
+12. A. Ray, A. Hildreth, U. I. Esen, Morbid obesity and intra-partum care, J. Obstet. Gynaecol., 28
+(2008), 301–304.
+13. A. M. Miles, M. Monga, K. S. Richeson, Correlation of external and internal monitoring of uterine
+activity in a cohort of term patients, Am. J. Perinatol., 18 (2001),137–140.
+14. K. M. Rood, Complications associated with insertion of intrauterine pressure catheters: An un-
+usual case of uterine hypertonicity and uterine perforation resulting in fetal distress after insertion
+of an intrauterine pressure catheter, Case Rep. Obstet. Gynecol., 2012 (2012).
+15. L. M. Harper, A. L. Shanks, M. G. Tuuli, K. A. Roehl, A. G. Cahill, The risks and beneﬁts of
+internal monitors in laboring patients, Am. J. Obstet. Gynecol., 209 (2013), 38.e1–38.e6.
+16. R. E. Garﬁeld, H. Maul, W. Maner, C. Fittkow, G. Olson, L. Shi, et al., Uterine electromyography
+and light-induced ﬂuorescence in the management of term and preterm labor, J. Soc. Gynecol.
+Invest., 9 (2002),265–275.
+17. A. J. Wolfberg. The future of fetal monitoring, Rev. Obstet. Gynecol., 5 (2012), e132–e136.
+18. D. Devedeux, C. Marque, S. Mansour, G. Germain, J. Duchˆene, Uterine electromyography: a
+critical review. Am. J. Obstet. Gynecol., 169 (1993), 1636–1653.
+19. J. Duchene, D. Devedeux, S. Mansour, C. Marque, Analyzing uterine EM: Tracking instantaneous
+burst frequency, IEEE Eng. Med. Biol. Mag., 14 (1995), 125–132.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3037
+20. R. E. Garﬁeld, W. L. Maner, Physiology and electrical activity of uterine contractions, in Seminars
+in cell & developmental biology, Academic Press, (2007), 289–295.
+21. T. Y. Euliano, M. T. Nguyen, S. Darmanjian, S. P. McGorray, N. Euliano, A. Onkala, et al., Mon-
+itoring uterine activity during labor: A comparison of 3 methods, Am. J. Obstet. Gynecol., 208
+(2013), 66.e1–66.e6.
+22. R. E. Garﬁeld, G. Saade, C. Buhimschi, I. Buhimschi, L. Shi, S. Q. Shi, et al.,
+Control and
+assessment of the uterus and cervix during pregnancy and labour, Hum. Reprod. Update, 4 (1998),
+673–695.
+23. H. Eswaran, J. D. Wilson, P. Murphy, H. Preissl, C. L. Lowery, Application of wavelet transform to
+uterine electromyographic signals recorded using abdominal surface electrodes, J. Matern. Fetal
+Neonat. Med., 11 (2002), 158–166.
+24. T. Y. Euliano, M. T. Nguyen, D. Marossero, R. K. Edwards, Monitoring contractions in obese
+parturients: Electrohysterography compared with traditional monitoring, Obstet. Gynecol., 109
+(2007), 1136–1140.
+25. K. Horoba, S. Graczyk, J. Jezewski, A. Gacek, J. Wrobel, Statistical approach to analysis of
+electrohysterographic signal, 1999 IEEE Engineering in Medicine and Biology 21st Annual Con-
+ference and the 1999 Annual Fall Meeting of the Biomedical Engineering Society, 1999. Available
+from: https://ieeexplore.ieee.org/abstract/document/804042/.
+26. J. Ramondt, C. Kooten, A. Verhoeﬀ, H. C. S. Wallenburg, Computer analysis of mechanical and
+electrical uterine activity, Med. Biol. Eng. Comput., 24 (1986), 351–355.
+27. K. Horoba, J. Jezewski, J. Wrobel, S. Graczyk, In Algorithm for detection of uterine contrac-
+tions from electrohysterogram, 2001 Conference Proceedings of the 23rd Annual International
+Conference of the IEEE Engineering in Medicine and Biology Society, 2001. Available from:
+https://ieeexplore.ieee.org/abstract/document/1017198.
+28. J. Jezewski, K. Horoba, A. Matonia, J. Wrobel, Quantitative analysis of contraction patterns in
+electrical activity signal of pregnant uterus as an alternative to mechanical approach, Physiol.
+Meas., 26 (2005),753–767.
+29. M. D. Skowronski, J. G. Harris, D. E. Marossero, R. K. Edwards, T. Y. Euliano,
+Prediction
+of intrauterine pressure from electrohysterography using optimal linear ﬁltering,
+IEEE Trans.
+Biomed. Eng., 53 (2006), 1983–1989.
+30. B. C. Jacod, E. Ma. Graatsma, E. V. Hagen, G. H. A. Visser, A validation of electrohysterography
+for uterine activity monitoring during labour, J. Matern. Fetal Neonat. Med., 23 (2010), 17–22.
+31. J. Reinhard, B. R. HGill, S. Schiermeier, H. L¨oser, L. M. Niedballa, E. Haarmann, et al., Uterine
+activity monitoring during labour - a multi-centre, blinder two-way trial of external tocodynamom-
+etry against electrohysteragraphy, Z. Geburtsh. Neonatol., 215 (2011), 199–204.
+32. M. J. Rooijakkers, C. Rabotti, S. G. Oei, R. M. Aarts, M. Mischi, Low-complexity intrauterine
+pressure estimation using the Teager energy operator on electrohysterographic recordings, Physiol.
+Meas., 35 (2014), 1215–1228.
+33. C. Buhimschi, M. B. Boyle,R. E. Garﬁeld, Electrical activity of the human uterus during pregnancy
+as recorded from the abdominal surface, Obstet. Gynecol., 90 (1997), 102–111.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3038
+34. S. Snowden, N. A. B. Simpson, J. J. Walker, A digital system for recording the electrical activity
+of the uterus, Physiol. Meas., 22 (2001), 673.
+35. C. Rabotti1, M. Mischi1, J. O. E. H. van Laar, G. S. Oei, J. W. M. Bergmans, Estimation of in-
+ternal uterine pressure by joint amplitude and frequency analysis of electrohysterographic signals,
+Physiol. Meas., 29 (2008), 829–841.
+36. M. O. Diab, B. Moslem, M. Khalil, C. Marque, Classiﬁcation of uterine EMG signals by using
+normalized wavelet packet energy, 2012 16th IEEE Mediterranean Electrotechnical Conference,
+2012. Available from: https://ieeexplore.ieee.org/abstract/document/6196443/.
+37. R. Merletti, P. J. Parker, Electromyography: Physiology, engineering and non-invasive applica-
+tions, John Wiley & Sons, (2004).
+38. C. Marque, J. M. G. Duchene, S. Leclercq, G. S. Panczer, J. Chaumont, Uterine ehg processing
+for obstetrical monitoring, IEEE Trans. Biomed. Eng., 12 (1986), 1182–1187.
+39. J. F. Kaiser,
+On a simple algorithm to calculate the ‘energy’ of a signal,
+In-
+ternational
+conference
+on
+acoustics,
+speech,
+and
+signal
+processing,
+Available
+from:
+https://ieeexplore.ieee.org/abstract/document/115702/.
+40. J. F. Kaiser,
+Some useful properties of Teager’s energy operators,
+1993 IEEE in-
+ternational conference on acoustics, speech, and signal processing, 1993. Available from:
+https://ieeexplore.ieee.org/abstract/document/319457.
+41. A. D. Robison, N-bit unsigned division via n-bit multiply-add, 17th IEEE Symposium on Com-
+puter Arithmetic,2005. Available from: https://ieeexplore.ieee.org/abstract/document/1467632.
+42. B. Farhang-Boroujeny, Y. C. Lim, A comment on the computational complexity of sliding FFT,
+IEEE Trans. Circuits Syst. II Analog Digit. Signal Process., 39 (1992), 875–876.
+43. M. Vetterli, H. J. Nussbaumer, Simple FFT and DCT algorithms with reduced number of opera-
+tions, Signal Process., 6 (1984), 267–278.
+44. H. Leman, C. Marque, and J. Gondry, Use of the electrohysterogram signal for characterization
+of contractions during pregnancy, IEEE Trans. Biomed. Eng., 46 (1999), 1222–1229.
+45. W. L. Maner, R. E. Garﬁeld, H. Maul, G. Olson, G. Saade, Predicting term and preterm delivery
+with transabdominal uterine electromyography, Obstet. Gynecol., 101 (2003), 1254–1260.
+46. M. J. Rooijakkers, S. Song, C. Rabotti, S. G. Oei, J. W. M. Bergmans, E. Cantatore, et al., Inﬂuence
+of electrode placement on signal quality for ambulatory pregnancy monitoring, Comput. Math.
+Methods Med., 2014 (2014).
+47. L. Rabiner, K. Steiglitz, The design of wide-band recursive and nonrecursive digital diﬀerentiators,
+IEEE Trans. Audio Electroacoust., 18 (1970), 204–209.
+48. M. G. Bellanger, G. Bonnerot, M. Coudreuse, Digital ﬁltering by polyphase network: Application
+to sample-rate alteration and ﬁlter banks, IEEE Trans. Acoust., Speech, Signal Process., 24 (1976),
+109–114.
+49. J. G. Proakis, D. G. Manolakis, Digital signal processing: Principles, algorithms, and applications.
+in Pearson Education India, 2001.
+50. A. T. Bahill, J. S. Kallman, J. E. Lieberman, Frequency limitations of the two-point central diﬀer-
+ence diﬀerentiation algorithm, Biol. Cybern., 45 (1982), 1–4.
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
+3039
+51. L. Rabiner, B. Gold, C. McGonegal, An approach to the approximation problem for nonrecursive
+digital ﬁlters, IEEE Trans. Audio Electroacoust., 18 (1970),83–106.
+52. S. Graczyk, J. Jezewski, J. Wrobel, A. Gacek. Abdominal electrohysterogram data acquisition
+problems and their source of origin, Proceedings of the First Regional Conference, IEEE En-
+gineering in Medicine and Biology Society and 14th Conference of the Biomedical Engineering
+Society of India, 1995. Available from: https://ieeexplore.ieee.org/abstract/document/511701/.
+53. G. Wolfs, H. Rottinghuis, Electrical and mechanical activity of the human uterus during labour,
+Arch. Gynecol. Obstet., 208 (1970), 373–385.
+54. J. G. Planes, J. P. Morucci, H. Grandjean, R. Favretto,
+External recording and processing of
+fast electrical activity of the uterus in human parturition, Med. Biol. Eng. Comput., 22 (1984),
+585–591.
+c⃝2020
+Atuhor(s),
+licensee
+AIMS
+Press.
+This
+is
+an
+open
+access
+article
+distributed
+under
+the
+terms
+of
+the
+Creative
+Commons
+Attribution
+License
+(http://creativecommons.org/licenses/by/4.0)
+Mathematical Biosciences and Engineering
+Volume 17, Issue 4, 3019–3039
