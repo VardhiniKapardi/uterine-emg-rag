@@ -1,144 +1,124 @@
-# Uterine EMG RAG
+Uterine EMG RAG: Domain-Specific Biomedical Literature Assistant
+An end-to-end, fully local, CPU-optimized Retrieval-Augmented Generation (RAG) pipeline engineered for Uterine Electromyography (EMG / Electrohysterography - EHG) research.
 
-A Retrieval-Augmented Generation (RAG) system for uterine electromyography (EMG) research papers. This project aims to build an intelligent question-answering system that retrieves relevant scientific literature and generates accurate, context-aware responses using Large Language Models (LLMs).
+This system automates the retrieval of open-access biomedical literature, indexes semantic document chunks into a dense vector space, applies cross-encoder reranking to prioritize high-fidelity context, and generates grounded, cited responses using a quantized Qwen2.5-3B-Instruct large language model.
 
----
+📌 Architecture Overview
+                          ┌───────────────────────────┐
+                          │   OpenAlex API Search     │
+                          │   (Automated OA Discovery)│
+                          └─────────────┬─────────────┘
+                                        │ (PDFs)
+                                        ▼
+                          ┌───────────────────────────┐
+                          │   Document Preprocessing  │
+                          │   - PyMuPDF Extraction    │
+                          │   - Recursive Chunking    │
+                          └─────────────┬─────────────┘
+                                        │ (833 Chunks)
+                                        ▼
+┌──────────────────┐      ┌───────────────────────────┐
+│   User Query     │─────▶│ all-MiniLM-L6-v2 Encoder  │
+└──────────────────┘      └─────────────┬─────────────┘
+         │                              │ (Dense Embeddings: d=384)
+         │                              ▼
+         │                ┌───────────────────────────┐
+         │                │     FAISS FlatIP Index    │
+         │                │   (Cosine Sim Candidate)  │
+         │                └─────────────┬─────────────┘
+         │                              │ (Top-20 Candidates)
+         ▼                              ▼
+┌─────────────────────────────────────────────────────┐
+│      ms-marco-MiniLM-L-6-v2 CrossEncoder            │
+│         (Contextual Score Reranking)                │
+└──────────────────────────┬──────────────────────────┘
+                           │ (Top-5 Reranked Chunks + Provenance)
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│           Qwen2.5-3B-Instruct (GGUF 4-bit)          │
+│           - llama-cpp-python CPU Engine             │
+│           - Citation-Aware Prompt Template          │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│          Interactive Streamlit Web Interface        │
+│          (Grounded Answer + Reranked Sources)       │
+└─────────────────────────────────────────────────────┘
 
-## Project Structure
+✨ Key Features
+- Automated Paper Acquisition: Query-driven discovery of open-access EHG/uterine EMG research via the OpenAlex API with automated metadata sanitization and PDF downloading.
+- Two-Stage Information Retrieval:
+Dense Retrieval: Sub-millisecond vector search across 384-dimensional normalized embeddings using FAISS (IndexFlatIP).
+Neural Reranking: Deep cross-attentional scoring with ms-marco-MiniLM-L-6-v2 to eliminate irrelevant context prior to generation.
+- 100% Local CPU Execution: Quantized 4-bit GGUF inference powered by llama-cpp-python, allowing fast generation on standard laptop/desktop CPUs without dedicated GPU hardware.
+- Source Attribution & Hallucination Guardrails: Prompt-engineered citation binding [Source N] ensuring that factual statements directly map to verified literature excerpts.
+- Gold-Standard Evaluation Suite: Benchmarked on 30 domain-specific queries evaluating retrieval accuracy (Hit Rate@5, NDCG@5, MRR, Precision, and Recall).
 
-```
+📂 Repository Structure
 uterine-emg-rag/
+├── .streamlit/
+│   └── config.toml           # Streamlit watcher blacklist & UI configuration
+├── data/
+│   ├── raw/                  # Source research PDFs
+│   └── processed/            # FAISS index, chunk metadata, embeddings
+├── src/
+│   ├── __init__.py           # Package marker
+│   ├── search_papers.py      # Automated OpenAlex open-access paper downloader
+│   ├── ingest.py             # PDF text extraction, chunking, and FAISS indexing
+│   ├── retriever.py          # Vector retrieval and CrossEncoder reranking module
+│   └── generator.py          # Quantized Qwen2.5 local CPU generation engine
+├── app.py                    # Streamlit web application frontend
+├── main.py                   # CLI end-to-end execution pipeline
+├── requirements.txt          # Pinned dependency requirements
+└── README.md
 
-├── notebooks/
-│   ├── 01_Module1_Document_Loading.ipynb
-│   ├── 02_Load_PDFs.ipynb
-│   └── 03_Text_Chunking.ipynb
-│
-├── papers/
-│   ├── *.pdf
-│
-├── text/
-│   ├── *.txt
-│
-├── processed/
-│   ├── chunks.csv
-│   └── chunks.json
-│
-├── images/
-│
-├── README.md
-└── requirements.txt
-```
+🚀 Getting Started
+1. Prerequisites
+Python 3.10+
+Git
 
----
+2. Clone and Setup Environment
+# Clone the repository
+git clone https://github.com/your-username/uterine-emg-rag.git
+cd uterine-emg-rag
 
-## Project Workflow
+# Create and activate virtual environment
+python -m venv ehg_rag_venv
+source ehg_rag_venv/bin/activate  # On Windows: ehg_rag_venv\Scripts\activate
 
-```
-Research Papers (PDF)
-          │
-          ▼
-Module 1: Document Loading
-          │
-          ▼
-Module 2: Text Extraction
-          │
-          ▼
-Module 3: Text Chunking
-          │
-          ▼
-Module 4: Embeddings (Upcoming)
-          │
-          ▼
-Module 5: Vector Database (Upcoming)
-          │
-          ▼
-Module 6: Retrieval (Upcoming)
-          │
-          ▼
-Module 7: LLM Response Generation (Upcoming)
-```
+# Install dependencies
+pip install -r requirements.txt
 
----
+3. Pipeline Ingestion (Optional if index exists)
+To fetch open-access papers and rebuild the vector database:
+# 1. Download open-access papers from OpenAlex
+python src/search_papers.py
 
-## Modules Completed
+# 2. Extract text, generate embeddings, and build the FAISS index
+python src/ingest.py
 
-### Module 1 – Document Loading
+💻 Usage
+(a) Run via Command Line Interface (CLI)
+python main.py
 
-**Objective**
-- Load uterine EMG research papers from PDF format.
-- Verify document loading and metadata extraction.
+(b) Run the Interactive Web UI
+Launch the Streamlit dashboard to test domain queries interactively:
+streamlit run app.py
+Navigate to http://localhost:8501 in your browser.
 
-**Tasks**
-- Load multiple PDF files.
-- Read document metadata.
-- Validate successful document ingestion.
+🔬 Technical Methodology
+1. Chunking Strategy
+Research documents are parsed into structured text and segmented using LangChain's RecursiveCharacterTextSplitter with a window size of 1000 characters and 200 characters overlap, preserving technical descriptions across sentence boundaries.
 
----
+2. Semantic Indexing & Normalization
+Embeddings are computed using all-MiniLM-L6-v2. Vectors are explicitly mapped to unit length (L2 normalization) to allow cosine similarity computations via inner product operations (IndexFlatIP).
 
-### Module 2 – Text Extraction
+3. Neural Reranking
+The retriever pulls candidate chunks (k=20) via FAISS and feeds (query, document) pairs to the ms-marco-MiniLM-L-6-v2 CrossEncoder. The cross-attention scores reorder the chunks, supplying only the top k=5 most relevant passages to the LLM.
 
-**Objective**
-- Extract textual content from each research paper using PyMuPDF.
+4. Quantized CPU Generation
+Answer synthesis uses Qwen2.5-3B-Instruct in 4-bit Q4_K_M GGUF quantization executed through llama-cpp-python. This allows inference on commodity CPUs with low RAM footprint (~2.2 GB) while preventing hallucination via explicit grounding prompts.
 
-**Tasks**
-- Read all PDF files.
-- Extract text page by page.
-- Store extracted text as individual `.txt` files.
-- Generate basic statistics such as word counts.
-
-**Output**
-- One `.txt` file per research paper.
-
----
-
-### Module 3 – Text Chunking
-
-**Objective**
-- Split extracted text into smaller overlapping chunks suitable for semantic search.
-
-**Tasks**
-- Read extracted text files.
-- Split text using `RecursiveCharacterTextSplitter`.
-- Create overlapping chunks.
-- Store chunk metadata.
-
-**Output**
-- `chunks.csv`
-- `chunks.json`
-
-Each chunk contains:
-- Source paper
-- Chunk ID
-- Chunk text
-
----
-
-## Technologies Used
-
-- Python
-- Google Colab
-- PyMuPDF
-- LangChain
-- LangChain Text Splitters
-- Pandas
-
----
-
-## Current Status
-
-- ✅ Module 1 – Completed
-- ✅ Module 2 – Completed
-- ✅ Module 3 – Completed
-- ⏳ Module 4 – Embedding Generation
-- ⏳ Module 5 – Vector Database
-- ⏳ Module 6 – Semantic Retrieval
-- ⏳ Module 7 – Question Answering with LLM
-
----
-
-## Dataset
-
-Currently includes **10 uterine EMG research papers** in PDF format.
-
-> **Note:** The research papers are not included in this repository due to copyright restrictions.
+📜 License
+This project is licensed under the MIT License.

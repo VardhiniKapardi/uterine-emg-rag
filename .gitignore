@@ -1,1 +1,5 @@
-papers/
+data/raw/
+data/processed/
+.streamlit/
+ehg_rag_venv
+

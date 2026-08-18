@@ -1,5 +1,11 @@
-langchain
-
-langchain-community
-
 pymupdf
+langchain-text-splitters
+sentence-transformers
+faiss-cpu
+pandas
+numpy
+huggingface-hub
+llama-cpp-python
+streamlit
+torchvision
+requests

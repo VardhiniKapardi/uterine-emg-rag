@@ -1,4 +1,0 @@
-query,FAISS_Precision@5,FAISS_Recall@5,FAISS_MRR,Reranker_Precision@5,Reranker_Recall@5,Reranker_MRR
-What are the characteristics of uterine EMG signals?,1.0,0.2,1.0,1.0,0.2,1.0
-How can uterine EMG predict preterm labor?,0.4,0.4,0.3333333333333333,0.4,0.4,1.0
-What signal processing methods are used for uterine EMG?,1.0,0.2,1.0,1.0,0.4,1.0
