@@ -1,0 +1,585 @@
+[
+  {
+    "query_id": null,
+    "question": "What are the main characteristics of uterine electromyography (EMG) signals?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper1",
+      "paper7"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5531464700081437
+  },
+  {
+    "query_id": null,
+    "question": "What physiological activity generates uterine EMG signals?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper1",
+      "paper5",
+      "paper7"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.7227265726449519
+  },
+  {
+    "query_id": null,
+    "question": "How do uterine EMG signals change as pregnancy progresses?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper7",
+      "paper2",
+      "paper1",
+      "paper4"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5296347172140421
+  },
+  {
+    "query_id": null,
+    "question": "How does uterine electrical activity change during the transition from pregnancy to labor?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper1",
+      "paper4",
+      "paper7",
+      "paper2",
+      "paper5"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.830419897363192
+  },
+  {
+    "query_id": null,
+    "question": "What differences in uterine EMG activity have been observed between laboring and non-laboring women?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper7",
+      "paper1",
+      "paper2",
+      "paper4",
+      "paper5"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.6608397947263839
+  },
+  {
+    "query_id": null,
+    "question": "What frequency components are commonly observed in uterine EMG signals?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper1",
+      "paper6",
+      "paper10"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5531464700081437
+  },
+  {
+    "query_id": null,
+    "question": "What frequency bands have been used for analyzing uterine EMG or EHG signals?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper1",
+      "paper6",
+      "paper10"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5531464700081437
+  },
+  {
+    "query_id": null,
+    "question": "What is the significance of the dominant or peak frequency in uterine EMG analysis?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper10",
+      "paper1",
+      "paper7"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5087403079104241
+  },
+  {
+    "query_id": null,
+    "question": "How is power spectral density used to characterize uterine EMG signals?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper10",
+      "paper7",
+      "paper6"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.3391602052736161
+  },
+  {
+    "query_id": null,
+    "question": "What spectral features of uterine EMG have been investigated for assessing uterine activity?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper7",
+      "paper1",
+      "paper6",
+      "paper10"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5087403079104241
+  },
+  {
+    "query_id": null,
+    "question": "What time-domain features are commonly extracted from uterine EMG signals?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper10",
+      "paper7"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5531464700081437
+  },
+  {
+    "query_id": null,
+    "question": "How is root mean square (RMS) used in uterine EMG analysis?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper7",
+      "paper5",
+      "paper10",
+      "paper6"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5087403079104241
+  },
+  {
+    "query_id": null,
+    "question": "What nonlinear features have been used to characterize uterine EMG signals?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper7",
+      "paper5",
+      "paper10",
+      "paper4"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.639945385422766
+  },
+  {
+    "query_id": null,
+    "question": "What signal processing features have been used to quantify uterine electrical activity?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper6",
+      "paper7",
+      "paper1",
+      "paper5"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.6164336326286644
+  },
+  {
+    "query_id": null,
+    "question": "Which uterine EMG features have been investigated for predicting the onset of labor?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper7",
+      "paper1",
+      "paper2",
+      "paper4",
+      "paper6"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5296347172140421
+  },
+  {
+    "query_id": null,
+    "question": "How are electrodes positioned for recording uterine EMG signals?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper1",
+      "paper6",
+      "paper8"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5531464700081437
+  },
+  {
+    "query_id": null,
+    "question": "What electrode configurations have been used for non-invasive uterine EMG recording?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper1",
+      "paper10",
+      "paper6"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5531464700081437
+  },
+  {
+    "query_id": null,
+    "question": "What sampling frequencies have been used for uterine EMG recordings?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper1",
+      "paper6",
+      "paper7",
+      "paper10"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5531464700081437
+  },
+  {
+    "query_id": null,
+    "question": "What preprocessing steps are commonly applied to uterine EMG signals before analysis?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper1",
+      "paper4",
+      "paper10",
+      "paper7"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.7227265726449519
+  },
+  {
+    "query_id": null,
+    "question": "How has uterine EMG been used to predict preterm birth?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper7",
+      "paper4",
+      "paper1",
+      "paper2",
+      "paper8"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5296347172140421
+  },
+  {
+    "query_id": null,
+    "question": "Which uterine EMG features have been associated with preterm versus term delivery?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper7",
+      "paper4",
+      "paper1",
+      "paper2",
+      "paper6"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5296347172140421
+  },
+  {
+    "query_id": null,
+    "question": "How effective is uterine EMG for distinguishing preterm from term pregnancies?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper4",
+      "paper7",
+      "paper2",
+      "paper1",
+      "paper8"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.6548086577531307
+  },
+  {
+    "query_id": null,
+    "question": "What changes in uterine electrical activity are associated with the onset of labor?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper7",
+      "paper1",
+      "paper2",
+      "paper6",
+      "paper5"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5147714448836774
+  },
+  {
+    "query_id": null,
+    "question": "How can uterine EMG be used to monitor uterine contractions?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper8",
+      "paper7",
+      "paper1"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.48522855511632257
+  },
+  {
+    "query_id": null,
+    "question": "What evidence supports the use of EHG for identifying women at risk of preterm delivery?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper7",
+      "paper8",
+      "paper2",
+      "paper1",
+      "paper4"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.4468535299918563
+  },
+  {
+    "query_id": null,
+    "question": "What are the advantages of uterine EMG compared with conventional methods of monitoring uterine contractions?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper7",
+      "paper1",
+      "paper8"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5087403079104241
+  },
+  {
+    "query_id": null,
+    "question": "What machine learning methods have been applied to uterine EMG or EHG classification?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper4",
+      "paper1",
+      "paper8"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.7227265726449519
+  },
+  {
+    "query_id": null,
+    "question": "What features have been used as inputs to machine learning models for uterine EMG analysis?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper4",
+      "paper1",
+      "paper10",
+      "paper7"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.7227265726449519
+  },
+  {
+    "query_id": null,
+    "question": "What are the major limitations of uterine EMG or EHG as a method for pregnancy and labor assessment?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper7",
+      "paper2",
+      "paper1",
+      "paper5"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5296347172140421
+  },
+  {
+    "query_id": null,
+    "question": "What challenges affect the reliability and reproducibility of uterine EMG measurements?",
+    "gold_paper_ids": [
+      "paper1",
+      "paper2",
+      "paper3",
+      "paper4",
+      "paper5"
+    ],
+    "retrieved_paper_ids": [
+      "paper2",
+      "paper7",
+      "paper1"
+    ],
+    "hit_rate@5": 1,
+    "ndcg@5": 0.5087403079104241
+  }
+]
