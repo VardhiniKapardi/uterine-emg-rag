@@ -1,0 +1,4 @@
+query,precision@5,recall@5,MRR
+What are the characteristics of uterine EMG signals?,1.0,0.2,1.0
+How can uterine EMG predict preterm labor?,0.4,0.4,0.3333333333333333
+What signal processing methods are used for uterine EMG?,1.0,0.2,1.0

@@ -1,0 +1,453 @@
+[
+  {
+    "query": "What are the characteristics of uterine EMG signals?",
+    "answer": "Uterine EMG signals exhibit distinctive characteristics in both the time and frequency domains. Key features include amplitude, frequency content, temporal pattern, and propagation. \n\nThe amplitude of uterine EMG signals ranges from a few tens of microvolts up to about 1 millivolt on the abdominal surface during uterine contractions. Specifically, the higher-frequency \"fast\" component usually has an amplitude under 1 mV, while the low-frequency \"slow\" baseline shift can reach several millivolts. As labor progresses, the amplitude of uterine EMG signals tends to increase due to stronger and more synchronized contractions. However, absolute amplitude can vary widely between patients and with electrode placement, making it not a specific indicator of labor unless normalized within-subjects [Source 1].\n\nIn terms of frequency content, uterine EMG signals show a composite of slow baseline shifts and fast-wave components up to approximately 1 Hz. The signals typically manifest as low-frequency bursts correlating with contractions. Signal processing techniques, including spectral analysis and machine learning, have been applied to extract features such as peak frequency, which rises as labor approaches, and signal entropy, which decreases as contractions become more organized [Source 5].\n\nClinically, uterine EMG signals have shown value in accurately detecting contractions, distinguishing true from false labor, predicting impending preterm delivery, and characterizing labor efficiency. It holds advantages over traditional tocography, especially in cases of maternal",
+    "citations": {
+      "citations": [
+        1,
+        5
+      ],
+      "invalid_citations": [],
+      "all_citations_valid": true
+    },
+    "sources": [
+      {
+        "source_id": 1,
+        "paper": "paper2",
+        "chunk_id": 25,
+        "faiss_rank": 3,
+        "faiss_score": 0.7202328443527222,
+        "rerank_rank": 1,
+        "rerank_score": 8.740561485290527,
+        "text": "home environments.\n2.4. Signal Characteristics and Typical EHG Profiles\nUterine EMG signals have distinctive characteristics in both the time and frequency do-\nmains. Key features include amplitude, frequency content, temporal pattern, and propagation.\nAmplitude: The EHG is a low-amplitude signal. During uterine contractions, the peak-\nto-peak amplitude typically ranges from a few tens of microvolts up to about 1 millivolt on\nthe abdominal surface. Studies report that the higher-frequency “fast” component of EHG\nusually has amplitude under 1 mV, whereas the low-frequency “slow” baseline shift can\nreach several millivolts [10]. As labor progresses, the EHG amplitude tends to increase due\nto stronger and more synchronized contractions. However, absolute amplitude can vary\nwidely between patients and with electrode placement, so amplitude alone is not a specific\nindicator of labor unless normalized within-subject."
+      },
+      {
+        "source_id": 2,
+        "paper": "paper2",
+        "chunk_id": 55,
+        "faiss_rank": 9,
+        "faiss_score": 0.6870161294937134,
+        "rerank_rank": 2,
+        "rerank_score": 8.26572036743164,
+        "text": "to enhance our ability to monitor, predict, and manage labor through the lens of uterine\nelectrophysiology.\n3.4. Characteristics of Uterine EMG Signals (Cellular, Myometrial, and Abdominal Levels)\nUterine EMG manifests differently across biological scales. At the cellular level, sin-\ngle myocytes show rhythmic slow depolarizations with superimposed action-potential\nspikes recordable by microelectrodes; near term, cells fire regular bursts of long-duration\n(hundreds of milliseconds), calcium-driven spikes, an intrinsic pacemaker-like rhythmicity\nnot localized to any one cell. At the myometrial-tissue level, contact electrodes record the\nsummation of many myocytes as compound bursts that occur in phase with intrauterine\npressure, confirming the electrical activity as the direct precursor of contraction [10]; internal\nrecordings reach the millivolt range with sharp spike morphology and dominant frequen-\ncies below ~5 Hz. At the abdominal surface, EHG provides a filtered, lower-amplitude"
+      },
+      {
+        "source_id": 3,
+        "paper": "paper2",
+        "chunk_id": 44,
+        "faiss_rank": 1,
+        "faiss_score": 0.7209058403968811,
+        "rerank_rank": 3,
+        "rerank_score": 6.40878963470459,
+        "text": "invasive EMG is crucial for interpreting surface recordings and for developing models of\nuterine excitation and propagation.\n3.2. Physiological Basis of Uterine EMG vs. Skeletal Muscle EMG\nElectromyography in the classical sense often refers to recording electrical activity\nfrom skeletal muscle. Uterine muscle, being smooth muscle, differs significantly in its\nelectrophysiological behavior. These distinctions shape both the waveform characteristics\nand the interpretation of uterine EMG.\nExcitation mechanism: Skeletal muscle contractions result from somatic motor-neuron\nstimulation, leading to rapid, all-or-none action potentials. In contrast, uterine smooth\nmuscle is self-excitable, exhibiting intrinsic pacemaker activity modulated by hormonal\nand paracrine influences. Uterine action potentials are calcium-based plateau spikes with\nlong durations, supporting sustained contractions. Consequently, uterine EMG signals"
+      },
+      {
+        "source_id": 4,
+        "paper": "paper2",
+        "chunk_id": 54,
+        "faiss_rank": 4,
+        "faiss_score": 0.7177914977073669,
+        "rerank_rank": 4,
+        "rerank_score": 5.959493160247803,
+        "text": "systems could eventually provide a comprehensive assessment of uterine function, using\nEMG to detect excitability and timing while pressure sensors quantify contraction strength.\nUterine EMG represents a powerful window into the bioelectrical mechanism driving\nlabor. From early invasive studies to modern noninvasive EHG, it has illuminated the\nelectrophysiology of uterine contractions and provided a foundation for clinical innovation.\nDistinct from skeletal-muscle EMG, uterine EMG is characterized by slow, synchronous,\ncalcium-mediated depolarizations that reflect the coordinated excitability of smooth muscle\ntissue. Continued refinement of acquisition technologies and analytical models promises\nhttps://doi.org/10.3390/s26154669\nSensors 2026, 26, 4669\n13 of 23\nto enhance our ability to monitor, predict, and manage labor through the lens of uterine\nelectrophysiology.\n3.4. Characteristics of Uterine EMG Signals (Cellular, Myometrial, and Abdominal Levels)"
+      },
+      {
+        "source_id": 5,
+        "paper": "paper2",
+        "chunk_id": 87,
+        "faiss_rank": 19,
+        "faiss_score": 0.653823733329773,
+        "rerank_rank": 5,
+        "rerank_score": 5.5933732986450195,
+        "text": "how EHG/EMG signals originate from smooth-muscle action potentials, propagate via a\ncoupled uterine syncytium, and manifest as low-frequency bursts correlating with contrac-\ntions. Signal acquisition is feasible with surface electrodes and specialized amplifiers, and\nthe signals typically show a composite of slow baseline shifts and fast-wave components up\nto ~1 Hz. A multitude of signal-processing techniques, from spectral analysis to machine\nlearning, have been applied to extract features such as peak frequency, which rises as labor\nnears, or signal entropy, which falls as contractions become more organized. Clinically,\nuterine EMG has shown value in accurately detecting contractions, distinguishing true\nfrom false labor, predicting impending preterm delivery, and characterizing labor efficiency.\nIt holds advantages over traditional tocography, especially in cases of maternal obesity\nor preterm-labor diagnosis where mechanical methods falter. EHG-based monitors have"
+      }
+    ]
+  },
+  {
+    "query": "What frequency ranges are commonly observed in uterine EMG?",
+    "answer": "Commonly observed frequency ranges in uterine EMG include:\n\n- **Low-Frequency Ranges**: \n  - Uterine EMG signals are predominantly low-frequency, with dominant energy below 1 Hz [Source 3].\n  - The frequency content of uterine EMG signals is mainly under 5 Hz [Source 1][Source 2].\n\n- **Specific Frequency Bands**:\n  - Fast wave activity is captured below 5 Hz [Source 1].\n  - Baseline shifts can reach several millivolts, indicating lower frequency components [Source 3].\n\n- **Notable Frequencies**:\n  - Action potentials last much longer (50–1000 ms) compared to skeletal muscle action potentials [Source 2].\n  - The low-frequency nature demands specialized amplifiers and filters, as conventional EMG systems might otherwise suppress these frequencies as \"noise\" [Source 1].\n\n- **Additional Considerations**:\n  - Uterine EMG signals are low-amplitude, with peak-to-peak amplitudes ranging from a few tens of microvolts to about 1 millivolt [Source 3].\n  - The frequency content is mainly under 5 Hz, with some studies extending up to 100 Hz for detailed analysis [Source 1].\n\n[Source 1][Source 3]",
+    "citations": {
+      "citations": [
+        1,
+        2,
+        3
+      ],
+      "invalid_citations": [],
+      "all_citations_valid": true
+    },
+    "sources": [
+      {
+        "source_id": 1,
+        "paper": "paper2",
+        "chunk_id": 23,
+        "faiss_rank": 2,
+        "faiss_score": 0.7031248211860657,
+        "rerank_rank": 1,
+        "rerank_score": 6.945415496826172,
+        "text": "between 100 and 500 Hz are generally selected, which adequately cover the uterine EMG\nspectrum (<5 Hz).\nFiltering: Signal filtering is critical for isolating uterine activity. A band-pass filter\nis commonly applied: the high-pass cutoff is often set around 0.1 Hz to remove baseline\ndrift caused by respiration or electrode motion, while the low-pass cutoff is typically 3 to\n5 Hz to capture the dominant “fast wave” activity while suppressing maternal ECG and\nhigher-frequency noise. Some studies extend the low-pass limit up to 100 Hz for detailed\nEMG analysis, though for routine monitoring, uterine signal energy remains concentrated\nbelow 5 Hz. Powerline interference at 50/60 Hz can be further attenuated with notch filters.\nPractical measures such as skin preparation (light abrasion, conductive gel) and careful\nelectrode fixation also reduce artifacts. Bipolar or figure-of-eight configurations help cancel\ncommon-mode noise, improving signal fidelity."
+      },
+      {
+        "source_id": 2,
+        "paper": "paper2",
+        "chunk_id": 45,
+        "faiss_rank": 4,
+        "faiss_score": 0.6968706846237183,
+        "rerank_rank": 2,
+        "rerank_score": 6.737460613250732,
+        "text": "and paracrine influences. Uterine action potentials are calcium-based plateau spikes with\nlong durations, supporting sustained contractions. Consequently, uterine EMG signals\nare low-frequency, long-duration bursts rather than the brief spikes typical of skeletal-\nmuscle EMG.\nFrequency content: Typical skeletal-muscle EMG (from a biceps or leg muscle, for\nexample) has significant power in the 50–150 Hz range due to short-duration action poten-\ntials (2–5 ms) and fast conduction velocities. Uterine muscle action potentials last much\nlonger (50–1000 ms, including plateaus) and propagate slowly, yielding frequency content\nmainly under 5 Hz. This low-frequency nature demands specialized amplifiers and filters,\nas conventional EMG systems might otherwise suppress these frequencies as “noise” [10].\nPropagation and recruitment: Whereas skeletal muscles consist of independently\nfiring motor units, the uterus behaves as a functional syncytium. Gap junctions between"
+      },
+      {
+        "source_id": 3,
+        "paper": "paper2",
+        "chunk_id": 25,
+        "faiss_rank": 1,
+        "faiss_score": 0.7457717657089233,
+        "rerank_rank": 3,
+        "rerank_score": 5.899711608886719,
+        "text": "home environments.\n2.4. Signal Characteristics and Typical EHG Profiles\nUterine EMG signals have distinctive characteristics in both the time and frequency do-\nmains. Key features include amplitude, frequency content, temporal pattern, and propagation.\nAmplitude: The EHG is a low-amplitude signal. During uterine contractions, the peak-\nto-peak amplitude typically ranges from a few tens of microvolts up to about 1 millivolt on\nthe abdominal surface. Studies report that the higher-frequency “fast” component of EHG\nusually has amplitude under 1 mV, whereas the low-frequency “slow” baseline shift can\nreach several millivolts [10]. As labor progresses, the EHG amplitude tends to increase due\nto stronger and more synchronized contractions. However, absolute amplitude can vary\nwidely between patients and with electrode placement, so amplitude alone is not a specific\nindicator of labor unless normalized within-subject."
+      },
+      {
+        "source_id": 4,
+        "paper": "paper2",
+        "chunk_id": 49,
+        "faiss_rank": 6,
+        "faiss_score": 0.6802158951759338,
+        "rerank_rank": 4,
+        "rerank_score": 4.425163269042969,
+        "text": "by asynchronously firing motor units. Uterine EMG (bottom) consists of low-frequency bursts\n(dominant energy below ~1 Hz) of long-duration, calcium-mediated action potentials that summate\nas the uterus behaves as an electrical syncytium, superimposed on a slow-wave baseline. The two\ndiffer by roughly two orders of magnitude in dominant frequency and time scale.\n3.3. EMG Signal Acquisition Techniques (Beyond Surface EHG)\nAlthough surface EHG is the primary clinical and research method for recording\nuterine electrical activity, several other acquisition approaches have been explored, each\nbalancing signal fidelity and invasiveness (Figure 3).\nInternal uterine electrodes: In experimental or surgical contexts, electrodes can be\nplaced directly on the uterine wall or cervix, yielding high-fidelity, low-noise recordings.\nThese internal EMGs correlate closely with contraction pressure and are considered the"
+      },
+      {
+        "source_id": 5,
+        "paper": "paper2",
+        "chunk_id": 47,
+        "faiss_rank": 9,
+        "faiss_score": 0.6754269599914551,
+        "rerank_rank": 5,
+        "rerank_score": 4.275024890899658,
+        "text": "plateau phases yield smoother EMG waveforms. Additionally, subthreshold slow waves can\ncontribute to baseline activity, reflecting the uterus’s readiness for coordinated contraction.\nSurface vs. intracellular signals: Intracellular uterine action potentials range from\n40 to 80 mV, but surface or extracellular electrodes detect only microvolt-level signals\nafter attenuation through tissue layers. Direct myometrial electrodes record signals of tens\nof millivolts, comparable to skeletal-muscle needle EMG. Thus, surface EHG captures a\nfar-reduced, filtered representation of the uterine depolarization field. Understanding this\ndistinction is key to interpreting the relatively low amplitudes observed in clinical EHG.\nIn summary, the physiological basis of uterine EMG is rooted in smooth-muscle elec-\ntrophysiology: slower events, synchronous recruitment over large areas, heavy influence\nhttps://doi.org/10.3390/s26154669\nSensors 2026, 26, 4669\n11 of 23"
+      }
+    ]
+  },
+  {
+    "query": "How is uterine EMG used for detecting labor?",
+    "answer": "Uterine EMG (Electromyogram) is utilized for detecting labor through its ability to capture electrical signals associated with uterine contractions. These signals are recorded on the abdominal surface and correlate with contraction pressure. Uterine EMG serves as a reference standard for validating non-invasive methods. It helps in distinguishing between effective contractions leading to fetal expulsion and mechanical obstructions. Additionally, changes in cell excitability and coupling required for effective contractions are reflected in EHG parameters. Uterine EMG is particularly useful in clinical settings for monitoring labor and predicting preterm birth. [Source 4][Source 3]",
+    "citations": {
+      "citations": [
+        3,
+        4
+      ],
+      "invalid_citations": [],
+      "all_citations_valid": true
+    },
+    "sources": [
+      {
+        "source_id": 1,
+        "paper": "paper2",
+        "chunk_id": 54,
+        "faiss_rank": 10,
+        "faiss_score": 0.7124552726745605,
+        "rerank_rank": 1,
+        "rerank_score": 7.044732570648193,
+        "text": "systems could eventually provide a comprehensive assessment of uterine function, using\nEMG to detect excitability and timing while pressure sensors quantify contraction strength.\nUterine EMG represents a powerful window into the bioelectrical mechanism driving\nlabor. From early invasive studies to modern noninvasive EHG, it has illuminated the\nelectrophysiology of uterine contractions and provided a foundation for clinical innovation.\nDistinct from skeletal-muscle EMG, uterine EMG is characterized by slow, synchronous,\ncalcium-mediated depolarizations that reflect the coordinated excitability of smooth muscle\ntissue. Continued refinement of acquisition technologies and analytical models promises\nhttps://doi.org/10.3390/s26154669\nSensors 2026, 26, 4669\n13 of 23\nto enhance our ability to monitor, predict, and manage labor through the lens of uterine\nelectrophysiology.\n3.4. Characteristics of Uterine EMG Signals (Cellular, Myometrial, and Abdominal Levels)"
+      },
+      {
+        "source_id": 2,
+        "paper": "paper2",
+        "chunk_id": 60,
+        "faiss_rank": 11,
+        "faiss_score": 0.7121244668960571,
+        "rerank_rank": 2,
+        "rerank_score": 6.229656219482422,
+        "text": "Sensors 2026, 26, 4669\n14 of 23\n3.6. Clinical and Research Applications of Uterine EMG\nMost clinical applications of uterine EMG are those already described for EHG in\nSection 2.6; here we note the perspectives that a broader, including invasive and preclinical,\nview adds. As a research reference standard, internal uterine EMG has been used to validate\nexternal monitors, as electrical activation provides direct evidence that a contraction has\noccurred. In pharmacological studies, EMG quantifies drug effects objectively: tocolytics\n(beta-agonists, magnesium sulfate, nifedipine) reduce burst frequency and amplitude,\nwhereas uterotonics increase activity. EMG also offers a window on labor disorders,\ndistinguishing electrically overactive but ineffective (dyscoordinated) contractions from\nmechanical obstruction, and has been proposed as a means of detecting uterine muscle\nfatigue [30]. Postpartum, absent or insufficient electrical activity could, in principle, flag"
+      },
+      {
+        "source_id": 3,
+        "paper": "paper7",
+        "chunk_id": 34,
+        "faiss_rank": 13,
+        "faiss_score": 0.7086231112480164,
+        "rerank_rank": 3,
+        "rerank_score": 6.171257972717285,
+        "text": "are required for effective contractions that end in the delivery (expulsion) of the fetus.\nSince uterine contractions are a result of the electrical activity within the myometrium, the external meas-\nurement of uterine electrical activity for monitoring and analyzing uterine contractility can contribute to a \nbetter understanding of labor and preterm labor etiology. This technique records non-invasively the electrical \nactivity associated with the contraction of the myometrial cells of the uterus from the maternal abdominal wall \nand is called the uterine electromyogram (EMG) or electrohysterogram (EHG) (see figure 1). It has been shown \nto provide better contraction detectability than TOCO (Alberola-Rubio et al 2013), especially in obese patients \n(Euliano et al 2007). In addition, changes in cell excitability and coupling required for effective contractions \nthat lead to delivery are reflected in changes in several EHG parameters (Lucovnik et al 2011). Several stud-"
+      },
+      {
+        "source_id": 4,
+        "paper": "paper2",
+        "chunk_id": 17,
+        "faiss_rank": 18,
+        "faiss_score": 0.6863988041877747,
+        "rerank_rank": 4,
+        "rerank_score": 5.985322952270508,
+        "text": "that uterine contractions are accompanied by reproducible electrical signals detectable\non the abdominal surface. In 1993, Devedeux and colleagues published a critical review\nsynthesizing animal and human uterine EMG findings, solidifying electrohysterography as\na viable modality for monitoring pregnancy and labor [10]. Since then, numerous studies\nhave advanced EHG technology and analysis, aiming to develop it into a clinical tool for\nlabor monitoring and preterm-birth prediction.\n2.2. Physiological Basis of the EHG Signal\nUterine contractions originate from the coordinated electrical activation of the my-\nometrium (uterine smooth muscle). Unlike skeletal muscle, which is governed by somatic\nmotor neurons and organized into motor units, uterine smooth muscle is hormonally\nprimed and intrinsically excitable, especially as pregnancy progresses. The physiolog-\nical basis of the EHG lies in the generation and propagation of uterine smooth muscle\naction potentials."
+      },
+      {
+        "source_id": 5,
+        "paper": "paper2",
+        "chunk_id": 50,
+        "faiss_rank": 1,
+        "faiss_score": 0.7609962821006775,
+        "rerank_rank": 5,
+        "rerank_score": 4.8143439292907715,
+        "text": "placed directly on the uterine wall or cervix, yielding high-fidelity, low-noise recordings.\nThese internal EMGs correlate closely with contraction pressure and are considered the\nreference standard for validating non-invasive methods. However, in human clinical care,\ntheir use is restricted to research due to infection risk and invasiveness.\nNeedle EMG: Historically, fine-needle electrodes were inserted transabdominally into\nthe myometrium to record local activity. Despite producing strong, precise signals, this\napproach proved painful and hazardous due to the risk of infection, uterine irritability, and\nfetal injury. It is now obsolete outside of limited physiological research.\nVaginal/cervical probes: Electrodes placed around the cervix or within the vagina\ncan record activity from the lower uterine segment. These devices have been evaluated\nfor preterm-labor detection, but results are inconsistent due to interference from pelvic-"
+      }
+    ]
+  },
+  {
+    "query": "What factors affect uterine EMG signal quality?",
+    "answer": "The quality of uterine EMG signals is affected by several factors:\n\n- **Electrode Placement**: Surface EHG captures a reduced, filtered representation of the uterine depolarization field. Placement on the abdominal surface distorts the signal compared to intracellular or internal recordings.\n\n- **Signal Attenuation**: Surface EHG signals are attenuated after passing through tissue layers, leading to reduced amplitude compared to intracellular or internal recordings.\n\n- **Frequency Content**: Uterine EMG signals are low-frequency, long-duration bursts. Conventional EMG systems might suppress these frequencies as \"noise,\" demanding specialized amplifiers and filters.\n\n- **Amplitude**: Uterine EMG signals are low-amplitude, ranging from a few tens of microvolts to several millivolts. Higher-frequency components are typically under 1 mV, while low-frequency baseline shifts can reach several millivolts.\n\n- **Temporal Pattern**: Uterine EMG signals consist of low-frequency bursts of long-duration, calcium-mediated action potentials. These signals are superimposed on a slow-wave baseline.\n\n- **Propagation and Recruitment**: The uterus behaves as a functional syncytium, with gap junctions between cells allowing for synchronous recruitment over large areas. \n\n- **Labor Progression**: Labor progression increases the amplitude of EHG signals due to stronger and more synchronized contractions, though absolute amplitude varies widely between patients and electrode placements.\n\n- **Biological Scales**: Uterine EMG manifests differently",
+    "citations": {
+      "citations": [],
+      "invalid_citations": [],
+      "all_citations_valid": true
+    },
+    "sources": [
+      {
+        "source_id": 1,
+        "paper": "paper2",
+        "chunk_id": 45,
+        "faiss_rank": 16,
+        "faiss_score": 0.6791199445724487,
+        "rerank_rank": 1,
+        "rerank_score": 4.516506671905518,
+        "text": "and paracrine influences. Uterine action potentials are calcium-based plateau spikes with\nlong durations, supporting sustained contractions. Consequently, uterine EMG signals\nare low-frequency, long-duration bursts rather than the brief spikes typical of skeletal-\nmuscle EMG.\nFrequency content: Typical skeletal-muscle EMG (from a biceps or leg muscle, for\nexample) has significant power in the 50–150 Hz range due to short-duration action poten-\ntials (2–5 ms) and fast conduction velocities. Uterine muscle action potentials last much\nlonger (50–1000 ms, including plateaus) and propagate slowly, yielding frequency content\nmainly under 5 Hz. This low-frequency nature demands specialized amplifiers and filters,\nas conventional EMG systems might otherwise suppress these frequencies as “noise” [10].\nPropagation and recruitment: Whereas skeletal muscles consist of independently\nfiring motor units, the uterus behaves as a functional syncytium. Gap junctions between"
+      },
+      {
+        "source_id": 2,
+        "paper": "paper2",
+        "chunk_id": 25,
+        "faiss_rank": 1,
+        "faiss_score": 0.7511072754859924,
+        "rerank_rank": 2,
+        "rerank_score": 3.9153521060943604,
+        "text": "home environments.\n2.4. Signal Characteristics and Typical EHG Profiles\nUterine EMG signals have distinctive characteristics in both the time and frequency do-\nmains. Key features include amplitude, frequency content, temporal pattern, and propagation.\nAmplitude: The EHG is a low-amplitude signal. During uterine contractions, the peak-\nto-peak amplitude typically ranges from a few tens of microvolts up to about 1 millivolt on\nthe abdominal surface. Studies report that the higher-frequency “fast” component of EHG\nusually has amplitude under 1 mV, whereas the low-frequency “slow” baseline shift can\nreach several millivolts [10]. As labor progresses, the EHG amplitude tends to increase due\nto stronger and more synchronized contractions. However, absolute amplitude can vary\nwidely between patients and with electrode placement, so amplitude alone is not a specific\nindicator of labor unless normalized within-subject."
+      },
+      {
+        "source_id": 3,
+        "paper": "paper2",
+        "chunk_id": 55,
+        "faiss_rank": 19,
+        "faiss_score": 0.6737064719200134,
+        "rerank_rank": 3,
+        "rerank_score": 1.9465123414993286,
+        "text": "to enhance our ability to monitor, predict, and manage labor through the lens of uterine\nelectrophysiology.\n3.4. Characteristics of Uterine EMG Signals (Cellular, Myometrial, and Abdominal Levels)\nUterine EMG manifests differently across biological scales. At the cellular level, sin-\ngle myocytes show rhythmic slow depolarizations with superimposed action-potential\nspikes recordable by microelectrodes; near term, cells fire regular bursts of long-duration\n(hundreds of milliseconds), calcium-driven spikes, an intrinsic pacemaker-like rhythmicity\nnot localized to any one cell. At the myometrial-tissue level, contact electrodes record the\nsummation of many myocytes as compound bursts that occur in phase with intrauterine\npressure, confirming the electrical activity as the direct precursor of contraction [10]; internal\nrecordings reach the millivolt range with sharp spike morphology and dominant frequen-\ncies below ~5 Hz. At the abdominal surface, EHG provides a filtered, lower-amplitude"
+      },
+      {
+        "source_id": 4,
+        "paper": "paper2",
+        "chunk_id": 47,
+        "faiss_rank": 2,
+        "faiss_score": 0.7301763296127319,
+        "rerank_rank": 4,
+        "rerank_score": 1.751453161239624,
+        "text": "plateau phases yield smoother EMG waveforms. Additionally, subthreshold slow waves can\ncontribute to baseline activity, reflecting the uterus’s readiness for coordinated contraction.\nSurface vs. intracellular signals: Intracellular uterine action potentials range from\n40 to 80 mV, but surface or extracellular electrodes detect only microvolt-level signals\nafter attenuation through tissue layers. Direct myometrial electrodes record signals of tens\nof millivolts, comparable to skeletal-muscle needle EMG. Thus, surface EHG captures a\nfar-reduced, filtered representation of the uterine depolarization field. Understanding this\ndistinction is key to interpreting the relatively low amplitudes observed in clinical EHG.\nIn summary, the physiological basis of uterine EMG is rooted in smooth-muscle elec-\ntrophysiology: slower events, synchronous recruitment over large areas, heavy influence\nhttps://doi.org/10.3390/s26154669\nSensors 2026, 26, 4669\n11 of 23"
+      },
+      {
+        "source_id": 5,
+        "paper": "paper2",
+        "chunk_id": 49,
+        "faiss_rank": 6,
+        "faiss_score": 0.7071802616119385,
+        "rerank_rank": 5,
+        "rerank_score": 1.5563933849334717,
+        "text": "by asynchronously firing motor units. Uterine EMG (bottom) consists of low-frequency bursts\n(dominant energy below ~1 Hz) of long-duration, calcium-mediated action potentials that summate\nas the uterus behaves as an electrical syncytium, superimposed on a slow-wave baseline. The two\ndiffer by roughly two orders of magnitude in dominant frequency and time scale.\n3.3. EMG Signal Acquisition Techniques (Beyond Surface EHG)\nAlthough surface EHG is the primary clinical and research method for recording\nuterine electrical activity, several other acquisition approaches have been explored, each\nbalancing signal fidelity and invasiveness (Figure 3).\nInternal uterine electrodes: In experimental or surgical contexts, electrodes can be\nplaced directly on the uterine wall or cervix, yielding high-fidelity, low-noise recordings.\nThese internal EMGs correlate closely with contraction pressure and are considered the"
+      }
+    ]
+  },
+  {
+    "query": "What signal processing methods are used for uterine EMG?",
+    "answer": "Signal processing methods for uterine EMG include spectral analysis, machine learning, and other advanced techniques. These methods are used to extract features such as peak frequency, which rises as labor nears, and signal entropy, which falls as contractions become more organized. [Source 2] Additionally, advanced algorithms have been reviewed, including those involving AI/ML-based approaches, which cover various aspects such as EHG preprocessing, signal extraction, uterine contraction detection, term/preterm birth prediction, and labor/non-labor classification. [Source 4]",
+    "citations": {
+      "citations": [
+        2,
+        4
+      ],
+      "invalid_citations": [],
+      "all_citations_valid": true
+    },
+    "sources": [
+      {
+        "source_id": 1,
+        "paper": "paper2",
+        "chunk_id": 49,
+        "faiss_rank": 1,
+        "faiss_score": 0.773608922958374,
+        "rerank_rank": 1,
+        "rerank_score": 5.892669677734375,
+        "text": "by asynchronously firing motor units. Uterine EMG (bottom) consists of low-frequency bursts\n(dominant energy below ~1 Hz) of long-duration, calcium-mediated action potentials that summate\nas the uterus behaves as an electrical syncytium, superimposed on a slow-wave baseline. The two\ndiffer by roughly two orders of magnitude in dominant frequency and time scale.\n3.3. EMG Signal Acquisition Techniques (Beyond Surface EHG)\nAlthough surface EHG is the primary clinical and research method for recording\nuterine electrical activity, several other acquisition approaches have been explored, each\nbalancing signal fidelity and invasiveness (Figure 3).\nInternal uterine electrodes: In experimental or surgical contexts, electrodes can be\nplaced directly on the uterine wall or cervix, yielding high-fidelity, low-noise recordings.\nThese internal EMGs correlate closely with contraction pressure and are considered the"
+      },
+      {
+        "source_id": 2,
+        "paper": "paper2",
+        "chunk_id": 87,
+        "faiss_rank": 8,
+        "faiss_score": 0.7087611556053162,
+        "rerank_rank": 2,
+        "rerank_score": 5.877416133880615,
+        "text": "how EHG/EMG signals originate from smooth-muscle action potentials, propagate via a\ncoupled uterine syncytium, and manifest as low-frequency bursts correlating with contrac-\ntions. Signal acquisition is feasible with surface electrodes and specialized amplifiers, and\nthe signals typically show a composite of slow baseline shifts and fast-wave components up\nto ~1 Hz. A multitude of signal-processing techniques, from spectral analysis to machine\nlearning, have been applied to extract features such as peak frequency, which rises as labor\nnears, or signal entropy, which falls as contractions become more organized. Clinically,\nuterine EMG has shown value in accurately detecting contractions, distinguishing true\nfrom false labor, predicting impending preterm delivery, and characterizing labor efficiency.\nIt holds advantages over traditional tocography, especially in cases of maternal obesity\nor preterm-labor diagnosis where mechanical methods falter. EHG-based monitors have"
+      },
+      {
+        "source_id": 3,
+        "paper": "paper1",
+        "chunk_id": 30,
+        "faiss_rank": 12,
+        "faiss_score": 0.7035932540893555,
+        "rerank_rank": 3,
+        "rerank_score": 5.553081035614014,
+        "text": "papers and articles published before 2010 were excluded. A total of 46 \nstudies that tested advanced signal processing methods or AI/ML-based \nalgorithms met these criteria and form the foundation of this review.\nThe remainder of this paper is organized as follows: Section 2 \ndiscusses the characteristics of EHG signals, focusing on different types \nof uterine contractions and common sources of interference. Section 3 \nexamines EHG signal recording, emphasizing the number and place-\nment of sensing electrodes, and provides a summary of publicly avail-\nable EHG datasets and their parameters. Section 4 reviews advanced \nalgorithms, including AI/ML-based approaches, for processing and an-\nalyzing EHG signals. This section is divided into five thematic areas: \nEHG preprocessing, signal extraction, uterine contraction detection, \nterm/preterm birth prediction, and labor/non-labor record classifi-\ncation. Evaluation metrics used to assess extraction, detection, and"
+      },
+      {
+        "source_id": 4,
+        "paper": "paper2",
+        "chunk_id": 41,
+        "faiss_rank": 2,
+        "faiss_score": 0.7507511377334595,
+        "rerank_rank": 4,
+        "rerank_score": 4.786043167114258,
+        "text": "EMG, the physiological distinctions between uterine and skeletal muscle activity, and the\ntechnical methods used to acquire and interpret uterine EMG signals. In current clinical\npractice, “uterine EMG” is effectively synonymous with EHG; the invasive and multiscale\nmaterial below is included to ground interpretation of the surface signal, not as a separate\nclinical modality.\n3.1. Historical Development and Context\nThe study of uterine EMG has evolved alongside the development of EHG. Early\ninvestigations in the period of 1920–1940 employed intracellular electrodes or organ-bath\nsetups in animal tissue to record spontaneous uterine electrical oscillations. These founda-\ntional experiments established that the uterus generates its own rhythmic depolarizations,\nlaying the groundwork for understanding uterine excitability.\nBy the 1960s, physiologists such as Arpad Csapo advanced the field through in vivo"
+      },
+      {
+        "source_id": 5,
+        "paper": "paper2",
+        "chunk_id": 40,
+        "faiss_rank": 14,
+        "faiss_score": 0.700035035610199,
+        "rerank_rank": 5,
+        "rerank_score": 4.778633117675781,
+        "text": "unfamiliar with EHG tracings, integration into monitors and records is incomplete, and,\nas with any diagnostic test, false positives or negatives carry clinical and ethical costs;\nlarge-scale validation and training are prerequisites for routine use.\n3. Electromyography (EMG) for Uterine Contractility\nEMG, in the context of uterine contractility, encompasses techniques that measure\nthe electrical activity generated by uterine smooth muscle. While EHG represents the\nnoninvasive, surface-based form of uterine EMG, a broader view includes invasive record-\nings, biophysical mechanisms, and comparative electromyographic principles drawn from\nclassical muscle physiology. This section outlines the historical development of uterine\nEMG, the physiological distinctions between uterine and skeletal muscle activity, and the\ntechnical methods used to acquire and interpret uterine EMG signals. In current clinical"
+      }
+    ]
+  },
+  {
+    "query": "How does uterine electrical activity change during pregnancy?",
+    "answer": "During pregnancy, uterine electrical activity changes dynamically and becomes more intense and synchronized as labor approaches. [Source 2] Electrical activity is initially scarce and poorly coordinated at early gestational ages but becomes more pronounced and synchronized as labor nears. [Source 2] Changes in uterine electrical activity can reflect myometrial properties that distinguish between true and false labor contractions. [Source 2] \n\nThe synchronization of electrical signals across many fibers produces a compound electrical signal that correlates with uterine contractions. [Source 1] As pregnancy progresses, there is an increase in pressure and spontaneous electrical activity, which can be observed and recorded. [Source 3] \n\nThese changes in electrical activity can be used to monitor and analyze uterine contractility, contributing to a better understanding of labor and preterm labor etiology. [Source 7] \n\nIn summary, uterine electrical activity becomes more coordinated and intense as labor approaches, reflecting changes in myometrial properties and contractility.",
+    "citations": {
+      "citations": [
+        1,
+        2,
+        3,
+        7
+      ],
+      "invalid_citations": [
+        7
+      ],
+      "all_citations_valid": false
+    },
+    "sources": [
+      {
+        "source_id": 1,
+        "paper": "paper2",
+        "chunk_id": 18,
+        "faiss_rank": 4,
+        "faiss_score": 0.6963406801223755,
+        "rerank_rank": 1,
+        "rerank_score": 7.100956916809082,
+        "text": "primed and intrinsically excitable, especially as pregnancy progresses. The physiolog-\nical basis of the EHG lies in the generation and propagation of uterine smooth muscle\naction potentials.\nMyometrial electrical activity: Uterine myocytes generate spontaneous depolarizations.\nDuring pregnancy, rising estrogen and declining progesterone levels near term increase\nexpression of ion channels and gap junctions (connexin-43) in the myometrium, enhancing\nexcitability and electrical coupling between cells [11]. These changes create a syncytium\nthat can support long-range propagation of electrical signals. Action potentials in uterine\nmuscle typically manifest as bursts of rapid spikes (from Ca2+-mediated currents), often\nsuperimposed on a slow depolarizing plateau. The synchronized bursts across many fibers\nproduce a compound electrical signal that correlates with a contraction.\nPacemakers and propagation: The uterus does not have a single pacemaker region;"
+      },
+      {
+        "source_id": 2,
+        "paper": "paper7",
+        "chunk_id": 35,
+        "faiss_rank": 17,
+        "faiss_score": 0.6665840744972229,
+        "rerank_rank": 2,
+        "rerank_score": 6.61408805847168,
+        "text": "that lead to delivery are reflected in changes in several EHG parameters (Lucovnik et al 2011). Several stud-\nies have shown that EHG features are ‘dynamic’ and change throughout pregnancy (Devedeux et al 1993). At \nearly gestational ages uterine electrical activity is scarce and poorly coordinated, however as labor approaches \nit becomes more and more intense and synchronized (Devedeux et al 1993, Garfield and Maner 2007). Many \nstudies have shown that different uterine EMG parameters can indicate myometrial properties that can dis-\ntinguish between true and ‘false’ labor contractions in term and preterm pregnancies (Fele-Zorz et al 2008, \nSchlembach et al 2009, Sikora et al 2011). Uterine EMG can help to identify patients in true labor better than \nany other method presently employed in clinics (Lucovnik et al 2011). Furthermore, analysis of EHG signals \nis non-invasive for both fetus and mother, does not require any special facilities or equipment and is relatively \nlow-cost."
+      },
+      {
+        "source_id": 3,
+        "paper": "paper6",
+        "chunk_id": 31,
+        "faiss_rank": 1,
+        "faiss_score": 0.7346844673156738,
+        "rerank_rank": 3,
+        "rerank_score": 4.79350471496582,
+        "text": "quiescent periods of electrical activity (burst), which are typical\nof pregnancy and observed more frequently duringmenses. Note-\nworthy, as an initial step toward the use of EHG outside preg-\nnancy, our approach is based on previous EHG studies in\npregnancy.\nDue to the size increase and hormonal changes that the\nuterus undergoes in pregnancy, some additional challenges\nshould be accounted for when using EHG measurements out-\nside pregnancy. Yet, similarly to pregnancy, pressure increases\nhave also been measured during contractions outside\npregnancy,26,55 and spontaneous electrical activity has\nbeen observed and recorded.55,82\nFurthermore, the significance of the features extracted during\nmenses supports the employment of the proposed methods for\nthe investigation of dysfunctions related to menses, such as dys-\nmenorrhea.Future studies,aiming atdeveloping tailoredmethods\nfor the analysis of the EHG outside pregnancy, may also reveal"
+      },
+      {
+        "source_id": 4,
+        "paper": "paper4",
+        "chunk_id": 68,
+        "faiss_rank": 2,
+        "faiss_score": 0.7192350625991821,
+        "rerank_rank": 4,
+        "rerank_score": 4.376847267150879,
+        "text": "[36] O. Grgic, R. Matijevic, O. Vasilj, Placental site does not change background uterine \nelectromyographic activity in the middle trimester of pregnancy, Eur. J. Obstet. \nGynecol. Reprod. Biol. 127 (2) (Aug. 2006) 209–212. \n[37] G. Kavˇsek, M. Pajntar, B. Leskoˇsek, Electromyographic Activity of the Uterus Above \nthe Placental Implantation Site, Gynecol. Obstet. Invest. 48 (2) (1999) 81–84. \n[38] A. Diaz-Martinez, et al., A comparative study of vaginal labor and caesarean \nsection postpartum uterine myoelectrical activity, Sensors (Switzerland) 20 (11) \n(2020) Jun. \n[39] J. Mas-Cabo, et al., Robust characterization of the uterine myoelectrical activity in \ndifferent obstetric scenarios, Entropy 22 (7) (Jul. 2020). \n[40] A. Alexandersson, T. Steingrimsdottir, J. Terrien, C. Marque, B. Karlsson, The \nIcelandic 16-electrode electrohysterogram database, Sci. Data 2 (1) (Apr. 2015) \n1–9. \n[41] F. Esgalhado, et al., Automatic contraction detection using uterine"
+      },
+      {
+        "source_id": 5,
+        "paper": "paper7",
+        "chunk_id": 34,
+        "faiss_rank": 10,
+        "faiss_score": 0.6794858574867249,
+        "rerank_rank": 5,
+        "rerank_score": 4.281569004058838,
+        "text": "are required for effective contractions that end in the delivery (expulsion) of the fetus.\nSince uterine contractions are a result of the electrical activity within the myometrium, the external meas-\nurement of uterine electrical activity for monitoring and analyzing uterine contractility can contribute to a \nbetter understanding of labor and preterm labor etiology. This technique records non-invasively the electrical \nactivity associated with the contraction of the myometrial cells of the uterus from the maternal abdominal wall \nand is called the uterine electromyogram (EMG) or electrohysterogram (EHG) (see figure 1). It has been shown \nto provide better contraction detectability than TOCO (Alberola-Rubio et al 2013), especially in obese patients \n(Euliano et al 2007). In addition, changes in cell excitability and coupling required for effective contractions \nthat lead to delivery are reflected in changes in several EHG parameters (Lucovnik et al 2011). Several stud-"
+      }
+    ]
+  },
+  {
+    "query": "What are the challenges associated with uterine EMG analysis?",
+    "answer": "The challenges associated with uterine EMG analysis include:\n\n- The analytical pipeline for uterine EMG largely mirrors that described for EHG, with specific considerations. For instance, recording scale dictates the achievable features: internal or animal recordings resolve individual action potentials (spike amplitude, duration, firing rate), whereas surface EHG yields only aggregate envelope and spectral features. [Source 4]\n- Because clinical classifiers must ultimately be trusted by clinicians, there is growing emphasis on models whose features are biologically interpretable rather than opaque. Nonlinear parameterizations that map onto myometrial activity are increasingly important. [Source 4]\n- There is a need for large-scale validation and training to ensure routine use. Integration into monitors and records is incomplete, and false positives or negatives carry clinical and ethical costs. [Source 3]\n- Differentiating electrically overactive but ineffective (dyscoordinated) contractions from mechanical obstruction remains challenging. [Source 2]\n- The technical methods used to acquire and interpret uterine EMG signals vary depending on the scale of recording. Internal or animal recordings resolve individual action potentials, while surface EHG yields only aggregate envelope and spectral features. [Source 4]",
+    "citations": {
+      "citations": [
+        2,
+        3,
+        4
+      ],
+      "invalid_citations": [],
+      "all_citations_valid": true
+    },
+    "sources": [
+      {
+        "source_id": 1,
+        "paper": "paper2",
+        "chunk_id": 54,
+        "faiss_rank": 11,
+        "faiss_score": 0.6462281346321106,
+        "rerank_rank": 1,
+        "rerank_score": 1.885554552078247,
+        "text": "systems could eventually provide a comprehensive assessment of uterine function, using\nEMG to detect excitability and timing while pressure sensors quantify contraction strength.\nUterine EMG represents a powerful window into the bioelectrical mechanism driving\nlabor. From early invasive studies to modern noninvasive EHG, it has illuminated the\nelectrophysiology of uterine contractions and provided a foundation for clinical innovation.\nDistinct from skeletal-muscle EMG, uterine EMG is characterized by slow, synchronous,\ncalcium-mediated depolarizations that reflect the coordinated excitability of smooth muscle\ntissue. Continued refinement of acquisition technologies and analytical models promises\nhttps://doi.org/10.3390/s26154669\nSensors 2026, 26, 4669\n13 of 23\nto enhance our ability to monitor, predict, and manage labor through the lens of uterine\nelectrophysiology.\n3.4. Characteristics of Uterine EMG Signals (Cellular, Myometrial, and Abdominal Levels)"
+      },
+      {
+        "source_id": 2,
+        "paper": "paper2",
+        "chunk_id": 60,
+        "faiss_rank": 6,
+        "faiss_score": 0.6609180569648743,
+        "rerank_rank": 2,
+        "rerank_score": 1.0835082530975342,
+        "text": "Sensors 2026, 26, 4669\n14 of 23\n3.6. Clinical and Research Applications of Uterine EMG\nMost clinical applications of uterine EMG are those already described for EHG in\nSection 2.6; here we note the perspectives that a broader, including invasive and preclinical,\nview adds. As a research reference standard, internal uterine EMG has been used to validate\nexternal monitors, as electrical activation provides direct evidence that a contraction has\noccurred. In pharmacological studies, EMG quantifies drug effects objectively: tocolytics\n(beta-agonists, magnesium sulfate, nifedipine) reduce burst frequency and amplitude,\nwhereas uterotonics increase activity. EMG also offers a window on labor disorders,\ndistinguishing electrically overactive but ineffective (dyscoordinated) contractions from\nmechanical obstruction, and has been proposed as a means of detecting uterine muscle\nfatigue [30]. Postpartum, absent or insufficient electrical activity could, in principle, flag"
+      },
+      {
+        "source_id": 3,
+        "paper": "paper2",
+        "chunk_id": 40,
+        "faiss_rank": 1,
+        "faiss_score": 0.7117084264755249,
+        "rerank_rank": 3,
+        "rerank_score": 0.8779293894767761,
+        "text": "unfamiliar with EHG tracings, integration into monitors and records is incomplete, and,\nas with any diagnostic test, false positives or negatives carry clinical and ethical costs;\nlarge-scale validation and training are prerequisites for routine use.\n3. Electromyography (EMG) for Uterine Contractility\nEMG, in the context of uterine contractility, encompasses techniques that measure\nthe electrical activity generated by uterine smooth muscle. While EHG represents the\nnoninvasive, surface-based form of uterine EMG, a broader view includes invasive record-\nings, biophysical mechanisms, and comparative electromyographic principles drawn from\nclassical muscle physiology. This section outlines the historical development of uterine\nEMG, the physiological distinctions between uterine and skeletal muscle activity, and the\ntechnical methods used to acquire and interpret uterine EMG signals. In current clinical"
+      },
+      {
+        "source_id": 4,
+        "paper": "paper2",
+        "chunk_id": 58,
+        "faiss_rank": 16,
+        "faiss_score": 0.6323368549346924,
+        "rerank_rank": 4,
+        "rerank_score": 0.731767475605011,
+        "text": "3.5. Signal Processing and Feature Extraction for Uterine EMG\nThe analytical pipeline for uterine EMG largely mirrors that described for EHG in\nSection 2.5: spectral parameters (peak and median frequency, band-power ratios), am-\nplitude and burst metrics, propagation and coherence measures, nonlinear and entropy\nfeatures, and, increasingly, machine-learning and deep-learning classifiers [17]. Two con-\nsiderations are specific to the broader EMG setting. First, recording scale dictates the\nachievable features: internal or animal recordings resolve individual action potentials\n(spike amplitude, duration, firing rate), whereas surface EHG yields only aggregate enve-\nlope and spectral features. Second, because clinical classifiers must ultimately be trusted\nby clinicians, there is growing emphasis on models whose features are biologically in-\nterpretable rather than opaque; nonlinear parameterizations that map onto myometrial"
+      },
+      {
+        "source_id": 5,
+        "paper": "paper2",
+        "chunk_id": 41,
+        "faiss_rank": 4,
+        "faiss_score": 0.6771596670150757,
+        "rerank_rank": 5,
+        "rerank_score": 0.6798421740531921,
+        "text": "EMG, the physiological distinctions between uterine and skeletal muscle activity, and the\ntechnical methods used to acquire and interpret uterine EMG signals. In current clinical\npractice, “uterine EMG” is effectively synonymous with EHG; the invasive and multiscale\nmaterial below is included to ground interpretation of the surface signal, not as a separate\nclinical modality.\n3.1. Historical Development and Context\nThe study of uterine EMG has evolved alongside the development of EHG. Early\ninvestigations in the period of 1920–1940 employed intracellular electrodes or organ-bath\nsetups in animal tissue to record spontaneous uterine electrical oscillations. These founda-\ntional experiments established that the uterus generates its own rhythmic depolarizations,\nlaying the groundwork for understanding uterine excitability.\nBy the 1960s, physiologists such as Arpad Csapo advanced the field through in vivo"
+      }
+    ]
+  }
+]
