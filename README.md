@@ -195,6 +195,15 @@ Answer synthesis uses **Qwen2.5-3B-Instruct** in 4-bit **Q4_K_M GGUF** quantizat
 
 ---
 
+## 📊 Evaluation & Benchmark Results
+
+The retrieval component was evaluated against a curated gold dataset of **30 specialized clinical and technical questions** covering uterine EMG characteristics, frequency analysis, and preterm birth prediction.
+
+| Retrieval Strategy | Hit Rate@5 | NDCG@5 | Mean MRR | Precision@5 |
+|---|---:|---:|---:|---:|
+| Baseline FAISS (all-MiniLM-L6-v2) | 100.0% | 57.14% | 0.78 | 0.80 |
+| FAISS + CrossEncoder Reranker | 100.0% | **58.46%** | **1.00** | 0.80 |
+
 # 📜 License
 
 This project is licensed under the **MIT License**.
