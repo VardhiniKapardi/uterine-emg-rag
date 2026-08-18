@@ -78,7 +78,7 @@ Prompt-engineered citation binding `[Source N]` ensuring that factual statements
 
 ### Gold-Standard Evaluation Suite
 
-Benchmarked on **30 domain-specific queries** evaluating retrieval accuracy (**Hit Rate@5, NDCG@5, MRR, Precision, and Recall**).
+Benchmarked on **30 domain-specific queries** evaluating retrieval accuracy (**Hit Rate@5, NDCG@5, MRR, Precision@5, and Recall@5**).
 
 ---
 
@@ -118,7 +118,7 @@ uterine-emg-rag/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/uterine-emg-rag.git
+git clone https://github.com/VardhiniKapardi/uterine-emg-rag.git
 cd uterine-emg-rag
 
 # Create and activate virtual environment
@@ -196,13 +196,42 @@ Answer synthesis uses **Qwen2.5-3B-Instruct** in 4-bit **Q4_K_M GGUF** quantizat
 ---
 
 ## 📊 Evaluation & Benchmark Results
-
 The retrieval component was evaluated against a curated gold dataset of **30 specialized clinical and technical questions** covering uterine EMG characteristics, frequency analysis, and preterm birth prediction.
 
-| Retrieval Strategy | Hit Rate@5 | NDCG@5 | Mean MRR | Precision@5 |
-|---|---:|---:|---:|---:|
-| Baseline FAISS (all-MiniLM-L6-v2) | 100.0% | 57.14% | 0.78 | 0.80 |
-| FAISS + CrossEncoder Reranker | 100.0% | **58.46%** | **1.00** | 0.80 |
+Retrieval Performance
+
+Retrieval Metric      Result
+--------------------------------
+Hit Rate@5            100.00%
+NDCG@5                79.64%
+MRR                   1.0000
+Precision@5           60.00%
+Recall@5              71.11%
+
+These results indicate that the retrieval pipeline successfully returned at least one relevant passage within the top five results for all 30 evaluation queries, while achieving an MRR of 1.0, indicating that the relevant result was consistently ranked first under the evaluation setup.
+
+## ⚡ System Performance
+The complete RAG pipeline was also benchmarked for inference performance on a CPU-based environment.
+
+System Metric                      Result
+-----------------------------------------------
+Open-access papers indexed             41
+Semantic chunks indexed                833
+Retrieval latency                      0.648 s
+End-to-end query latency               10.70 s
+LLM generation speed                   21.4 tokens/s
+Total RAM usage                        ~4.45 GB
+
+The retrieval stage completes in approximately 648 ms, while the complete query-to-answer pipeline takes approximately 10.7 seconds, including retrieval, reranking, and local LLM generation.
+The system therefore provides a practical fully local RAG workflow without requiring a dedicated GPU.
+
+## 🧪 Example Query
+Query:
+What are the characteristics of uterine EMG signals?
+
+Generated response:
+Uterine EMG (Electrohysterography) measures the electrical activity of the uterus, specifically myometrial electrical activation. It captures low-frequency electrical bursts associated with uterine activity and provides a noninvasive representation of the uterine depolarization field. Unlike intrauterine pressure measurements, uterine EMG can be recorded noninvasively and can be used for monitoring uterine activity in both clinical and home settings.
+The generated response is accompanied by retrieved literature sources and citation bindings to maintain traceability to the underlying biomedical literature.
 
 # 📜 License
 

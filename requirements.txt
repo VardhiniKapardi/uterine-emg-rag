@@ -9,3 +9,4 @@ llama-cpp-python
 streamlit
 torchvision
 requests
+psutil
